@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { EVENTS } from '@/lib/data';
+import { EVENTS, getDynamicEvents } from '@/lib/data';
 import { Header } from '@/components/layout/Header';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -31,7 +31,8 @@ export default function CalendarPage() {
   const nextMonth = () => { if (month === 11) { setYear(y => y+1); setMonth(0); } else setMonth(m => m+1); };
 
   // 이 달의 대회
-  const monthEvents = EVENTS.filter(e => {
+  const dynEv = getDynamicEvents();
+  const monthEvents = dynEv.filter(e => {
     const d = new Date(e.start);
     return d.getFullYear() === year && d.getMonth() === month;
   }).sort((a,b) => a.start.localeCompare(b.start));

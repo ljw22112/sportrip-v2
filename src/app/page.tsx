@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useState } from 'react';
-import { EVENTS } from '@/lib/data';
+import { EVENTS, getDynamicEvents } from '@/lib/data';
 import { EventRow } from '@/components/events/EventRow';
 import { KoreaMap } from '@/components/events/KoreaMap';
 import { Header } from '@/components/layout/Header';
@@ -34,15 +34,16 @@ export default function HomePage() {
   const sun = new Date(mon); sun.setDate(mon.getDate() + 6);
   const fmt = (d: Date) => d.toISOString().slice(0,10);
 
-  const upcoming     = EVENTS.filter(e => e.status !== 'done').sort((a,b) => calcDdayNum(a.start)-calcDdayNum(b.start)).slice(0,20);
-  const thisMonthEv  = EVENTS.filter(e => new Date(e.start).getMonth()+1 === today.getMonth()+1 && e.status !== 'done');
-  const thisWeekEv   = EVENTS.filter(e => e.start >= fmt(mon) && e.start <= fmt(sun));
+  const dynEvents = getDynamicEvents();
+  const upcoming     = dynEvents.filter(e => e.status !== 'done').sort((a,b) => calcDdayNum(a.start)-calcDdayNum(b.start)).slice(0,20);
+  const thisMonthEv  = dynEvents.filter(e => new Date(e.start).getMonth()+1 === today.getMonth()+1 && e.status !== 'done');
+  const thisWeekEv   = dynEvents.filter(e => e.start >= fmt(mon) && e.start <= fmt(sun));
 
   if (selectedRegion) {
     return (
       <>
         <Header showSearch />
-        <RegionListView region={selectedRegion} events={EVENTS.filter(e => e.region===selectedRegion&&e.status!=='done')} onBack={()=>setSelectedRegion(null)} />
+        <RegionListView region={selectedRegion} events={dynEvents.filter(e => e.region===selectedRegion&&e.status!=='done')} onBack={()=>setSelectedRegion(null)} />
       </>
     );
   }
@@ -180,7 +181,7 @@ export default function HomePage() {
               <Link href="/calendar">월간 캘린더</Link>
             </div>
             <div style={{ marginLeft:'auto', textAlign:'right' }}>
-              등록 대회 {EVENTS.length}건 · 예정 대회 {EVENTS.filter(e=>e.status!=='done').length}건<br/>
+              등록 대회 {EVENTS.length}건 · 예정 대회 {dynEvents.filter(e=>e.status!=='done').length}건<br/>
               관광 정보: 한국관광공사 TourAPI
             </div>
           </div>

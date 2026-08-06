@@ -4,7 +4,7 @@ import { useSearchParams } from 'next/navigation';
 import { EventCard, EventCardSkeleton, EventCardHorizontal } from '@/components/events/EventCard';
 import { KoreaMap } from '@/components/events/KoreaMap';
 import { Header } from '@/components/layout/Header';
-import { EVENTS, REGIONS } from '@/lib/data';
+import { EVENTS, REGIONS, getDynamicEvents } from '@/lib/data';
 import { getWeekRange, getMonthRange, cn } from '@/lib/utils';
 import { Search, X, SlidersHorizontal, ChevronDown } from 'lucide-react';
 
@@ -33,9 +33,10 @@ function EventsContent() {
   const activeCount = [region, status].filter(Boolean).length;
 
   const base = useMemo(() => {
-    if (tab === 'week') { const {start,end}=getWeekRange(); return EVENTS.filter(e=>e.start>=start&&e.start<=end); }
-    if (tab === 'month') { const {start,end}=getMonthRange(); return EVENTS.filter(e=>e.start>=start&&e.start<=end); }
-    return EVENTS;
+    const de=getDynamicEvents();
+    if (tab === 'week') { const {start,end}=getWeekRange(); return de.filter(e=>e.start>=start&&e.start<=end); }
+    if (tab === 'month') { const {start,end}=getMonthRange(); return de.filter(e=>e.start>=start&&e.start<=end); }
+    return de;
   }, [tab]);
 
   const filtered = useMemo(() => base.filter(e => {
