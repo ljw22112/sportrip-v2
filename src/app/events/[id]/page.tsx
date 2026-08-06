@@ -200,6 +200,33 @@ export default async function EventDetailPage({ params }: Props) {
               </div>
             </section>
 
+            {/* 주최 & 공식사이트 */}
+            <section style={{ marginBottom: 36, paddingBottom: 36, borderBottom: '1px solid var(--line)' }}>
+              <h2 style={{ fontSize: 17, fontWeight: 700, letterSpacing: '-.01em', marginBottom: 12 }}>주최</h2>
+              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                <tbody>
+                  <tr style={{ borderBottom: '1px solid var(--line-soft)' }}>
+                    <th style={{ width: 110, padding: '12px 0', fontSize: 14, color: 'var(--muted)', fontWeight: 500, textAlign: 'left', background: 'none', verticalAlign: 'top' }}>주최 기관</th>
+                    <td style={{ padding: '12px 0', fontSize: 14.5 }}>
+                      {ev.url ? (
+                        <a href={ev.url} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--green)', fontWeight: 600 }}>공식 사이트 바로가기 ↗</a>
+                      ) : (
+                        <span style={{ color: 'var(--muted)' }}>공식 사이트 준비 중</span>
+                      )}
+                    </td>
+                  </tr>
+                  {ev.url && (
+                    <tr>
+                      <th style={{ width: 110, padding: '12px 0', fontSize: 14, color: 'var(--muted)', fontWeight: 500, textAlign: 'left', background: 'none' }}>공식 사이트</th>
+                      <td style={{ padding: '12px 0', fontSize: 14.5 }}>
+                        <a href={ev.url} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--green)', wordBreak: 'break-all', fontSize: 13.5 }}>{ev.url}</a>
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </section>
+
             {/* 관광·축제 정보 — 카테고리별 */}
             <section>
               <h2 style={{ fontSize: 17, fontWeight: 700, letterSpacing: '-.01em', marginBottom: 4 }}>
@@ -256,10 +283,15 @@ export default async function EventDetailPage({ params }: Props) {
 
               {ev.url && (
                 <div style={{ marginTop: 10 }}>
-                  <a href={ev.url} target="_blank" rel="noopener"
-                    style={{ display: 'block', width: '100%', background: 'var(--green)', color: '#fff', fontWeight: 700, fontSize: 15, textAlign: 'center', padding: '13px 0', borderRadius: 12 }}>
-                    공식 사이트에서 신청
+                  <a href={ev.url} target="_blank" rel="noopener noreferrer"
+                    style={{ display: 'block', width: '100%', background: 'var(--green)', color: '#fff', fontWeight: 700, fontSize: 15, textAlign: 'center', padding: '13px 0', borderRadius: 12, textDecoration: 'none' }}>
+                    공식 사이트 바로가기 ↗
                   </a>
+                </div>
+              )}
+              {!ev.url && (
+                <div style={{ marginTop: 10, padding: '12px', background: 'var(--gray)', borderRadius: 12, fontSize: 13, color: 'var(--muted)', textAlign: 'center' }}>
+                  공식 사이트 준비 중
                 </div>
               )}
 
