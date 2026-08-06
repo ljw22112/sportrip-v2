@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+:root {
+  --green:  #1A3A2A;
+  --green-l:#2D5A3D;
+  --green-btn:#1E4D2B;
+  --yellow: #D4FF4A;
+  --bg:     #FFFFFF;
+  --border: #E5E5E5;
+  --text:   #1A1A1A;
+  --muted:  #717171;
+  --light:  #F7F7F7;
+}
+@theme inline {
+  --color-background: #FFFFFF;
+  --color-foreground: #1A1A1A;
+  --font-sans: 'Pretendard', -apple-system, sans-serif;
+}
+body { background:#fff; color:#1A1A1A; font-family:'Pretendard',-apple-system,sans-serif; -webkit-font-smoothing:antialiased; }
+.no-scrollbar::-webkit-scrollbar { display:none }
+.no-scrollbar { -ms-overflow-style:none; scrollbar-width:none }
