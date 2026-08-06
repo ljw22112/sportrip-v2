@@ -1,187 +1,248 @@
 'use client';
 import Link from 'next/link';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { Search } from 'lucide-react';
-import { KoreaMap } from '@/components/events/KoreaMap';
-import { EventRow } from '@/components/events/EventRow';
 import { EVENTS } from '@/lib/data';
-import { getWeekRange, getMonthRange } from '@/lib/utils';
+import { EventRow } from '@/components/events/EventRow';
+import { KoreaMap } from '@/components/events/KoreaMap';
+import { Header } from '@/components/layout/Header';
+import { RegionListView } from '@/components/events/RegionListView';
 
-const CHIPS = [
-  { label: '전체',    icon: '⊕',  sport: '' },
-  { label: '마라톤',  icon: '🏃',  sport: '마라톤' },
-  { label: '러닝',    icon: '💨',  sport: '마라톤' },
-  { label: '자전거',  icon: '🚴',  sport: '사이클' },
-  { label: '축구',    icon: '⚽',  sport: '축구' },
-  { label: '배드민턴', icon: '🏸', sport: '배드민턴' },
-  { label: '수영',    icon: '🏊',  sport: '수영' },
-  { label: '테니스',  icon: '🎾',  sport: '테니스' },
-  { label: '트레일',  icon: '🏔️',  sport: '기타' },
+const REGIONS = ['서울','부산','대구','인천','광주','대전','울산','세종','경기','강원','충북','충남','전북','전남','경북','경남','제주'];
+
+const KTO_LINKS = [
+  ['오디(Odii) 오디오 가이드','https://korean.visitkorea.or.kr'],
+  ['베니키아','https://www.benikea.com'],
+  ['두루누비','https://www.durunubi.kr'],
+  ['공공 와이파이','https://korean.visitkorea.or.kr'],
+  ['국가유산 유유자적','https://korean.visitkorea.or.kr'],
+  ['관광두레','https://korean.visitkorea.or.kr'],
+  ['한국관광 데이터랩','https://datalab.visitkorea.or.kr'],
+  ['한국관광 콘텐츠랩','https://api.visitkorea.or.kr'],
+  ['여행가이드북','https://korean.visitkorea.or.kr'],
+  ['고캠핑','https://www.gocamping.or.kr'],
+  ['관광불편신고센터','https://korean.visitkorea.or.kr'],
+  ['템플스테이','https://www.templestay.com'],
+  ['세이프스테이','https://korean.visitkorea.or.kr'],
+  ['포토코리아','https://phoko.visitkorea.or.kr'],
+  ['한국관광산업포털','https://korean.visitkorea.or.kr'],
+  ['대한민국 관광기념품 공모전·박람회','https://korean.visitkorea.or.kr'],
 ];
 
-const QUICK = [
-  { label: '이번 주말', param: 'period=weekend' },
-  { label: '다음 달',   param: 'period=nextmonth' },
-  { label: '내 지역',   param: 'myloc=1' },
-  { label: '축제와 함께', param: 'festival=1' },
-];
-
-const SPORTS_LIST = ['전체','마라톤','배드민턴','수영','축구','테니스','사이클','골프','야구','농구','배구','태권도','기타'];
-const DATE_LIST   = ['전체 기간','이번 주','이번 달','다음 달','3개월 이내','6개월 이내'];
+function calcDdayNum(s: string) {
+  return Math.ceil((new Date(s).getTime() - Date.now()) / 86400000);
+}
 
 export default function HomePage() {
-  const router = useRouter();
-  const [activeChip, setActiveChip] = useState('');
-  const [keyword, setKeyword] = useState('');
-  const [date, setDate]   = useState('전체 기간');
-  const [sport, setSport] = useState('전체');
-  const [dateOpen,  setDateOpen]  = useState(false);
-  const [sportOpen, setSportOpen] = useState(false);
+  const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
+  const [ktoOpen, setKtoOpen] = useState(false);
 
-  const handleSearch = () => {
-    const params = new URLSearchParams();
-    if (keyword) params.set('keyword', keyword);
-    if (sport !== '전체') params.set('sport', sport);
-    router.push(`/events?${params.toString()}`);
-    setDateOpen(false); setSportOpen(false);
-  };
+  const today = new Date();
+  const thisMonth = today.getMonth() + 1;
+  const mon = new Date(today); mon.setDate(today.getDate() - today.getDay() + 1);
+  const sun = new Date(mon); sun.setDate(mon.getDate() + 6);
+  const fmt = (d: Date) => d.toISOString().slice(0,10);
 
-  // 섹션별 대회 필터
-  const upcoming = EVENTS.filter(e => e.status !== 'done').slice(0, 20);
-  const { start: ws, end: we } = getWeekRange();
-  const { start: ms, end: me } = getMonthRange();
-  const thisWeek  = EVENTS.filter(e => e.start >= ws && e.start <= we);
-  const thisMonth = EVENTS.filter(e => e.start >= ms && e.start <= me);
+  const upcoming = EVENTS.filter(e => e.status !== 'done').sort((a,b) => calcDdayNum(a.start) - calcDdayNum(b.start)).slice(0,20);
+  const thisMonthEvents = EVENTS.filter(e => new Date(e.start).getMonth()+1 === thisMonth && e.status !== 'done');
+  const thisWeekEvents  = EVENTS.filter(e => e.start >= fmt(mon) && e.start <= fmt(sun));
+
+  // 지역 클릭 → 분할 화면 표시
+  if (selectedRegion) {
+    return (
+      <>
+        <Header showSearch />
+        <RegionListView
+          region={selectedRegion}
+          events={EVENTS.filter(e => e.region === selectedRegion && e.status !== 'done')}
+          onBack={() => setSelectedRegion(null)}
+        />
+      </>
+    );
+  }
 
   return (
-    <div className="max-w-[1120px] mx-auto px-5">
-
-      {/* ── 종목 칩 ── */}
-      <div className="flex gap-0 overflow-x-auto no-scrollbar border-b border-[#E5E5E5] -mx-5 px-5 mb-6">
-        {CHIPS.map(({ label, icon, sport: s }) => {
-          const active = activeChip === label || (label === '전체' && !activeChip);
-          return (
-            <Link key={label} href={s ? `/events?sport=${s}` : '/events'}
-              onClick={() => setActiveChip(label === '전체' ? '' : label)}
-              className={`flex flex-col items-center gap-1.5 px-5 py-3 flex-shrink-0 border-b-2 transition-all text-xs font-medium whitespace-nowrap
-                ${active ? 'border-[#1A1A1A] text-[#1A1A1A] opacity-100' : 'border-transparent text-[#717171] opacity-70 hover:opacity-100'}`}>
-              <span className="text-xl">{icon}</span>
-              <span>{label}</span>
-            </Link>
-          );
-        })}
-      </div>
-
-      {/* ── 검색바 ── */}
-      <div className="flex items-stretch border border-[#D0D0D0] rounded-2xl overflow-hidden shadow-sm mb-3">
-        <div className="flex-1 px-5 py-3.5 min-w-0">
-          <div className="text-[11px] font-semibold text-[#1A1A1A] mb-1">지역</div>
-          <input value={keyword} onChange={e => setKeyword(e.target.value)}
-            onKeyDown={e => e.key === 'Enter' && handleSearch()}
-            placeholder="지역명 또는 문장으로 검색"
-            className="w-full text-sm text-[#717171] bg-transparent outline-none placeholder:text-[#AAAAAA]" />
+    <>
+      <Header showSearch />
+      <main>
+        {/* 히어로 카피 */}
+        <div style={{ maxWidth:1240, margin:'0 auto', padding:'20px 24px 6px', textAlign:'center' }}>
+          <h1 style={{ fontSize:'clamp(20px,2.6vw,26px)', fontWeight:800, letterSpacing:'-.02em', lineHeight:1.3 }}>
+            대회 보러 가는 길,{' '}
+            <span style={{ background:'linear-gradient(transparent 62%,#D6F14E 62%)' }}>그 지역까지</span>{' '}
+            즐기고 오세요
+          </h1>
+          <p style={{ color:'var(--muted)', marginTop:6, fontSize:13.5 }}>
+            전국 스포츠 대회 일정과 개최지 주변 관광지·맛집·숙소, 같은 기간 열리는 지역 축제까지 한곳에서 확인하세요.
+          </p>
         </div>
-        <div className="w-px bg-[#E5E5E5] my-3" />
-        <div className="relative px-5 py-3.5 min-w-[140px]">
-          <div className="text-[11px] font-semibold text-[#1A1A1A] mb-1">날짜</div>
-          <button onClick={() => { setDateOpen(v => !v); setSportOpen(false); }}
-            className="flex items-center gap-2 text-sm text-[#717171] w-full text-left">
-            {date}
-            <svg className="w-3.5 h-3.5 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-          </button>
-          {dateOpen && (
-            <div className="absolute top-full left-0 mt-1 bg-white border border-[#E5E5E5] rounded-xl shadow-lg w-44 py-1 z-50">
-              {DATE_LIST.map(d => (
-                <button key={d} onClick={() => { setDate(d); setDateOpen(false); }}
-                  className={`w-full text-left px-4 py-2.5 text-sm hover:bg-[#F7F7F7] ${date === d ? 'font-semibold text-[#1A3A2A]' : 'text-[#1A1A1A]'}`}>{d}</button>
-              ))}
-            </div>
-          )}
-        </div>
-        <div className="w-px bg-[#E5E5E5] my-3" />
-        <div className="relative px-5 py-3.5 min-w-[120px]">
-          <div className="text-[11px] font-semibold text-[#1A1A1A] mb-1">종목</div>
-          <button onClick={() => { setSportOpen(v => !v); setDateOpen(false); }}
-            className="flex items-center gap-2 text-sm text-[#717171] w-full text-left">
-            {sport}
-            <svg className="w-3.5 h-3.5 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-          </button>
-          {sportOpen && (
-            <div className="absolute top-full left-0 mt-1 bg-white border border-[#E5E5E5] rounded-xl shadow-lg w-40 py-1 z-50 max-h-64 overflow-y-auto">
-              {SPORTS_LIST.map(s => (
-                <button key={s} onClick={() => { setSport(s); setSportOpen(false); }}
-                  className={`w-full text-left px-4 py-2.5 text-sm hover:bg-[#F7F7F7] ${sport === s ? 'font-semibold text-[#1A3A2A]' : 'text-[#1A1A1A]'}`}>{s}</button>
-              ))}
-            </div>
-          )}
-        </div>
-        <div className="flex items-center px-3">
-          <button onClick={handleSearch}
-            className="w-10 h-10 bg-[#1E4D2B] hover:bg-[#1A3A2A] rounded-full flex items-center justify-center transition-colors">
-            <Search className="w-4 h-4 text-white" />
-          </button>
-        </div>
-      </div>
 
-      {/* 힌트 */}
-      <p className="text-xs text-[#717171] text-center mb-10">
-        문장으로 적어도 됩니다 — 예: <span className="font-semibold text-[#1A1A1A]">"11월 부산 마라톤"</span>을 그대로 입력해 보세요.
-      </p>
-
-      {/* ── 히어로 카피 ── */}
-      <div className="text-center mb-6">
-        <h1 className="text-3xl md:text-4xl font-extrabold text-[#1A1A1A] leading-tight mb-3">
-          대회 보러 가는 길,<br />
-          <span className="relative inline-block">
-            <span className="relative z-10">그 지역까지 즐기고 오세요</span>
-            <span className="absolute bottom-0 left-0 right-0 h-3 bg-[#D4FF4A] -z-0 rounded-sm" />
-          </span>
-        </h1>
-        <p className="text-sm text-[#717171] max-w-md mx-auto leading-relaxed mb-6">
-          전국 스포츠 대회 일정과 개최지 주변 관광지·맛집·숙소,<br />
-          같은 기간 열리는 지역 축제까지 한곳에서 확인하세요.
-        </p>
-        {/* 퀵 필터 */}
-        <div className="flex flex-wrap gap-2 justify-center">
-          {QUICK.map(({ label, param }) => (
-            <Link key={label} href={`/events?${param}`}
-              className="px-4 py-2 border border-[#D0D0D0] rounded-full text-sm font-medium text-[#1A1A1A] hover:border-[#1A1A1A] hover:bg-[#F7F7F7] transition-all">
-              {label}
-            </Link>
+        {/* 빠른 선택 칩 */}
+        <div style={{ display:'flex', gap:8, justifyContent:'center', flexWrap:'wrap', padding:'12px 24px' }}>
+          {[['이번 주말','weekend'],['다음 달','nextmonth'],['내 지역','near'],['축제와 함께','festival']].map(([label,k]) => (
+            <Link key={k} href={`/events?quick=${k}`} className="quick-chip">{label}</Link>
           ))}
         </div>
-      </div>
 
-      {/* ── 대회 카드 섹션 3개 (샘플과 동일) ── */}
-      <div className="mt-12">
+        {/* 지도 */}
+        <section style={{ maxWidth:1240, margin:'0 auto', padding:'26px 24px 8px' }}>
+          <div style={{ display:'flex', alignItems:'center', gap:14, marginBottom:12 }}>
+            <h2 style={{ fontSize:16, fontWeight:700 }}>지도로 한눈에 보기</h2>
+            <Link href="/events" style={{ marginLeft:'auto', fontSize:13.5, fontWeight:600, color:'var(--green)', display:'flex', alignItems:'center', gap:4 }}>
+              목록으로 보기 ›
+            </Link>
+          </div>
+          <div style={{ position:'relative', background:'#D8E4DA', border:'1px solid var(--line)', borderRadius:20, overflow:'hidden', height:440 }}>
+            <KoreaMap events={EVENTS} className="w-full h-full" />
+            <div className="map-zoom-btns">
+              <button>+</button><button>−</button>
+            </div>
+            <div className="map-note">약식 지도 — 점을 누르면 대회 상세로 이동합니다</div>
+          </div>
+        </section>
+
+        {/* STEP 1/2/3 */}
+        <section style={{ maxWidth:1240, margin:'0 auto', padding:'26px 24px', borderTop:'1px solid var(--line)' }}>
+          <h2 style={{ textAlign:'center', fontSize:21, fontWeight:800, letterSpacing:'-.02em' }}>스포트립은 이렇게 씁니다</h2>
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(260px,1fr))', gap:22, maxWidth:960, margin:'18px auto 0' }}>
+            {[
+              ['STEP 1','대회 찾기','지역·날짜·종목으로 거르거나, "11월 부산 마라톤"처럼 문장으로 검색합니다.'],
+              ['STEP 2','주변 여행 정보 확인','개최지 주변 관광지·맛집·숙소와 대회 기간에 겹치는 지역 축제를 함께 보여 드립니다.'],
+              ['STEP 3','저장하고 공유','마음에 든 대회는 하트로 저장하고, 일행에게 링크로 공유해 함께 떠나세요.\n로그인 없이도 이용 가능합니다.'],
+            ].map(([bib,h,p]) => (
+              <div key={bib} style={{ background:'var(--gray)', border:'1px solid var(--line-soft)', borderRadius:20, padding:20 }}>
+                <span className="step-bib">{bib}</span>
+                <h3 style={{ margin:'10px 0 4px', fontSize:16, letterSpacing:'-.01em' }}>{h}</h3>
+                <p style={{ fontSize:13.5, color:'var(--muted)', whiteSpace:'pre-line' }}>{p}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* 3개 캐러셀 섹션 */}
         <EventRow title="전체 대회" href="/events" events={upcoming} />
-        <EventRow title="이번달의 대회" href="/events?tab=month" events={thisMonth.length > 0 ? thisMonth : upcoming.slice(0, 10)} />
-        <EventRow title="이번주의 대회" href="/events?tab=week" events={thisWeek.length > 0 ? thisWeek : upcoming.slice(0, 6)} />
-      </div>
+        <EventRow title="이번달의 대회" href="/events?tab=month" events={thisMonthEvents.length > 0 ? thisMonthEvents : upcoming.slice(0,10)} />
+        <EventRow title="이번주의 대회" href="/events?tab=week" events={thisWeekEvents.length > 0 ? thisWeekEvents : upcoming.slice(0,6)} />
 
-      {/* ── 지도로 한눈에 보기 ── */}
-      <div className="mt-6 mb-16">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-base font-bold text-[#1A1A1A]">지도로 한눈에 보기</h2>
-          <Link href="/events" className="flex items-center gap-1 text-sm font-medium text-[#717171] hover:text-[#1A1A1A] transition-colors">
-            로 보기
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7"/></svg>
-          </Link>
-        </div>
-        <div className="border border-[#E5E5E5] rounded-2xl overflow-hidden relative" style={{ height: '440px' }}>
-          <KoreaMap events={EVENTS} className="w-full h-full" />
-          <div className="absolute top-3 right-3 flex flex-col gap-1">
-            <button className="w-8 h-8 bg-white border border-[#E5E5E5] rounded-lg flex items-center justify-center text-lg font-light text-[#1A1A1A] hover:bg-[#F7F7F7] shadow-sm">+</button>
-            <button className="w-8 h-8 bg-white border border-[#E5E5E5] rounded-lg flex items-center justify-center text-lg font-light text-[#1A1A1A] hover:bg-[#F7F7F7] shadow-sm">−</button>
+        <hr className="lanes" style={{ marginTop:30 }} />
+
+        {/* 지역별 둘러보기 */}
+        <section style={{ maxWidth:1240, margin:'0 auto', padding:'26px 24px 34px', borderTop:'1px solid var(--line)' }}>
+          <h2 style={{ fontSize:20, fontWeight:800, letterSpacing:'-.02em' }}>지역별로 둘러보기</h2>
+          <p style={{ color:'var(--muted)', fontSize:13.5, margin:'4px 0 16px' }}>가고 싶은 지역을 고르면 그 지역의 대회만 모아 보여 드립니다.</p>
+          <div className="region-grid">
+            {REGIONS.map(r => {
+              const cnt = EVENTS.filter(e => e.region === r && e.status !== 'done').length;
+              return (
+                <button key={r} onClick={() => setSelectedRegion(r)} className="region-tile">
+                  <b>{r}</b>
+                  <span style={{ color: cnt ? '#E4572E' : 'var(--faint)', fontSize:12, marginTop:3, display:'block' }}>
+                    {cnt ? `예정 대회 ${cnt}건` : '예정 대회 없음'}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* KTO 스트립 (5번 사진 정확히) */}
+        <div className="kto-strip">
+          <div className="kto-inner">
+            {/* 관광안내 1330 + 지역번호 */}
+            <div className="kto-row">
+              <div className="kto-cell">
+                <span className="kto-label">관광안내</span>
+                <b className="kto-1330">
+                  <span style={{color:'#E6397E'}}>1</span>
+                  <span style={{color:'#0B8A4B'}}>3</span>
+                  <span style={{color:'#2B6CB0'}}>3</span>
+                  <span style={{color:'#12A5B8'}}>0</span>
+                </b>
+              </div>
+              <div className="kto-cell">
+                <span className="kto-label">지역번호</span>
+                <span className="kto-120">+ 120</span>
+              </div>
+            </div>
+
+            {/* 관광정보 아코디언 */}
+            <div className="kto-row">
+              <button className="kto-acc-btn" onClick={() => setKtoOpen(v => !v)}>
+                <span className="kto-label">관광정보</span>
+                <span style={{ fontSize:20, fontWeight:400 }}>{ktoOpen ? '—' : '+'}</span>
+              </button>
+            </div>
+            {ktoOpen && (
+              <div className="kto-panel">
+                <h5 className="kto-panel-title">관광정보</h5>
+                <ul className="kto-link-list">
+                  {KTO_LINKS.map(([name, url]) => (
+                    <li key={name}>
+                      <a href={url} target="_blank" rel="noopener">{name}</a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
-      </div>
 
-      {/* 드롭다운 닫기 */}
-      {(dateOpen || sportOpen) && (
-        <div className="fixed inset-0 z-40" onClick={() => { setDateOpen(false); setSportOpen(false); }} />
-      )}
-    </div>
+        {/* STEP 섹션은 지도 아래로 이미 이동됨, 여기는 푸터만 */}
+        <footer className="st-footer">
+          <div className="st-foot-inner">
+            <div>
+              <h4>스포트립</h4>
+              <Link href="/events">대회 찾기</Link>
+            </div>
+            <div style={{ marginLeft:'auto', textAlign:'right' }}>
+              등록 대회 {EVENTS.length}건 · 예정 대회 {EVENTS.filter(e=>e.status!=='done').length}건<br/>
+              관광 정보: 한국관광공사 TourAPI
+            </div>
+          </div>
+          <div className="st-foot-legal">© 2026 스포트립 · 2026 관광데이터 활용 공모전 출품작</div>
+        </footer>
+
+        <style>{`
+          .quick-chip{height:34px;padding:0 16px;border:1.5px solid var(--line);border-radius:999px;background:#fff;font-size:13.5px;font-weight:600;color:var(--ink);display:inline-flex;align-items:center;text-decoration:none;transition:border-color .15s}
+          .quick-chip:hover{border-color:var(--ink)}
+          .step-bib{display:inline-flex;align-items:center;font-weight:800;font-size:13px;background:#D6F14E;color:#2A3308;border-radius:6px;padding:2px 10px;letter-spacing:.04em}
+          .map-zoom-btns{position:absolute;right:12px;top:12px;display:flex;flex-direction:column;background:#fff;border-radius:10px;box-shadow:var(--shadow-1);overflow:hidden}
+          .map-zoom-btns button{width:34px;height:34px;font-size:17px;font-weight:700;cursor:pointer;border:0;background:transparent}
+          .map-zoom-btns button:hover{background:var(--gray)}
+          .map-note{position:absolute;left:12px;bottom:12px;background:rgba(255,255,255,.92);border-radius:10px;font-size:11.5px;color:var(--muted);padding:5px 10px}
+          .region-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+          @media(max-width:760px){.region-grid{grid-template-columns:repeat(3,1fr)}}
+          @media(max-width:420px){.region-grid{grid-template-columns:repeat(2,1fr)}}
+          .region-tile{background:var(--gray);border:1px solid var(--line-soft);border-radius:14px;padding:14px 8px;text-align:center;cursor:pointer;transition:background .15s}
+          .region-tile:hover{background:var(--line-soft)}
+          .region-tile b{display:block;font-size:14.5px;letter-spacing:-.01em}
+          /* KTO */
+          .kto-strip{background:#fff;border-top:1px solid var(--line);font-size:14px}
+          .kto-inner{max-width:1240px;margin:0 auto}
+          .kto-row{display:flex;align-items:stretch;border-bottom:1px solid var(--line-soft)}
+          .kto-cell{flex:1;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 24px}
+          .kto-cell+.kto-cell{border-left:1px solid var(--line-soft)}
+          .kto-label{color:var(--ink);font-weight:500}
+          .kto-1330{font-size:22px;font-weight:800;letter-spacing:2px}
+          .kto-120{color:#E8720C;font-size:18px;font-weight:800;letter-spacing:1px}
+          .kto-acc-btn{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 24px;background:none;border:0;cursor:pointer;font-size:14px;text-align:left}
+          .kto-acc-btn:hover{background:var(--gray)}
+          .kto-panel{background:var(--gray);border-bottom:1px solid var(--line-soft);padding:20px 24px}
+          .kto-panel-title{font-size:13.5px;margin-bottom:14px;color:var(--ink);font-weight:700}
+          .kto-link-list{list-style:none;columns:2;column-gap:40px;padding:0;margin:0}
+          .kto-link-list li{padding:5px 0;font-size:13px;break-inside:avoid}
+          .kto-link-list li::before{content:"·";margin-right:8px;color:var(--faint)}
+          .kto-link-list a{color:#0B5C43;font-weight:500}
+          .kto-link-list a:hover{text-decoration:underline}
+          @media(max-width:640px){.kto-row{flex-direction:column}.kto-cell+.kto-cell{border-left:0;border-top:1px solid var(--line-soft)}.kto-link-list{columns:1}}
+          /* Footer */
+          .st-footer{background:var(--gray);color:var(--muted);font-size:13px;border-top:1px solid var(--line)}
+          .st-foot-inner{max-width:1240px;margin:0 auto;padding:30px 24px;display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start}
+          .st-foot-inner h4{color:var(--ink);font-size:13px;margin-bottom:8px}
+          .st-foot-inner a{display:block;padding:3px 0;color:var(--muted)}
+          .st-foot-inner a:hover{color:var(--ink);text-decoration:underline}
+          .st-foot-legal{border-top:1px solid var(--line);padding:14px 24px;text-align:center;font-size:12px;color:var(--faint)}
+        `}</style>
+      </main>
+    </>
   );
 }
