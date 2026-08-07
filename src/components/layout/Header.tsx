@@ -33,13 +33,13 @@ export function Header({ showSearch=false }: { showSearch?: boolean }) {
       <header className="sticky top-0 z-50 bg-white border-b border-[#EBEBEB]">
         {/* ── 탑바 ── */}
         <div className="max-w-[1760px] mx-auto px-5 md:px-10">
-          <div className="flex items-center h-20 gap-3">
+          <div className="flex items-center h-24 gap-3">
             {/* 로고 — 에어비앤비처럼 크게 */}
             <Link href="/" className="flex-shrink-0 flex items-center gap-2">
-              <Image src="/logo.svg" alt="SpoTrip" width={64} height={64} priority
-                className="h-16 w-16"/>
-              <span className="font-extrabold text-[15px] text-[#1B1F1D] hidden md:block"
-                style={{letterSpacing:'-0.04em'}}>
+              <Image src="/logo.svg" alt="SpoTrip" width={80} height={80} priority
+                className="h-20 w-20"/>
+              <span className="font-extrabold text-[22px] text-[#1B1F1D] hidden md:block"
+                style={{letterSpacing:'-0.05em'}}>
                 스포트립
               </span>
             </Link>
