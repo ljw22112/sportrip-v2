@@ -128,7 +128,7 @@ export function KoreaMap({ events, className }: Props) {
 
           {/* 라벨 */}
           <text x="450" y="150" textAnchor="middle" fontSize="11" fill="#6892A8" fontWeight="600" opacity="0.7">동해</text>
-          <text x="72" y="240" textAnchor="middle" fontSize="11" fill="#6892A8" fontWeight="600" opacity="0.7">황해</text>
+          <text x="72" y="240" textAnchor="middle" fontSize="11" fill="#6892A8" fontWeight="600" opacity="0.7">서해</text>
           <text x="280" y="448" textAnchor="middle" fontSize="11" fill="#6892A8" fontWeight="600" opacity="0.7">남해</text>
           <line x1="158" y1="72" x2="315" y2="72" stroke="#888" strokeWidth="1.5" strokeDasharray="5 4" opacity="0.5"/>
           <text x="238" y="56" textAnchor="middle" fontSize="9" fill="#888" fontWeight="600">DMZ</text>
