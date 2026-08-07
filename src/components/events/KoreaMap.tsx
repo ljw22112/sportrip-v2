@@ -137,10 +137,7 @@ export function KoreaMap({ events, className }: Props) {
         </div>
       )}
 
-      {/* 안내 문구 */}
-      <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm border border-[#E5E5E5] rounded-full px-3 py-1.5 text-xs text-[#717171]">
-        약식 지도 — 점을 누르면 대회 상세로 이동합니다
-      </div>
+
     </div>
   );
 }
