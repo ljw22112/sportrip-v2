@@ -18,8 +18,9 @@ function fmtDate(ds: string) {
   return `${y}년 ${m}월 ${d}일 (${'일월화수목금토'[new Date(Date.UTC(y,m-1,d)).getUTCDay()]})`;
 }
 
-export default function EventDetailPage({ params }: { params: { id: string } }) {
-  const ev = EVENTS.find(e => String(e.id) === params.id);
+export default async function EventDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const ev = EVENTS.find(e => String(e.id) === id);
   if (!ev) return notFound();
 
   const tour  = getTourData(ev.region);
