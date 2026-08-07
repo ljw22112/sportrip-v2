@@ -85,18 +85,18 @@ export function Header({ showSearch=false }: HeaderProps) {
 
       <style>{`
         .st-header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-        .st-topbar{max-width:1240px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:16px}
+        .st-topbar{max-width:1760px;margin:0 auto;padding:12px 80px;display:flex;align-items:center;gap:16px}
         .st-logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:21px;letter-spacing:-.02em}
         .st-beta{font-size:11px;font-weight:600;color:var(--green);background:var(--green-tint);padding:2px 8px;border-radius:999px}
         .st-saved{display:inline-flex;align-items:center;gap:7px;font-weight:600;border-radius:999px;padding:9px 16px;color:var(--ink)}
         .st-saved:hover{background:var(--gray)}
-        .st-sport-tabs{max-width:1240px;margin:0 auto;padding:4px 24px 0;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+        .st-sport-tabs{max-width:1760px;margin:0 auto;padding:4px 80px 0;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
         .st-sport-tabs::-webkit-scrollbar{display:none}
         .st-tab{display:flex;flex-direction:column;align-items:center;gap:5px;padding:8px 13px 10px;color:var(--muted);border-bottom:2.5px solid transparent;font-size:12.5px;font-weight:600;flex-shrink:0;transition:color .15s;white-space:nowrap}
         .st-tab:hover{color:var(--ink)}
         .st-tab.active{color:var(--ink);border-bottom-color:var(--ink)}
         .st-tab-icon{font-size:22px}
-        .st-searchwrap{max-width:1240px;margin:0 auto;padding:14px 24px 18px}
+        .st-searchwrap{max-width:1760px;margin:0 auto;padding:14px 80px 18px}
         .st-searchbar{display:flex;align-items:stretch;background:#fff;border:1px solid var(--line);border-radius:999px;box-shadow:0 1px 2px rgba(0,0,0,.06),0 4px 12px rgba(0,0,0,.06);max-width:760px;margin:0 auto;transition:box-shadow .15s}
         .st-searchbar:focus-within{box-shadow:0 3px 12px rgba(0,0,0,.14)}
         .st-cell{flex:1;display:flex;flex-direction:column;gap:1px;padding:10px 22px;border-radius:999px;min-width:0;transition:background .12s}

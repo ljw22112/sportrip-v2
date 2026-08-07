@@ -95,7 +95,7 @@ export default async function EventDetailPage({ params }: Props) {
         </Link>
       </div>
 
-      <div style={{ maxWidth: 1140, margin: '0 auto', padding: '12px 24px 80px' }}>
+      <div style={{ maxWidth: 1140, margin: '0 auto', padding: '12px 80px 80px' }}>
         {/* 브레드크럼 */}
         <p style={{ fontSize: 13, color: 'var(--muted)', marginBottom: 10 }}>
           <Link href="/events" style={{ color: 'var(--green)', fontWeight: 600 }}>대회 목록</Link> · {ev.sport} · {ev.region}

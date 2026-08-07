@@ -54,7 +54,7 @@ export default function HomePage() {
       <main>
 
         {/* ── 히어로 카피 ── */}
-        <div style={{ maxWidth:1240, margin:'0 auto', padding:'20px 24px 6px', textAlign:'center' }}>
+        <div style={{ maxWidth:1760, margin:'0 auto', padding:'20px 80px 6px', textAlign:'center' }}>
           <h1 style={{ fontSize:'clamp(20px,2.6vw,26px)', fontWeight:800, letterSpacing:'-.02em', lineHeight:1.3 }}>
             대회 보러 가는 길,{' '}
             <span style={{ background:'linear-gradient(transparent 62%,#D6F14E 62%)' }}>그 지역까지</span>{' '}
@@ -66,7 +66,7 @@ export default function HomePage() {
         </div>
 
         {/* 빠른 선택 칩 + 캘린더 버튼 */}
-        <div style={{ display:'flex', gap:8, justifyContent:'center', flexWrap:'wrap', padding:'12px 24px' }}>
+        <div style={{ display:'flex', gap:8, justifyContent:'center', flexWrap:'wrap', padding:'12px 80px' }}>
           {[['이번 주말','weekend'],['다음 달','nextmonth'],['내 지역','near'],['축제와 함께','festival']].map(([label,k])=>(
             <Link key={k} href={`/events?quick=${k}`} className="quick-chip">{label}</Link>
           ))}
@@ -79,7 +79,7 @@ export default function HomePage() {
         </div>
 
         {/* ── 지도 ── */}
-        <section style={{ maxWidth:1240, margin:'0 auto', padding:'26px 24px 8px' }}>
+        <section style={{ maxWidth:1760, margin:'0 auto', padding:'26px 80px 8px' }}>
           <div style={{ display:'flex', alignItems:'center', gap:14, marginBottom:12 }}>
             <h2 style={{ fontSize:16, fontWeight:700 }}>지도로 한눈에 보기</h2>
             <Link href="/events" style={{ marginLeft:'auto', fontSize:13.5, fontWeight:600, color:'var(--green)' }}>목록으로 보기 ›</Link>
@@ -92,7 +92,7 @@ export default function HomePage() {
         </section>
 
         {/* ── STEP 섹션 (지도 바로 아래) ── */}
-        <section style={{ maxWidth:1240, margin:'0 auto', padding:'26px 24px', borderTop:'1px solid var(--line)' }}>
+        <section style={{ maxWidth:1760, margin:'0 auto', padding:'26px 80px', borderTop:'1px solid var(--line)' }}>
           <h2 style={{ textAlign:'center', fontSize:21, fontWeight:800, letterSpacing:'-.02em' }}>스포트립은 이렇게 씁니다</h2>
           <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(260px,1fr))', gap:22, maxWidth:960, margin:'18px auto 0' }}>
             {[
@@ -117,7 +117,7 @@ export default function HomePage() {
         <hr className="lanes" style={{ marginTop:30 }}/>
 
         {/* ── 지역별 둘러보기 ── */}
-        <section style={{ maxWidth:1240, margin:'0 auto', padding:'26px 24px 34px', borderTop:'1px solid var(--line)' }}>
+        <section style={{ maxWidth:1760, margin:'0 auto', padding:'26px 80px 34px', borderTop:'1px solid var(--line)' }}>
           <h2 style={{ fontSize:20, fontWeight:800, letterSpacing:'-.02em' }}>지역별로 둘러보기</h2>
           <p style={{ color:'var(--muted)', fontSize:13.5, margin:'4px 0 16px' }}>가고 싶은 지역을 고르면 그 지역의 대회만 모아 보여 드립니다.</p>
           <div className="region-grid">
@@ -198,22 +198,22 @@ export default function HomePage() {
           .map-zoom-btns button:hover{background:var(--gray)}
           .map-note{position:absolute;left:12px;bottom:12px;background:rgba(255,255,255,.92);border-radius:10px;font-size:11.5px;color:var(--muted);padding:5px 10px}
           .region-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
-          @media(max-width:760px){.region-grid{grid-template-columns:repeat(3,1fr)}}
+          @media(max-width:880px){.region-grid{grid-template-columns:repeat(3,1fr)}}
           @media(max-width:420px){.region-grid{grid-template-columns:repeat(2,1fr)}}
           .region-tile{background:var(--gray);border:1px solid var(--line-soft);border-radius:14px;padding:14px 8px;text-align:center;cursor:pointer;transition:background .15s;font-family:inherit}
           .region-tile:hover{background:var(--line-soft)}
           .region-tile b{display:block;font-size:14.5px;letter-spacing:-.01em}
           .kto-strip{background:#fff;border-top:1px solid var(--line);font-size:14px}
-          .kto-inner{max-width:1240px;margin:0 auto}
+          .kto-inner{max-width:1760px;margin:0 auto}
           .kto-row{display:flex;align-items:stretch;border-bottom:1px solid var(--line-soft)}
-          .kto-cell{flex:1;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 24px}
+          .kto-cell{flex:1;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 80px}
           .kto-cell+.kto-cell{border-left:1px solid var(--line-soft)}
           .kto-label{color:var(--ink);font-weight:500}
           .kto-1330{font-size:22px;font-weight:800;letter-spacing:2px}
           .kto-120{color:#E8720C;font-size:18px;font-weight:800;letter-spacing:1px}
-          .kto-acc-btn{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 24px;background:none;border:0;cursor:pointer;font-size:14px;text-align:left;font-family:inherit}
+          .kto-acc-btn{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 80px;background:none;border:0;cursor:pointer;font-size:14px;text-align:left;font-family:inherit}
           .kto-acc-btn:hover{background:var(--gray)}
-          .kto-panel{background:var(--gray);border-bottom:1px solid var(--line-soft);padding:20px 24px}
+          .kto-panel{background:var(--gray);border-bottom:1px solid var(--line-soft);padding:20px 80px}
           .kto-panel-title{font-size:13.5px;margin-bottom:14px;color:var(--ink);font-weight:700}
           .kto-link-list{list-style:none;columns:2;column-gap:40px;padding:0;margin:0}
           .kto-link-list li{padding:5px 0;font-size:13px;break-inside:avoid}
@@ -222,11 +222,11 @@ export default function HomePage() {
           .kto-link-list a:hover{text-decoration:underline}
           @media(max-width:640px){.kto-row{flex-direction:column}.kto-cell+.kto-cell{border-left:0;border-top:1px solid var(--line-soft)}.kto-link-list{columns:1}}
           .st-footer{background:var(--gray);color:var(--muted);font-size:13px;border-top:1px solid var(--line)}
-          .st-foot-inner{max-width:1240px;margin:0 auto;padding:30px 24px;display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start}
+          .st-foot-inner{max-width:1760px;margin:0 auto;padding:30px 80px;display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start}
           .st-foot-inner h4{color:var(--ink);font-size:13px;margin-bottom:8px}
           .st-foot-inner a{display:block;padding:3px 0;color:var(--muted);text-decoration:none}
           .st-foot-inner a:hover{color:var(--ink);text-decoration:underline}
-          .st-foot-legal{border-top:1px solid var(--line);padding:14px 24px;text-align:center;font-size:12px;color:var(--faint)}
+          .st-foot-legal{border-top:1px solid var(--line);padding:14px 80px;text-align:center;font-size:12px;color:var(--faint)}
         `}</style>
       </main>
     </>

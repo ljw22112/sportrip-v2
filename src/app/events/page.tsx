@@ -60,7 +60,7 @@ function EventsContent() {
       <div style={{ display:'grid', gridTemplateColumns: mapVisible ? 'minmax(0,1fr) minmax(320px,42%)' : '1fr', minHeight:'calc(100vh - 130px)', maxWidth:'100%' }}>
 
         {/* 좌측: 목록 */}
-        <div style={{ padding:'18px 24px 40px' }}>
+        <div style={{ padding:'18px 80px 40px' }}>
 
           {/* 종목 칩 */}
           <div style={{ display:'flex', gap:2, overflowX:'auto', borderBottom:'1px solid var(--line)', marginBottom:14, paddingBottom:0, marginLeft:-24, marginRight:-24, paddingLeft:24, paddingRight:24, scrollbarWidth:'none' }}>
@@ -200,7 +200,7 @@ export default function EventsPage() {
   return (
     <Suspense fallback={
       <><Header showSearch />
-      <div style={{ maxWidth:1240, margin:'0 auto', padding:'24px', display:'grid', gridTemplateColumns:'repeat(2,1fr)', gap:16 }}>
+      <div style={{ maxWidth:1760, margin:'0 auto', padding:'24px', display:'grid', gridTemplateColumns:'repeat(2,1fr)', gap:16 }}>
         {Array.from({length:6}).map((_,i)=><EventCardSkeleton key={i}/>)}
       </div></>
     }>

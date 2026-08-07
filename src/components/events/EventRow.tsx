@@ -12,7 +12,7 @@ export function EventRow({ title, href, events }: Props) {
   const scroll = (dir: number) => ref.current?.scrollBy({ left: dir * 460, behavior: 'smooth' });
 
   return (
-    <section style={{ maxWidth: 1240, margin: '0 auto', padding: '26px 24px 8px' }}>
+    <section style={{ maxWidth: 1760, margin: '0 auto', padding: '26px 80px 8px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 12 }}>
         <h2 style={{ fontSize: 16, fontWeight: 700, letterSpacing: '-.01em' }}>{title}</h2>
         <div style={{ marginLeft: 'auto', display: 'flex', gap: 8, alignItems: 'center' }}>

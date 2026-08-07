@@ -25,7 +25,7 @@ export function RegionListView({ region, events, onBack }: Props) {
   return (
     <div style={{ display:'grid', gridTemplateColumns:'minmax(0,1fr) minmax(320px,40%)', minHeight:'calc(100vh - 130px)' }}>
       {/* 좌측: 목록 */}
-      <div style={{ padding:'18px 24px 40px', overflowY:'auto' }}>
+      <div style={{ padding:'18px 80px 40px', overflowY:'auto' }}>
         {/* 뒤로 + 결과 헤더 */}
         <button onClick={onBack}
           style={{ display:'inline-flex', alignItems:'center', gap:6, fontSize:13, color:'var(--muted)', marginBottom:14, cursor:'pointer', border:0, background:'none', padding:0 }}>

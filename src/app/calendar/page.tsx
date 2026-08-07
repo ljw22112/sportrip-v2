@@ -55,7 +55,7 @@ export default function CalendarPage() {
   return (
     <>
       <Header showSearch />
-      <main style={{ maxWidth: 1140, margin: '0 auto', padding: '20px 24px 60px' }}>
+      <main style={{ maxWidth: 1140, margin: '0 auto', padding: '20px 80px 60px' }}>
         {/* 브레드크럼 */}
         <p style={{ fontSize: 13, color: 'var(--muted)', marginBottom: 10 }}>
           <Link href="/events" style={{ color: 'var(--green)', fontWeight: 600 }}>대회 일정</Link> › 캘린더
@@ -71,7 +71,7 @@ export default function CalendarPage() {
 
         {/* 캘린더 네비 */}
         <div style={{ background: '#fff', border: '1px solid var(--line)', borderRadius: 16, overflow: 'hidden', boxShadow: 'var(--shadow-1)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 24px', borderBottom: '1px solid var(--line)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 80px', borderBottom: '1px solid var(--line)' }}>
             <button onClick={prevMonth} style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 14, fontWeight: 600, color: 'var(--green)', border: 0, background: 'none', cursor: 'pointer', fontFamily: 'inherit' }}>
               <ChevronLeft style={{ width: 16, height: 16 }} /> {month === 0 ? `${year-1}.12` : `${year}.${month}`}
             </button>
