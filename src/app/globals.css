@@ -7,34 +7,16 @@
   --green:#0B5C43; --green-deep:#083D2D; --green-tint:#E7F1EC;
   --lime:#D6F14E; --lime-ink:#2A3308;
   --signal:#E4572E; --signal-tint:#FDEDE7;
-  --r-lg:20px; --r-md:14px; --r-sm:10px; --r-pill:999px;
   --shadow-1:0 1px 2px rgba(20,32,26,.06),0 4px 14px rgba(20,32,26,.06);
   --shadow-2:0 2px 6px rgba(20,32,26,.08),0 12px 32px rgba(20,32,26,.12);
 }
-@theme inline {
-  --color-background:#FFFFFF;
-  --color-foreground:#1B1F1D;
-  --font-sans:'Pretendard',-apple-system,sans-serif;
+body {
+  font-family:'Pretendard',-apple-system,sans-serif;
+  color:var(--ink);background:var(--paper);
+  line-height:1.55;-webkit-font-smoothing:antialiased;
 }
-*{box-sizing:border-box}
-body{font-family:'Pretendard',-apple-system,sans-serif;color:var(--ink);background:var(--paper);line-height:1.55;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
 input,select{font-family:inherit;color:inherit}
-.no-scrollbar::-webkit-scrollbar{display:none}
-.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}
-
-/* 레인 구분선 */
-.lanes{height:10px;background:linear-gradient(var(--line) 1.5px,transparent 1.5px) 0 0/100% 5px;opacity:.8}
-
-/* ── 에어비앤비 기준 반응형 width ── */
-@media (max-width: 1128px) {
-  .st-topbar,.st-sport-tabs,.st-searchwrap,.kto-inner,.st-foot-inner{
-    padding-left:40px!important;padding-right:40px!important;
-  }
-}
-@media (max-width: 744px) {
-  .st-topbar,.st-sport-tabs,.st-searchwrap,.kto-inner,.st-foot-inner{
-    padding-left:24px!important;padding-right:24px!important;
-  }
-}
+@keyframes shimmer{0%{opacity:.55}50%{opacity:1}100%{opacity:.55}}
+.animate-shimmer{animation:shimmer 1.4s infinite}

@@ -3,21 +3,21 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { Search, Heart, X, ChevronDown, Calendar } from 'lucide-react';
 
 const SPORTS = ['전체','마라톤','러닝','자전거','축구','배드민턴','수영','테니스','트레일'];
-const MONTHS = [8,9,10,11,12,3,4];
 const SPORT_ICONS: Record<string,string> = {
   전체:'⊕',마라톤:'🏃',러닝:'💨',자전거:'🚴',축구:'⚽',배드민턴:'🏸',수영:'🏊',테니스:'🎾',트레일:'🏔️'
 };
+const MONTHS = [8,9,10,11,12,3,4];
 
-interface HeaderProps { showSearch?: boolean }
-
-export function Header({ showSearch=false }: HeaderProps) {
+export function Header({ showSearch=false }: { showSearch?: boolean }) {
   const router = useRouter();
   const [activeSport, setActiveSport] = useState('전체');
   const [region, setRegion] = useState('');
   const [month, setMonth] = useState('');
   const [sportSel, setSportSel] = useState('전체');
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,91 +26,138 @@ export function Header({ showSearch=false }: HeaderProps) {
     if (month) p.set('month', month);
     if (sportSel !== '전체') p.set('sport', sportSel);
     router.push(`/events?${p.toString()}`);
+    setMobileSearchOpen(false);
   };
 
   return (
-    <header className="st-header">
-      {/* 탑바 */}
-      <div className="st-topbar">
-        <Link href="/" className="st-logo">
-          <Image src="/logo.svg" alt="SpoTrip" width={120} height={32} priority />
-          <span className="st-beta">BETA</span>
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[--line]">
+      {/* 데스크톱 탑바 */}
+      <div className="max-w-[1760px] mx-auto px-5 md:px-20 h-14 flex items-center justify-between">
+        <Link href="/" className="flex items-center gap-2 font-extrabold text-xl tracking-tight flex-shrink-0">
+          <Image src="/logo.svg" alt="SpoTrip" width={110} height={30} priority />
+          <span className="text-[11px] font-semibold text-[--green] bg-[--green-tint] px-2 py-0.5 rounded-full">BETA</span>
         </Link>
-        <div style={{marginLeft:'auto'}}>
-          <Link href="/events" className="st-saved">♡ 저장한 대회</Link>
+
+        {/* 모바일: 검색 + 저장 아이콘만 */}
+        <div className="flex items-center gap-2 md:hidden">
+          <button onClick={() => setMobileSearchOpen(v=>!v)}
+            className="w-9 h-9 flex items-center justify-center rounded-full border border-[--line]">
+            <Search className="w-4 h-4 text-[--ink]"/>
+          </button>
+          <Link href="/events" className="w-9 h-9 flex items-center justify-center rounded-full border border-[--line]">
+            <Heart className="w-4 h-4 text-[--ink]"/>
+          </Link>
+        </div>
+
+        {/* 데스크톱: 저장한 대회 */}
+        <div className="hidden md:flex items-center gap-3">
+          <Link href="/calendar" className="flex items-center gap-1.5 text-sm font-medium text-[--ink] hover:bg-[--gray] px-3 py-2 rounded-full transition-colors">
+            <Calendar className="w-4 h-4"/> 캘린더
+          </Link>
+          <Link href="/events" className="flex items-center gap-1.5 text-sm font-medium text-[--ink] hover:bg-[--gray] px-3 py-2 rounded-full transition-colors">
+            <Heart className="w-4 h-4"/> 저장한 대회
+          </Link>
         </div>
       </div>
 
-      {showSearch && <>
-        {/* 종목 탭 */}
-        <nav className="st-sport-tabs">
-          {SPORTS.map(s => (
-            <Link key={s} href={s==='전체'?'/events':`/events?sport=${encodeURIComponent(s)}`}
-              onClick={()=>setActiveSport(s)}
-              className={`st-tab ${activeSport===s?'active':''}`}>
-              <span className="st-tab-icon">{SPORT_ICONS[s]}</span>
-              <span>{s}</span>
-            </Link>
-          ))}
-        </nav>
-
-        {/* 검색바 */}
-        <div className="st-searchwrap">
-          <form onSubmit={handleSubmit} className="st-searchbar">
-            <div className="st-cell">
-              <label htmlFor="h-region">지역</label>
-              <input id="h-region" value={region} onChange={e=>setRegion(e.target.value)}
-                placeholder="지역명 또는 문장으로 검색" />
-            </div>
-            <div className="st-divider"/>
-            <div className="st-cell st-cell-sm">
-              <label htmlFor="h-month">날짜</label>
-              <select id="h-month" value={month} onChange={e=>setMonth(e.target.value)}>
+      {/* 모바일 검색 드롭다운 */}
+      {mobileSearchOpen && showSearch && (
+        <div className="md:hidden border-t border-[--line] bg-white px-4 py-4">
+          <form onSubmit={handleSubmit} className="space-y-3">
+            <input value={region} onChange={e=>setRegion(e.target.value)}
+              placeholder="지역명 또는 대회명 검색"
+              className="w-full px-4 py-3 border border-[--line] rounded-xl text-sm outline-none focus:border-[--green]"/>
+            <div className="grid grid-cols-2 gap-3">
+              <select value={month} onChange={e=>setMonth(e.target.value)}
+                className="px-3 py-3 border border-[--line] rounded-xl text-sm bg-white">
                 <option value="">전체 기간</option>
                 {MONTHS.map(m=><option key={m} value={m}>{m}월</option>)}
               </select>
-            </div>
-            <div className="st-divider"/>
-            <div className="st-cell st-cell-sm">
-              <label htmlFor="h-sport-sel">종목</label>
-              <select id="h-sport-sel" value={sportSel} onChange={e=>setSportSel(e.target.value)}>
+              <select value={sportSel} onChange={e=>setSportSel(e.target.value)}
+                className="px-3 py-3 border border-[--line] rounded-xl text-sm bg-white">
                 {SPORTS.map(s=><option key={s}>{s}</option>)}
               </select>
             </div>
-            <button type="submit" className="st-go" aria-label="검색">🔍</button>
+            <button type="submit"
+              className="w-full py-3 bg-[--green] text-white font-bold rounded-xl text-sm">
+              검색
+            </button>
           </form>
-          <p className="st-hint">문장으로 적어도 됩니다 — 예: <b>"11월 부산 마라톤"</b>을 그대로 입력해 보세요.</p>
         </div>
-      </>}
+      )}
 
-      <style>{`
-        .st-header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-        .st-topbar{max-width:1760px;margin:0 auto;padding:12px 80px;display:flex;align-items:center;gap:16px}
-        .st-logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:21px;letter-spacing:-.02em}
-        .st-beta{font-size:11px;font-weight:600;color:var(--green);background:var(--green-tint);padding:2px 8px;border-radius:999px}
-        .st-saved{display:inline-flex;align-items:center;gap:7px;font-weight:600;border-radius:999px;padding:9px 16px;color:var(--ink)}
-        .st-saved:hover{background:var(--gray)}
-        .st-sport-tabs{max-width:1760px;margin:0 auto;padding:4px 80px 0;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
-        .st-sport-tabs::-webkit-scrollbar{display:none}
-        .st-tab{display:flex;flex-direction:column;align-items:center;gap:5px;padding:8px 13px 10px;color:var(--muted);border-bottom:2.5px solid transparent;font-size:12.5px;font-weight:600;flex-shrink:0;transition:color .15s;white-space:nowrap}
-        .st-tab:hover{color:var(--ink)}
-        .st-tab.active{color:var(--ink);border-bottom-color:var(--ink)}
-        .st-tab-icon{font-size:22px}
-        .st-searchwrap{max-width:1760px;margin:0 auto;padding:14px 80px 18px}
-        .st-searchbar{display:flex;align-items:stretch;background:#fff;border:1px solid var(--line);border-radius:999px;box-shadow:0 1px 2px rgba(0,0,0,.06),0 4px 12px rgba(0,0,0,.06);max-width:760px;margin:0 auto;transition:box-shadow .15s}
-        .st-searchbar:focus-within{box-shadow:0 3px 12px rgba(0,0,0,.14)}
-        .st-cell{flex:1;display:flex;flex-direction:column;gap:1px;padding:10px 22px;border-radius:999px;min-width:0;transition:background .12s}
-        .st-cell:hover{background:var(--gray)}
-        .st-cell-sm{flex:0 0 auto;min-width:130px}
-        .st-cell label{font-size:11px;font-weight:700;letter-spacing:.02em;color:var(--ink)}
-        .st-cell input,.st-cell select{border:0;background:none;font-size:14px;width:100%;padding:0;outline:none;color:var(--muted);font-family:inherit;cursor:pointer}
-        .st-cell input::placeholder{color:var(--faint)}
-        .st-divider{width:1px;background:var(--line-soft);margin:6px 0}
-        .st-go{align-self:center;margin:6px;width:46px;height:46px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s;font-size:18px}
-        .st-go:hover{background:var(--green-deep)}
-        .st-hint{text-align:center;font-size:12px;color:var(--faint);margin-top:8px}
-        .st-hint b{color:var(--green);font-weight:600}
-      `}</style>
+      {showSearch && (
+        <>
+          {/* 종목 탭 (데스크톱) */}
+          <nav className="hidden md:flex max-w-[1760px] mx-auto px-20 gap-1 overflow-x-auto border-b border-[--line]"
+            style={{scrollbarWidth:'none'}}>
+            {SPORTS.map(s => (
+              <Link key={s} href={s==='전체'?'/events':`/events?sport=${encodeURIComponent(s)}`}
+                onClick={()=>setActiveSport(s)}
+                className={`flex flex-col items-center gap-1.5 px-5 py-3 flex-shrink-0 border-b-2 transition-all text-xs font-semibold whitespace-nowrap -mb-px
+                  ${activeSport===s ? 'border-[--ink] text-[--ink]' : 'border-transparent text-[--muted] hover:text-[--ink]'}`}>
+                <span className="text-xl">{SPORT_ICONS[s]}</span>
+                <span>{s}</span>
+              </Link>
+            ))}
+          </nav>
+
+          {/* 검색바 (데스크톱) */}
+          <div className="hidden md:block max-w-[1760px] mx-auto px-20 py-4">
+            <form onSubmit={handleSubmit}
+              className="flex items-stretch bg-white border border-[--line] rounded-full shadow-sm hover:shadow-md transition-shadow max-w-[880px] mx-auto focus-within:shadow-md">
+              <div className="flex-1 flex flex-col px-6 py-2.5 min-w-0 hover:bg-[--gray] rounded-l-full transition-colors">
+                <label className="text-[11px] font-bold tracking-wider text-[--ink]">지역</label>
+                <input value={region} onChange={e=>setRegion(e.target.value)}
+                  placeholder="지역명 또는 문장으로 검색"
+                  className="text-sm text-[--muted] bg-transparent outline-none placeholder:text-[--faint]"/>
+              </div>
+              <div className="w-px bg-[--line-soft] my-2"/>
+              <div className="flex flex-col px-6 py-2.5 min-w-[140px] hover:bg-[--gray] transition-colors">
+                <label className="text-[11px] font-bold tracking-wider text-[--ink]">날짜</label>
+                <select value={month} onChange={e=>setMonth(e.target.value)}
+                  className="text-sm text-[--muted] bg-transparent outline-none cursor-pointer">
+                  <option value="">전체 기간</option>
+                  {MONTHS.map(m=><option key={m} value={m}>{m}월</option>)}
+                </select>
+              </div>
+              <div className="w-px bg-[--line-soft] my-2"/>
+              <div className="flex flex-col px-6 py-2.5 min-w-[120px] hover:bg-[--gray] transition-colors">
+                <label className="text-[11px] font-bold tracking-wider text-[--ink]">종목</label>
+                <select value={sportSel} onChange={e=>setSportSel(e.target.value)}
+                  className="text-sm text-[--muted] bg-transparent outline-none cursor-pointer">
+                  {SPORTS.map(s=><option key={s}>{s}</option>)}
+                </select>
+              </div>
+              <div className="flex items-center px-2">
+                <button type="submit"
+                  className="w-10 h-10 rounded-full bg-[--green] hover:bg-[--green-deep] flex items-center justify-center transition-colors">
+                  <Search className="w-4 h-4 text-white"/>
+                </button>
+              </div>
+            </form>
+            <p className="text-center text-xs text-[--faint] mt-2">
+              문장으로 적어도 됩니다 — 예: <b className="text-[--green]">"11월 부산 마라톤"</b>을 그대로 입력해 보세요.
+            </p>
+          </div>
+
+          {/* 종목 탭 (모바일) - 모바일 검색 안 열렸을 때만 */}
+          {!mobileSearchOpen && (
+            <nav className="md:hidden flex overflow-x-auto border-b border-[--line] px-4"
+              style={{scrollbarWidth:'none'}}>
+              {SPORTS.map(s => (
+                <Link key={s} href={s==='전체'?'/events':`/events?sport=${encodeURIComponent(s)}`}
+                  className={`flex flex-col items-center gap-1 px-3 py-2 flex-shrink-0 border-b-2 transition-all text-[11px] font-semibold -mb-px
+                    ${activeSport===s ? 'border-[--ink] text-[--ink]' : 'border-transparent text-[--muted]'}`}
+                  onClick={()=>setActiveSport(s)}>
+                  <span className="text-lg">{SPORT_ICONS[s]}</span>
+                  <span>{s}</span>
+                </Link>
+              ))}
+            </nav>
+          )}
+        </>
+      )}
     </header>
   );
 }

@@ -95,7 +95,7 @@ export default async function EventDetailPage({ params }: Props) {
         </Link>
       </div>
 
-      <div style={{ maxWidth: 1140, margin: '0 auto', padding: '12px 80px 80px' }}>
+      <div style={{ maxWidth: 1140, margin: '0 auto', padding: '12px 20px 60px' }}>
         {/* 브레드크럼 */}
         <p style={{ fontSize: 13, color: 'var(--muted)', marginBottom: 10 }}>
           <Link href="/events" style={{ color: 'var(--green)', fontWeight: 600 }}>대회 목록</Link> · {ev.sport} · {ev.region}
@@ -153,7 +153,7 @@ export default async function EventDetailPage({ params }: Props) {
         </div>
 
         {/* 2단 레이아웃 */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr) 320px', gap: 40, alignItems: 'start' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr)', gap: 40, alignItems: 'start' }}>
 
           {/* 좌측 */}
           <div>
