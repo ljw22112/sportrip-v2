@@ -72,12 +72,14 @@ export default function HomePage() {
             </Link>
           </div>
           <div className="flex flex-col md:flex-row gap-4">
-            {/* 지도 */}
-            <div className="flex-1 relative bg-[#D8E4DA] border border-[#DDD] rounded-2xl overflow-hidden h-[280px] md:h-[480px]">
+            {/* 지도 — 1:1 비율 */}
+            <div className="relative bg-[#C8DCE8] border-2 border-[#EBEBEB] rounded-2xl overflow-hidden md:flex-1"
+              style={{aspectRatio:'1/1', maxHeight:'520px'}}>
               <KoreaMap events={EVENTS} className="w-full h-full"/>
             </div>
-            {/* 미니 캘린더 (우측) */}
-            <div className="hidden md:flex flex-col w-[320px] flex-shrink-0 border-2 border-[#EBEBEB] rounded-2xl overflow-hidden bg-white">
+            {/* 캘린더 — 1:1 동일 크기 */}
+            <div className="hidden md:flex flex-col md:flex-1 border-2 border-[#EBEBEB] rounded-2xl overflow-hidden bg-white"
+              style={{aspectRatio:'1/1', maxHeight:'520px'}}>
               <div className="px-5 py-4 border-b border-[#EBEBEB] bg-[#F7F7F6]">
                 <div className="font-bold text-[16px] text-[#222]">
                   {today.getMonth()+1}월 예정 대회
