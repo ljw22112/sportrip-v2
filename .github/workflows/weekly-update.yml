@@ -5,7 +5,6 @@ on:
     - cron: '0 0 * * 5'
   workflow_dispatch:
 
-# ── push 권한 부여 ──
 permissions:
   contents: write
 
@@ -19,6 +18,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          ref: main
 
       - name: ⚙️ Node.js 설정
         uses: actions/setup-node@v4
@@ -39,7 +39,6 @@ jobs:
             COUNT=$(git diff src/lib/data.ts | grep -c '^+.*{id:' || echo 0)
             echo "changed=true"  >> $GITHUB_OUTPUT
             echo "count=$COUNT"  >> $GITHUB_OUTPUT
-            echo "새 대회 ${COUNT}건"
           fi
 
       - name: 📤 자동 커밋 & 푸시
@@ -49,6 +48,7 @@ jobs:
           git config user.name  "SpoTrip Bot 🤖"
           git add src/lib/data.ts
           git commit -m "🤖 대회 데이터 자동 업데이트 (+${{ steps.diff.outputs.count }}건) $(date +'%Y-%m-%d')"
+          git pull --rebase origin main
           git push origin main
 
       - name: ✅ 결과
