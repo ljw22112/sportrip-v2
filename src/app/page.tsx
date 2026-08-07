@@ -9,6 +9,26 @@ import { RegionListView } from '@/components/events/RegionListView';
 import { getSportInfo } from '@/lib/sports';
 
 const REGIONS_LIST = ['서울','부산','대구','인천','광주','대전','울산','세종','경기','강원','충북','충남','전북','전남','경북','경남','제주'];
+
+const REGION_COLOR: Record<string,{border:string; bg:string; text:string; emoji:string}> = {
+  서울: {border:'#E4572E', bg:'#FEF0EC', text:'#B03A1E', emoji:'🏙️'},
+  부산: {border:'#2E86C1', bg:'#EBF5FB', text:'#1A5276', emoji:'🌊'},
+  대구: {border:'#8E44AD', bg:'#F5EEF8', text:'#6C3483', emoji:'🍎'},
+  인천: {border:'#27AE60', bg:'#EAFAF1', text:'#1E8449', emoji:'✈️'},
+  광주: {border:'#E67E22', bg:'#FEF5E7', text:'#BA6A1A', emoji:'🌿'},
+  대전: {border:'#2980B9', bg:'#EBF5FB', text:'#1F618D', emoji:'🔬'},
+  울산: {border:'#C0392B', bg:'#FDEDEC', text:'#922B21', emoji:'🏭'},
+  세종: {border:'#D4AC0D', bg:'#FEFDE7', text:'#9A7D0A', emoji:'🏛️'},
+  경기: {border:'#1ABC9C', bg:'#E8F8F5', text:'#148F77', emoji:'🌾'},
+  강원: {border:'#145A32', bg:'#E9F7EF', text:'#0B5345', emoji:'⛰️'},
+  충북: {border:'#784212', bg:'#FDF0E6', text:'#6E2F1A', emoji:'🌲'},
+  충남: {border:'#9B59B6', bg:'#F5EEF8', text:'#76448A', emoji:'🌻'},
+  전북: {border:'#1A5276', bg:'#EBF5FB', text:'#154360', emoji:'🌊'},
+  전남: {border:'#0E6655', bg:'#E8F8F5', text:'#0B5345', emoji:'🍊'},
+  경북: {border:'#6C3483', bg:'#F5EEF8', text:'#5B2C6F', emoji:'🏯'},
+  경남: {border:'#1F618D', bg:'#EBF5FB', text:'#154360', emoji:'🦀'},
+  제주: {border:'#117A65', bg:'#E8F8F5', text:'#0E6655', emoji:'🍊'},
+};
 const KTO_LINKS = [
   ['오디(Odii) 오디오 가이드','https://korean.visitkorea.or.kr'],
   ['베니키아','https://www.benikea.com'],['두루누비','https://www.durunubi.kr'],
@@ -130,9 +150,15 @@ export default function HomePage() {
               const cnt = dynEv.filter(e=>e.region===r&&e.status!=='done').length;
               return (
                 <button key={r} onClick={()=>setSelectedRegion(r)}
-                  className="border-2 border-[#EBEBEB] hover:border-[#0B5C43] rounded-xl py-4 px-2 text-center transition-all group">
-                  <b className="block text-[16px] md:text-[17px] font-bold tracking-tight group-hover:text-[#0B5C43]">{r}</b>
-                  <span className={`text-[13px] mt-1 block font-semibold ${cnt?'text-[#E4572E]':'text-[#AAAAAA]'}`}>
+                  className="rounded-2xl py-5 px-3 text-center transition-all group hover:shadow-md"
+                  style={{
+                    border: `2.5px solid ${(REGION_COLOR[r]||{border:'#EBEBEB'}).border}`,
+                    background: (REGION_COLOR[r]||{bg:'#F7F7F6'}).bg,
+                  }}>
+                  <span className="block text-2xl mb-1">{(REGION_COLOR[r]||{emoji:'📍'}).emoji}</span>
+                  <b className="block text-[16px] md:text-[18px] font-extrabold tracking-tight"
+                    style={{color:(REGION_COLOR[r]||{text:'#222'}).text}}>{r}</b>
+                  <span className={`text-[13px] mt-1 block font-bold ${cnt?'text-[#E4572E]':'text-[#AAAAAA]'}`}>
                     {cnt?`예정 ${cnt}건`:'없음'}
                   </span>
                 </button>
