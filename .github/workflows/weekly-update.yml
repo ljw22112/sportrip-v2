@@ -1,0 +1,54 @@
+name: 📅 매주 금요일 대회 데이터 자동 업데이트
+
+on:
+  schedule:
+    - cron: '0 0 * * 5'   # 매주 금요일 오전 9시 KST (= UTC 00:00)
+  workflow_dispatch:       # GitHub Actions 탭에서 수동 실행 가능
+
+jobs:
+  update:
+    name: 전국대회정보 수집 및 업데이트
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 체크아웃
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Node.js 설정
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: 🏃 대회 데이터 수집
+        env:
+          DATA_GO_KR_KEY: ${{ secrets.DATA_GO_KR_KEY }}
+        run: node scripts/fetch-events.js
+
+      - name: 🔍 변경사항 확인
+        id: diff
+        run: |
+          if git diff --quiet src/lib/data.ts; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            COUNT=$(git diff src/lib/data.ts | grep -c '^+.*{id:' || echo 0)
+            echo "changed=true"  >> $GITHUB_OUTPUT
+            echo "count=$COUNT"  >> $GITHUB_OUTPUT
+            echo "새 대회 ${COUNT}건"
+          fi
+
+      - name: 📤 자동 커밋 & 푸시
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          git config user.email "bot@sportrip.app"
+          git config user.name  "SpoTrip Bot 🤖"
+          git add src/lib/data.ts
+          git commit -m "🤖 대회 데이터 자동 업데이트 (+${{ steps.diff.outputs.count }}건) $(date +'%Y-%m-%d' -d '+9 hours')"
+          git push
+
+      - name: ✅ 결과 출력
+        run: |
+          if [ "${{ steps.diff.outputs.changed }}" == "true" ]; then
+            echo "✅ ${{ steps.diff.outputs.count }}건 추가 → Vercel 자동 재배포 시작"
+          else
+            echo "ℹ️  이번 주 새 대회 없음"
+          fi
