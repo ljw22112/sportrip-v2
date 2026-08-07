@@ -37,9 +37,9 @@ export function Header({ showSearch=false }: { showSearch?: boolean }) {
             {/* 로고 — 에어비앤비처럼 크게 */}
             <Link href="/" className="flex-shrink-0 flex items-center gap-2">
               <Image src="/logo.svg" alt="SpoTrip" width={40} height={40} priority
-                className="h-10 w-10"/>
+                className="h-14 w-14"/>
               <span className="font-extrabold text-[22px] tracking-[-0.06em] text-[#1B1F1D] hidden md:block"
-                style={{letterSpacing:'-0.06em'}}>
+                style={{letterSpacing:'-0.05em'}}>
                 스포트립
               </span>
             </Link>
