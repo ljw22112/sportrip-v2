@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { EVENTS, calcDday } from '@/lib/data';
 import { SPORT_SVG, getTourData, TourSpot } from '@/lib/courses';
+import { TourSection } from '@/components/events/TourSection';
 import { ShareButton } from '@/components/events/ShareButton';
 import { SaveButton } from '@/components/events/SaveButton';
 
@@ -23,27 +24,7 @@ function fmtDate(ds: string) {
   return `${y}년 ${m}월 ${d}일 (${dow})`;
 }
 
-// 관광 카테고리 섹션
-function TourSection({ title, icon, items }: { title: string; icon: string; items: TourSpot[] }) {
-  if (items.length === 0) return null;
-  return (
-    <div style={{ marginBottom: 32 }}>
-      <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 12, letterSpacing: '-.01em' }}>
-        {icon} {title}
-      </h3>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(220px,1fr))', gap: 10 }}>
-        {items.map((item, i) => (
-          <div key={i} style={{ background: 'var(--gray)', border: '1px solid var(--line-soft)', borderRadius: 12, padding: '14px 16px' }}>
-            <b style={{ display: 'block', fontSize: 14, letterSpacing: '-.01em', marginBottom: 4 }}>{item.name}</b>
-            {item.addr && <p style={{ fontSize: 12, color: 'var(--muted)', marginBottom: 4 }}>{item.addr}</p>}
-            {item.desc && <p style={{ fontSize: 13, color: 'var(--muted)', lineHeight: 1.5 }}>{item.desc}</p>}
-            {item.tel && <p style={{ fontSize: 12, color: 'var(--green)', marginTop: 4 }}>📞 {item.tel}</p>}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
+// TourSection은 클라이언트 컴포넌트로 분리됨
 
 // 지도 (약식 SVG)
 function MiniMap({ lat, lng, name }: { lat: number; lng: number; name: string }) {
@@ -236,11 +217,16 @@ export default async function EventDetailPage({ params }: Props) {
                 한국관광공사 TourAPI 기반 · 영업시간과 휴무는 방문 전 확인해 주세요.
               </p>
 
-              <TourSection title="대회 기간에 열리는 지역 축제" icon="🎊" items={tour.festival} />
-              <TourSection title="역사 관광지" icon="🏛️" items={tour.attraction} />
-              <TourSection title="문화·레포츠 시설" icon="🎭" items={tour.culture} />
-              <TourSection title="음식점" icon="🍽️" items={tour.food} />
-              <TourSection title="숙박" icon="🏨" items={tour.hotel} />
+              <TourSection title="행사·축제" icon="🎊"
+                sampleItems={tour.festival} lat={ev.lat} lng={ev.lng} contentTypeId="15"/>
+              <TourSection title="역사 관광지" icon="🏛️"
+                sampleItems={tour.attraction} lat={ev.lat} lng={ev.lng} contentTypeId="12"/>
+              <TourSection title="문화·레포츠 시설" icon="🎭"
+                sampleItems={tour.culture} lat={ev.lat} lng={ev.lng} contentTypeId="14"/>
+              <TourSection title="음식점" icon="🍽️"
+                sampleItems={tour.food} lat={ev.lat} lng={ev.lng} contentTypeId="39"/>
+              <TourSection title="숙박" icon="🏨"
+                sampleItems={tour.hotel} lat={ev.lat} lng={ev.lng} contentTypeId="32"/>
 
               <p style={{ fontSize: 12, color: 'var(--faint)', marginTop: 12 }}>
                 여행 정보 출처:{' '}
