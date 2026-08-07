@@ -1,9 +1,4 @@
-/**
- * 스포트립 대회 데이터 자동 수집
- * 소스: 공공데이터포털 - 전국대회정보 표준데이터
- */
 'use strict';
-
 const fs   = require('fs');
 const path = require('path');
 
@@ -12,24 +7,20 @@ const ENDPOINT  = 'https://api.data.go.kr/openapi/tn_pubr_public_national_compet
 const PAGE_SIZE = 100;
 const DATA_PATH = path.join(__dirname, '../src/lib/data.ts');
 
-if (!API_KEY) {
-  console.error('❌ DATA_GO_KR_KEY 환경변수가 없습니다.');
-  process.exit(1);
-}
+if (!API_KEY) { console.error('❌ DATA_GO_KR_KEY 없음'); process.exit(1); }
 
 const REGIONS = ['서울','부산','대구','인천','광주','대전','울산','세종',
                  '경기','강원','충북','충남','전북','전남','경북','경남','제주'];
 
 const SPORT_KEYWORDS = [
   ['마라톤','마라톤'],['달리기','러닝'],['러닝','러닝'],['육상','마라톤'],
-  ['자전거','사이클'],['사이클','사이클'],['철인','기타'],
+  ['로드레이스','마라톤'],['자전거','사이클'],['사이클','사이클'],['철인','기타'],
   ['수영','수영'],['오픈워터','수영'],
-  ['축구','축구'],['풋살','축구'],
-  ['배드민턴','배드민턴'],['테니스','테니스'],
+  ['축구','축구'],['풋살','축구'],['배드민턴','배드민턴'],['테니스','테니스'],
   ['농구','농구'],['배구','배구'],['야구','야구'],
   ['태권도','태권도'],['유도','유도'],['씨름','기타'],
   ['트레일','기타'],['등산','기타'],['클라이밍','기타'],
-  ['골프','골프'],['볼링','기타'],['탁구','기타'],
+  ['골프','골프'],['볼링','기타'],['탁구','기타'],['검도','기타'],
   ['체육','종합'],['종합','종합'],
 ];
 
@@ -48,31 +39,26 @@ const REGION_COORDS = {
   경남:[35.237,128.692],제주:[33.499,126.531],기타:[36.500,127.500],
 };
 
-function extractRegion(venueNm, compNm) {
-  const text = (venueNm || '') + ' ' + (compNm || '');
+function extractRegion(venueTxt, titleTxt) {
+  const text = (venueTxt||'') + ' ' + (titleTxt||'');
   return REGIONS.find(r => text.includes(r)) || '기타';
 }
 
-function extractSport(compNm) {
+function extractSport(title) {
   for (const [kw, sport] of SPORT_KEYWORDS) {
-    if ((compNm || '').includes(kw)) return sport;
+    if ((title||'').includes(kw)) return sport;
   }
   return '종합';
 }
 
-function toDate(raw) {
-  const s = (raw || '').replace(/\D/g, '');
-  if (s.length === 8) return `${s.slice(0,4)}-${s.slice(4,6)}-${s.slice(6,8)}`;
-  return '';
-}
-
 function calcStatus(start, end) {
   const today = new Date().toISOString().slice(0,10);
-  if (end < today)    return 'done';
+  if ((end||start) < today) return 'done';
   if (start <= today) return 'ongoing';
   return 'upcoming';
 }
 
+// ── API 한 페이지 호출 ────────────────────────────────────
 async function fetchPage(pageNo) {
   const url = new URL(ENDPOINT);
   url.searchParams.set('serviceKey', API_KEY);
@@ -84,26 +70,26 @@ async function fetchPage(pageNo) {
     signal: AbortSignal.timeout(20000),
     headers: { 'Accept': 'application/json' },
   });
-  if (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);
-
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
   const json = await res.json();
 
-  // 에러 응답 체크
-  if (json?.response?.header?.resultCode !== '00') {
-    const msg = json?.response?.header?.resultMsg || JSON.stringify(json);
-    throw new Error(`API 오류: ${msg}`);
+  // 실제 응답 구조: json.header / json.body (response 래퍼 없음)
+  const header = json?.header || json?.response?.header;
+  const body   = json?.body   || json?.response?.body;
+
+  if (!header || header.resultCode !== '00') {
+    throw new Error(`API resultCode: ${header?.resultCode} / ${header?.resultMsg}`);
   }
 
-  const body  = json?.response?.body;
-  const items = body?.items ?? [];
-  const total = body?.totalCount ?? 0;
+  // items: body.items.item (배열 or 단일 객체)
+  const raw = body?.items?.item ?? body?.items ?? [];
+  const items = Array.isArray(raw) ? raw : (raw ? [raw] : []);
+  const total = Number(body?.totalCount ?? 0);
 
-  return {
-    items: Array.isArray(items) ? items : (items && typeof items === 'object' ? [items] : []),
-    total,
-  };
+  return { items, total };
 }
 
+// ── 전체 페이지 수집 ──────────────────────────────────────
 async function fetchAll() {
   console.log('📡 1페이지 수집 중...');
   const first = await fetchPage(1);
@@ -112,30 +98,31 @@ async function fetchAll() {
   const all = [...first.items];
   const totalPages = Math.ceil(first.total / PAGE_SIZE);
 
-  for (let p = 2; p <= Math.min(totalPages, 20); p++) {
+  for (let p = 2; p <= Math.min(totalPages, 30); p++) {
     process.stdout.write(`   ${p}/${totalPages} 페이지...\r`);
     try {
       const { items } = await fetchPage(p);
       all.push(...items);
       await new Promise(r => setTimeout(r, 300));
     } catch (e) {
-      console.warn(`\n   ⚠️  ${p}페이지 실패: ${e.message}`);
+      console.warn(`\n   ⚠️  ${p}페이지 오류: ${e.message}`);
     }
   }
-  console.log(`\n✅ 수집: ${all.length}건`);
+  console.log(`\n✅ 수집 완료: ${all.length}건`);
   return all;
 }
 
+// ── data.ts 병합 ──────────────────────────────────────────
 function merge(rawItems) {
   const src = fs.readFileSync(DATA_PATH, 'utf-8');
-
-  const ids = [...src.matchAll(/\{id:(\d+),/g)].map(m => +m[1]);
-  let nextId = ids.length ? Math.max(...ids) + 1 : 400;
+  const ids  = [...src.matchAll(/\{id:(\d+),/g)].map(m => +m[1]);
+  let nextId = ids.length ? Math.max(...ids) + 1 : 500;
 
   const existingTitles = new Set(
     [...src.matchAll(/title:'([^']+)'/g)].map(m => m[1])
   );
 
+  // 2주 전 이전 종료 대회 제외
   const cutoff = new Date();
   cutoff.setDate(cutoff.getDate() - 14);
   const cutoffStr = cutoff.toISOString().slice(0,10);
@@ -144,33 +131,32 @@ function merge(rawItems) {
   let skipped = 0;
 
   for (const item of rawItems) {
-    const title   = ((item.compNm     || item.대회명      || '')).trim();
-    const venueNm = ((item.compSitNm  || item.대회개최지명 || '')).trim();
-    const org     = ((item.suprInstNm || item.주관기관명  || '')).trim();
-    const startRaw= (item.compStartDt || item.대회시작일자 || '');
-    const endRaw  = (item.compEndDt   || item.대회종료일자 || '');
-    const siteUrl = ((item.hmpgAddr   || item.홈페이지주소 || '')).trim();
+    // ── 실제 API 필드명 매핑 ──
+    const title  = (item.cnfrnNm       || '').trim();
+    const venue  = (item.cnfrnHdmtRgnNm|| '').trim();
+    const org    = (item.sprvsnInstNm  || '').trim();
+    const start  = (item.cnfrnBgngYmd  || '').trim(); // 이미 YYYY-MM-DD
+    const end    = (item.cnfrnEndYmd   || start).trim();
+    const url    = (item.hmpgAddr      || '').trim();
 
     if (!title || title.length < 2)    { skipped++; continue; }
-    const start = toDate(startRaw);
-    const end   = toDate(endRaw) || start;
-    if (!start)                         { skipped++; continue; }
-    if (end && end < cutoffStr)         { skipped++; continue; }
-    if (existingTitles.has(title))      { skipped++; continue; }
+    if (!start || start.length < 10)   { skipped++; continue; }
+    if (end < cutoffStr)               { skipped++; continue; }
+    if (existingTitles.has(title))     { skipped++; continue; }
 
-    const region = extractRegion(venueNm, title);
+    const region = extractRegion(venue, title);
     const sport  = extractSport(title);
     const coords = REGION_COORDS[region] || REGION_COORDS['기타'];
     const status = calcStatus(start, end);
     const icon   = SPORT_ICON[sport] || '🏆';
-    const desc   = `${title}. 주관: ${org||'미확인'}. ${venueNm||region} 개최.`;
     const safe   = s => String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    const desc   = `${title}. 주관: ${org||'미확인'}.`;
 
     lines.push(
       `  {id:${nextId++},title:'${safe(title)}',sport:'${sport}',icon:'${icon}',` +
-      `venue:'${safe(venueNm||region+' 경기장')}',address:'${safe(region)}',` +
+      `venue:'${safe(venue||region+' 경기장')}',address:'${safe(region)}',` +
       `start:'${start}',end:'${end}',status:'${status}',region:'${region}',` +
-      `desc:'${safe(desc)}',url:'${safe(siteUrl)}',` +
+      `desc:'${safe(desc)}',url:'${safe(url)}',` +
       `participants:'미정',lat:${coords[0]},lng:${coords[1]},distances:''},`
     );
     existingTitles.add(title);
@@ -179,14 +165,14 @@ function merge(rawItems) {
   console.log(`📊 추가 ${lines.length}건 / 제외 ${skipped}건`);
 
   if (lines.length === 0) {
-    console.log('ℹ️  새 대회 없음');
+    console.log('ℹ️  새 대회 없음 — data.ts 변경 없음');
     return 0;
   }
 
-  const stamp  = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
-  const insert = src.lastIndexOf('];');
+  const stamp   = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
+  const insert  = src.lastIndexOf('];');
   const updated = src.slice(0, insert)
-    + `\n  // ── 자동 수집: ${stamp} ──\n`
+    + `\n  // ── 공공데이터 자동 수집: ${stamp} ──\n`
     + lines.join('\n') + '\n'
     + src.slice(insert);
 
@@ -195,8 +181,9 @@ function merge(rawItems) {
   return lines.length;
 }
 
+// ── 실행 ──────────────────────────────────────────────────
 (async () => {
-  console.log('🏃 스포트립 대회 데이터 수집 시작');
+  console.log('🏃 스포트립 전국대회정보 자동 수집');
   console.log(`📅 ${new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })}\n`);
   try {
     const items = await fetchAll();
