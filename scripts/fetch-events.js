@@ -1,9 +1,11 @@
 'use strict';
-const fs   = require('fs');
-const path = require('path');
+const fs    = require('fs');
+const path  = require('path');
+const https = require('https');
 
 const API_KEY   = process.env.DATA_GO_KR_KEY;
-const ENDPOINT  = 'https://api.data.go.kr/openapi/tn_pubr_public_national_competition_information_api';
+const HOST      = 'api.data.go.kr';
+const BASE_PATH = '/openapi/tn_pubr_public_national_competition_information_api';
 const PAGE_SIZE = 100;
 const DATA_PATH = path.join(__dirname, '../src/lib/data.ts');
 
@@ -39,6 +41,34 @@ const REGION_COORDS = {
   경남:[35.237,128.692],제주:[33.499,126.531],기타:[36.500,127.500],
 };
 
+// ── https.get 래퍼 ──────────────────────────────────────
+function httpsGet(pageNo) {
+  return new Promise((resolve, reject) => {
+    // serviceKey는 인코딩 없이 직접 쿼리 문자열에 삽입
+    const qs = `serviceKey=${API_KEY}&pageNo=${pageNo}&numOfRows=${PAGE_SIZE}&type=json`;
+    const options = {
+      hostname: HOST,
+      path: `${BASE_PATH}?${qs}`,
+      method: 'GET',
+      headers: { 'Accept': 'application/json' },
+      timeout: 20000,
+    };
+
+    const req = https.request(options, res => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        try { resolve(JSON.parse(data)); }
+        catch (e) { reject(new Error(`JSON 파싱 오류: ${data.slice(0,200)}`)); }
+      });
+    });
+
+    req.on('timeout', () => { req.destroy(); reject(new Error('요청 타임아웃')); });
+    req.on('error', reject);
+    req.end();
+  });
+}
+
 function extractRegion(venueTxt, titleTxt) {
   const text = (venueTxt||'') + ' ' + (titleTxt||'');
   return REGIONS.find(r => text.includes(r)) || '기타';
@@ -58,38 +88,22 @@ function calcStatus(start, end) {
   return 'upcoming';
 }
 
-// ── API 한 페이지 호출 ────────────────────────────────────
 async function fetchPage(pageNo) {
-  const url = new URL(ENDPOINT);
-  url.searchParams.set('serviceKey', API_KEY);
-  url.searchParams.set('pageNo',     String(pageNo));
-  url.searchParams.set('numOfRows',  String(PAGE_SIZE));
-  url.searchParams.set('type',       'json');
+  const json = await httpsGet(pageNo);
 
-  const res = await fetch(url.toString(), {
-    signal: AbortSignal.timeout(20000),
-    headers: { 'Accept': 'application/json' },
-  });
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  const json = await res.json();
-
-  // 실제 응답 구조: json.header / json.body (response 래퍼 없음)
   const header = json?.header || json?.response?.header;
   const body   = json?.body   || json?.response?.body;
 
   if (!header || header.resultCode !== '00') {
-    throw new Error(`API resultCode: ${header?.resultCode} / ${header?.resultMsg}`);
+    throw new Error(`API 오류 [${header?.resultCode}]: ${header?.resultMsg}`);
   }
 
-  // items: body.items.item (배열 or 단일 객체)
-  const raw = body?.items?.item ?? body?.items ?? [];
+  const raw   = body?.items?.item ?? body?.items ?? [];
   const items = Array.isArray(raw) ? raw : (raw ? [raw] : []);
   const total = Number(body?.totalCount ?? 0);
-
   return { items, total };
 }
 
-// ── 전체 페이지 수집 ──────────────────────────────────────
 async function fetchAll() {
   console.log('📡 1페이지 수집 중...');
   const first = await fetchPage(1);
@@ -108,13 +122,12 @@ async function fetchAll() {
       console.warn(`\n   ⚠️  ${p}페이지 오류: ${e.message}`);
     }
   }
-  console.log(`\n✅ 수집 완료: ${all.length}건`);
+  console.log(`\n✅ 수집: ${all.length}건`);
   return all;
 }
 
-// ── data.ts 병합 ──────────────────────────────────────────
 function merge(rawItems) {
-  const src = fs.readFileSync(DATA_PATH, 'utf-8');
+  const src  = fs.readFileSync(DATA_PATH, 'utf-8');
   const ids  = [...src.matchAll(/\{id:(\d+),/g)].map(m => +m[1]);
   let nextId = ids.length ? Math.max(...ids) + 1 : 500;
 
@@ -122,7 +135,6 @@ function merge(rawItems) {
     [...src.matchAll(/title:'([^']+)'/g)].map(m => m[1])
   );
 
-  // 2주 전 이전 종료 대회 제외
   const cutoff = new Date();
   cutoff.setDate(cutoff.getDate() - 14);
   const cutoffStr = cutoff.toISOString().slice(0,10);
@@ -131,18 +143,17 @@ function merge(rawItems) {
   let skipped = 0;
 
   for (const item of rawItems) {
-    // ── 실제 API 필드명 매핑 ──
-    const title  = (item.cnfrnNm       || '').trim();
-    const venue  = (item.cnfrnHdmtRgnNm|| '').trim();
-    const org    = (item.sprvsnInstNm  || '').trim();
-    const start  = (item.cnfrnBgngYmd  || '').trim(); // 이미 YYYY-MM-DD
-    const end    = (item.cnfrnEndYmd   || start).trim();
-    const url    = (item.hmpgAddr      || '').trim();
+    const title = (item.cnfrnNm        || '').trim();
+    const venue = (item.cnfrnHdmtRgnNm || '').trim();
+    const org   = (item.sprvsnInstNm   || '').trim();
+    const start = (item.cnfrnBgngYmd   || '').trim();
+    const end   = (item.cnfrnEndYmd    || start).trim();
+    const url   = (item.hmpgAddr       || '').trim();
 
-    if (!title || title.length < 2)    { skipped++; continue; }
-    if (!start || start.length < 10)   { skipped++; continue; }
-    if (end < cutoffStr)               { skipped++; continue; }
-    if (existingTitles.has(title))     { skipped++; continue; }
+    if (!title || title.length < 2)  { skipped++; continue; }
+    if (!start || start.length < 10) { skipped++; continue; }
+    if (end < cutoffStr)             { skipped++; continue; }
+    if (existingTitles.has(title))   { skipped++; continue; }
 
     const region = extractRegion(venue, title);
     const sport  = extractSport(title);
@@ -150,13 +161,12 @@ function merge(rawItems) {
     const status = calcStatus(start, end);
     const icon   = SPORT_ICON[sport] || '🏆';
     const safe   = s => String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-    const desc   = `${title}. 주관: ${org||'미확인'}.`;
 
     lines.push(
       `  {id:${nextId++},title:'${safe(title)}',sport:'${sport}',icon:'${icon}',` +
-      `venue:'${safe(venue||region+' 경기장')}',address:'${safe(region)}',` +
+      `venue:'${safe(venue||region)}',address:'${safe(region)}',` +
       `start:'${start}',end:'${end}',status:'${status}',region:'${region}',` +
-      `desc:'${safe(desc)}',url:'${safe(url)}',` +
+      `desc:'${safe(title)}. 주관: ${safe(org||'미확인')}.',url:'${safe(url)}',` +
       `participants:'미정',lat:${coords[0]},lng:${coords[1]},distances:''},`
     );
     existingTitles.add(title);
@@ -165,7 +175,7 @@ function merge(rawItems) {
   console.log(`📊 추가 ${lines.length}건 / 제외 ${skipped}건`);
 
   if (lines.length === 0) {
-    console.log('ℹ️  새 대회 없음 — data.ts 변경 없음');
+    console.log('ℹ️  새 대회 없음');
     return 0;
   }
 
@@ -181,7 +191,6 @@ function merge(rawItems) {
   return lines.length;
 }
 
-// ── 실행 ──────────────────────────────────────────────────
 (async () => {
   console.log('🏃 스포트립 전국대회정보 자동 수집');
   console.log(`📅 ${new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })}\n`);
