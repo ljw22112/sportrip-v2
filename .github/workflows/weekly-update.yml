@@ -46,12 +46,13 @@ jobs:
         run: |
           git config user.email "bot@sportrip.app"
           git config user.name  "SpoTrip Bot 🤖"
-          # 변경사항 임시 저장
-          git stash
-          # 최신 원격 코드 가져오기
-          git pull origin main
-          # 변경사항 복원
-          git stash pop
+          # 수정된 data.ts 내용을 파일로 백업
+          cp src/lib/data.ts /tmp/data_updated.ts
+          # 원격 최신본으로 완전히 리셋
+          git fetch origin main
+          git reset --hard origin/main
+          # 수집된 최신 data.ts 복원
+          cp /tmp/data_updated.ts src/lib/data.ts
           # 커밋 & 푸시
           git add src/lib/data.ts
           git commit -m "🤖 대회 데이터 자동 업데이트 (+${{ steps.diff.outputs.count }}건) $(date +'%Y-%m-%d')"
