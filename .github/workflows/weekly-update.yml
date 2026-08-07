@@ -14,11 +14,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 체크아웃
+      - name: 📥 체크아웃 (최신 main)
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           ref: main
+          fetch-depth: 0
+
+      - name: ⬇️ 최신 코드 pull
+        run: git pull origin main
 
       - name: ⚙️ Node.js 설정
         uses: actions/setup-node@v4
@@ -41,14 +45,13 @@ jobs:
             echo "count=$COUNT"  >> $GITHUB_OUTPUT
           fi
 
-      - name: 📤 자동 커밋 & 푸시
+      - name: 📤 커밋 & 푸시
         if: steps.diff.outputs.changed == 'true'
         run: |
           git config user.email "bot@sportrip.app"
           git config user.name  "SpoTrip Bot 🤖"
           git add src/lib/data.ts
           git commit -m "🤖 대회 데이터 자동 업데이트 (+${{ steps.diff.outputs.count }}건) $(date +'%Y-%m-%d')"
-          git pull --rebase origin main
           git push origin main
 
       - name: ✅ 결과
