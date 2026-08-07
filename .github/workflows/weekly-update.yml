@@ -2,8 +2,12 @@ name: 📅 매주 금요일 대회 데이터 자동 업데이트
 
 on:
   schedule:
-    - cron: '0 0 * * 5'   # 매주 금요일 오전 9시 KST (= UTC 00:00)
-  workflow_dispatch:       # GitHub Actions 탭에서 수동 실행 가능
+    - cron: '0 0 * * 5'
+  workflow_dispatch:
+
+# ── push 권한 부여 ──
+permissions:
+  contents: write
 
 jobs:
   update:
@@ -13,11 +17,13 @@ jobs:
     steps:
       - name: 📥 체크아웃
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: ⚙️ Node.js 설정
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
 
       - name: 🏃 대회 데이터 수집
         env:
@@ -42,13 +48,13 @@ jobs:
           git config user.email "bot@sportrip.app"
           git config user.name  "SpoTrip Bot 🤖"
           git add src/lib/data.ts
-          git commit -m "🤖 대회 데이터 자동 업데이트 (+${{ steps.diff.outputs.count }}건) $(date +'%Y-%m-%d' -d '+9 hours')"
-          git push
+          git commit -m "🤖 대회 데이터 자동 업데이트 (+${{ steps.diff.outputs.count }}건) $(date +'%Y-%m-%d')"
+          git push origin main
 
-      - name: ✅ 결과 출력
+      - name: ✅ 결과
         run: |
           if [ "${{ steps.diff.outputs.changed }}" == "true" ]; then
-            echo "✅ ${{ steps.diff.outputs.count }}건 추가 → Vercel 자동 재배포 시작"
+            echo "✅ ${{ steps.diff.outputs.count }}건 추가 → Vercel 자동 재배포"
           else
-            echo "ℹ️  이번 주 새 대회 없음"
+            echo "ℹ️  새 대회 없음"
           fi
