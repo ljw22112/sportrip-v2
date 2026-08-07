@@ -18,12 +18,11 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          ref: main
 
       - name: ⚙️ Node.js 설정
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: 🏃 대회 데이터 수집
         env:
@@ -35,41 +34,36 @@ jobs:
         run: |
           if git diff --quiet src/lib/data.ts; then
             echo "changed=false" >> $GITHUB_OUTPUT
+            echo "ℹ️ 새 대회 없음"
           else
             COUNT=$(git diff src/lib/data.ts | grep -c '^+.*{id:' || echo 0)
             echo "changed=true"  >> $GITHUB_OUTPUT
             echo "count=$COUNT"  >> $GITHUB_OUTPUT
+            echo "✅ 새 대회 ${COUNT}건 발견"
           fi
 
-      - name: 📤 커밋 & 푸시
+      - name: 📤 GitHub API로 파일 업데이트
         if: steps.diff.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git config user.email "bot@sportrip.app"
-          git config user.name  "SpoTrip Bot 🤖"
+          # 현재 파일의 SHA 가져오기 (API 업데이트에 필요)
+          FILE_SHA=$(gh api \
+            repos/${{ github.repository }}/contents/src/lib/data.ts \
+            --jq '.sha')
 
-          # 수집 결과 백업
-          cp src/lib/data.ts /tmp/data_new.ts
+          echo "현재 파일 SHA: $FILE_SHA"
 
-          # 원격 최신 상태로 완전 동기화
-          git fetch origin main
-          git reset --hard origin/main
+          # 파일 내용을 base64로 인코딩
+          CONTENT=$(base64 -w 0 src/lib/data.ts)
 
-          # 수집 결과 적용
-          cp /tmp/data_new.ts src/lib/data.ts
-          git add src/lib/data.ts
+          # GitHub API로 직접 파일 업데이트 (push 충돌 없음)
+          gh api \
+            repos/${{ github.repository }}/contents/src/lib/data.ts \
+            --method PUT \
+            --field message="🤖 대회 데이터 자동 업데이트 (+${{ steps.diff.outputs.count }}건) $(date +'%Y-%m-%d')" \
+            --field content="$CONTENT" \
+            --field sha="$FILE_SHA" \
+            --field branch="main"
 
-          # 변경 없으면 스킵
-          git diff --cached --quiet && echo "변경 없음" && exit 0
-
-          git commit -m "🤖 대회 데이터 자동 업데이트 (+${{ steps.diff.outputs.count }}건) $(date +'%Y-%m-%d')"
-
-          # force-with-lease: 우리가 fetch한 시점 이후 변경 없으면 성공
-          git push --force-with-lease origin main
-
-      - name: ✅ 결과
-        run: |
-          if [ "${{ steps.diff.outputs.changed }}" == "true" ]; then
-            echo "✅ ${{ steps.diff.outputs.count }}건 추가 완료 → Vercel 재배포"
-          else
-            echo "ℹ️  새 대회 없음"
-          fi
+          echo "✅ GitHub API 업데이트 완료 → Vercel 자동 재배포"
