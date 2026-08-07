@@ -99,6 +99,24 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* STEP 모바일 간소화 */}
+        <section className="md:hidden max-w-[1760px] mx-auto px-5 py-5 border-t border-[#EBEBEB]">
+          <h2 className="text-base font-extrabold tracking-tight mb-3 text-center">스포트립은 이렇게 씁니다</h2>
+          <div className="flex gap-3 overflow-x-auto pb-1" style={{scrollbarWidth:'none'}}>
+            {[['STEP 1','🔍','대회 찾기','지역·날짜·종목으로 검색'],
+              ['STEP 2','🗺️','여행 정보 확인','관광지·맛집·숙소 안내'],
+              ['STEP 3','♥️','저장하고 공유','로그인 없이 하트 저장'],
+            ].map(([bib,ico,h,p])=>(
+              <div key={bib} className="flex-shrink-0 w-44 bg-[#F7F7F6] rounded-2xl p-4">
+                <span className="inline-flex text-[11px] font-extrabold bg-[#D6F14E] text-[#2A3308] rounded px-2 py-0.5">{bib}</span>
+                <div className="text-2xl mt-2 mb-1">{ico}</div>
+                <div className="font-bold text-[13px] mb-0.5">{h}</div>
+                <div className="text-[11px] text-[#717171]">{p}</div>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* STEP (모바일 숨김 — 공간 절약) */}
         <section className="hidden md:block max-w-[1760px] mx-auto px-20 py-6 border-t border-[--line]">
           <h2 className="text-center text-xl font-extrabold tracking-tight mb-5">스포트립은 이렇게 씁니다</h2>
@@ -126,7 +144,7 @@ export default function HomePage() {
         <section className="max-w-[1760px] mx-auto px-5 md:px-20 py-6 border-t border-[--line]">
           <h2 className="text-lg md:text-xl font-extrabold tracking-tight mb-1">지역별로 둘러보기</h2>
           <p className="text-[--muted] text-[13.5px] mb-4 hidden md:block">가고 싶은 지역을 고르면 그 지역의 대회만 모아 보여 드립니다.</p>
-          <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-2 md:gap-2.5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-2 md:gap-2.5">
             {REGIONS_LIST.map(r=>{
               const cnt = dynEv.filter(e=>e.region===r&&e.status!=='done').length;
               return (

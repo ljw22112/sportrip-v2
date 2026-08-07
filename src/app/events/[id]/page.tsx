@@ -153,7 +153,7 @@ export default async function EventDetailPage({ params }: Props) {
         </div>
 
         {/* 2단 레이아웃 */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr)', gap: 40, alignItems: 'start' }}>
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_320px] gap-8 md:gap-10 items-start">
 
           {/* 좌측 */}
           <div>
@@ -251,8 +251,8 @@ export default async function EventDetailPage({ params }: Props) {
             </section>
           </div>
 
-          {/* 우측 — 대회 한눈에 (sticky) */}
-          <aside>
+          {/* 우측 — 대회 한눈에 (sticky, 데스크톱만) */}
+          <aside className="hidden md:block">
             <div style={{ position: 'sticky', top: 80, background: '#fff', border: '1.5px solid var(--line)', borderRadius: 20, boxShadow: '0 2px 6px rgba(20,32,26,.08),0 12px 32px rgba(20,32,26,.12)', padding: 20 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontWeight: 800, fontSize: 16, letterSpacing: '-.01em', marginBottom: 4 }}>
                 <Image src={sportSvg} alt={ev.sport} width={22} height={22} />
@@ -301,6 +301,26 @@ export default async function EventDetailPage({ params }: Props) {
             </div>
           </aside>
         </div>
+
+        {/* 모바일 하단 고정 바 */}
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-[#EBEBEB] px-4 py-3 md:hidden z-40 flex items-center gap-3 shadow-lg">
+          <div className="flex-1 min-w-0">
+            <div className="font-bold text-[13px] text-[#222] truncate">{ev.title}</div>
+            <div className="text-[12px] text-[#717171]">
+              {isDone ? '종료된 대회' : <span className="text-[#E4572E] font-bold">{dday}</span>}
+            </div>
+          </div>
+          {ev.url ? (
+            <a href={ev.url} target="_blank" rel="noopener"
+              className="flex-shrink-0 bg-[#0B5C43] text-white font-bold text-sm px-5 py-3 rounded-xl">
+              공식 사이트 ↗
+            </a>
+          ) : (
+            <span className="flex-shrink-0 bg-[#F7F7F7] text-[#717171] text-sm px-5 py-3 rounded-xl">준비 중</span>
+          )}
+        </div>
+        {/* 모바일 하단 바 여백 */}
+        <div className="h-20 md:hidden"/>
 
         {/* 비슷한 대회 */}
         {(() => {
