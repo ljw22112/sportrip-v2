@@ -126,6 +126,21 @@ async function fetchAll() {
   return all;
 }
 
+// 대회명 정규화 — "제N회", "년도", "스폰서명" 제거
+function normalizeTitle(title) {
+  return title
+    .replace(/제\d+회\s*/g, '')       // 제25회
+    .replace(/\d{4}\s*/g, '')           // 2026
+    .replace(/^(\S+배|\S+기|\S+컵)\s+/, '') // 스폰서배 제거
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// 중복 키 생성 — 정규화된 제목 + 시작일 + 지역
+function dedupKey(title, start, region) {
+  return `${normalizeTitle(title)}|${start}|${region}`;
+}
+
 function merge(rawItems) {
   const src  = fs.readFileSync(DATA_PATH, 'utf-8');
   const ids  = [...src.matchAll(/\{id:(\d+),/g)].map(m => +m[1]);
@@ -153,7 +168,9 @@ function merge(rawItems) {
     if (!title || title.length < 2)  { skipped++; continue; }
     if (!start || start.length < 10) { skipped++; continue; }
     if (end < cutoffStr)             { skipped++; continue; }
-    if (existingTitles.has(title))   { skipped++; continue; }
+    // 3중 중복 체크: 제목 + 날짜 + 지역
+    const dk = dedupKey(title, start, region);
+    if (existingTitles.has(title) || existingDedupKeys.has(dk)) { skipped++; continue; }
 
     const region = extractRegion(venue, title);
     const sport  = extractSport(title);
@@ -170,6 +187,7 @@ function merge(rawItems) {
       `participants:'미정',lat:${coords[0]},lng:${coords[1]},distances:''},`
     );
     existingTitles.add(title);
+    existingDedupKeys.add(dk);
   }
 
   console.log(`📊 추가 ${lines.length}건 / 제외 ${skipped}건`);
