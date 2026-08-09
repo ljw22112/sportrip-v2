@@ -3,7 +3,6 @@ import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { SportEvent } from '@/types';
 import { getSportInfo, SPORTS_15 } from '@/lib/sports';
-import { SportIcon } from './SportIcon';
 
 const REGION_POS: Record<string,[number,number]> = {
   서울:[190,138], 인천:[152,152], 경기:[210,162],
@@ -20,8 +19,11 @@ const CLUSTER_COLORS = [
   '#C0392B','#16A085','#E67E22','#2980B9','#8E44AD',
 ];
 
-// 전체 종목 목록 (전체 포함)
-const ALL_SPORTS = SPORTS_15;
+// 전체 종목 목록 (전체 포함 16개)
+const ALL_SPORTS = [
+  { key:'전체', label:'전체', emoji:'🌐' },
+  ...SPORTS_15.filter(s => s.key !== '전체'),
+];
 
 interface Props { events: SportEvent[]; className?: string; }
 
@@ -55,11 +57,7 @@ export function KoreaMap({ events, className }: Props) {
             <button key={sp.key} onClick={()=>setActiveSport(sp.key)}
               className={`flex flex-col items-center justify-center gap-0.5 py-2.5 px-1 flex-shrink-0 border-b border-[#F0F0F0] transition-all
                 ${active ? 'bg-[#0B5C43]' : 'hover:bg-[#F7F7F6]'}`}>
-              <span className="h-7 w-9 md:h-8 md:w-10 flex items-center justify-center">
-                {sp.icon
-                  ? <SportIcon sport={sp.key} className="h-full w-full object-contain" />
-                  : <span className="text-xl md:text-2xl leading-none">{sp.emoji}</span>}
-              </span>
+              <span className="text-xl md:text-2xl leading-none">{sp.emoji}</span>
               <span className={`text-[10px] md:text-[11px] font-bold leading-tight text-center
                 ${active ? 'text-white' : 'text-[#333]'}`}>
                 {sp.label}
@@ -173,9 +171,9 @@ export function KoreaMap({ events, className }: Props) {
                 return (
                   <button key={ev.id} onClick={()=>router.push(`/events/${ev.id}`)}
                     className="w-full flex items-center gap-3 py-2.5 border-b border-[#F5F5F5] last:border-0 hover:bg-[#F7F7F6] rounded-xl px-2 -mx-2 transition-colors text-left">
-                    <div className="w-9 h-9 flex-shrink-0 rounded-xl border-2 flex items-center justify-center p-1"
+                    <div className="w-9 h-9 flex-shrink-0 rounded-xl border-2 flex items-center justify-center text-lg"
                       style={{borderColor:sp.color+'55',background:sp.color+'11'}}>
-                      <SportIcon sport={ev.sport} className="w-full h-full object-contain" emojiClassName="text-lg" />
+                      {sp.emoji}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="font-semibold text-[13px] text-[#222] truncate">{ev.title}</div>

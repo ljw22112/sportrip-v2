@@ -7,7 +7,6 @@ import { KoreaMap } from '@/components/events/KoreaMap';
 import { Header } from '@/components/layout/Header';
 import { RegionListView } from '@/components/events/RegionListView';
 import { getSportInfo } from '@/lib/sports';
-import { SportIcon } from '@/components/events/SportIcon';
 
 const REGIONS_LIST = ['서울','부산','대구','인천','광주','대전','울산','세종','경기','강원','충북','충남','전북','전남','경북','경남','제주'];
 
@@ -113,9 +112,9 @@ export default function HomePage() {
                   return (
                     <Link key={e.id} href={`/events/${e.id}`}
                       className="flex items-center gap-3 py-2.5 border-b border-[#F5F5F5] last:border-0 hover:bg-[#F7F7F6] rounded-lg px-2 -mx-2 transition-colors">
-                      <div className="w-9 h-9 flex-shrink-0 rounded-xl border-2 flex items-center justify-center p-1"
+                      <div className="w-9 h-9 flex-shrink-0 rounded-xl border-2 flex items-center justify-center text-lg"
                         style={{borderColor:sp.color+'55',background:sp.color+'11'}}>
-                        <SportIcon sport={e.sport} className="w-full h-full object-contain" emojiClassName="text-lg" />
+                        {sp.emoji}
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="font-semibold text-[13px] text-[#222] truncate">{e.title}</div>

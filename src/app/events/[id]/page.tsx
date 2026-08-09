@@ -5,7 +5,6 @@ import { Header } from '@/components/layout/Header';
 import { getTourData } from '@/lib/courses';
 import { TourSection } from '@/components/events/TourSection';
 import { getSportInfo } from '@/lib/sports';
-import { SportIcon } from '@/components/events/SportIcon';
 import { ShareButton } from '@/components/events/ShareButton';
 import { SaveButton } from '@/components/events/SaveButton';
 import { ExternalLink, MapPin, Calendar, Users } from 'lucide-react';
@@ -46,9 +45,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
             <div className="flex items-center gap-3 mb-4">
               <div className="flex items-center gap-2 px-4 py-2 rounded-full border-2 font-bold text-[15px]"
                 style={{borderColor:sport.color, color:sport.color, background:sport.color+'11'}}>
-                <span className="h-7 w-9 flex items-center justify-center">
-                  <SportIcon sport={ev.sport} className="h-full w-full object-contain" emojiClassName="text-2xl" />
-                </span>
+                <span className="text-2xl">{sport.emoji}</span>
                 {ev.sport}
               </div>
               {!isDone && (
@@ -109,9 +106,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
               {/* 종목 캐릭터 카드 */}
               <div className="aspect-square flex flex-col items-center justify-center bg-white border-b-2 border-[#EBEBEB]"
                 style={{background:sport.color+'08'}}>
-                <div className="w-[55%] mb-4">
-                  <SportIcon sport={ev.sport} className="w-full h-auto object-contain" emojiClassName="text-[80px] leading-none block" />
-                </div>
+                <div className="text-[80px] leading-none mb-4">{sport.emoji}</div>
                 {!isDone && (
                   <div className="text-white font-bold text-[18px] px-5 py-2 rounded-full"
                     style={{background:sport.color}}>{dday}</div>
@@ -143,7 +138,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
 
       {/* 모바일 하단 고정 바 */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-[#EBEBEB] px-5 py-3.5 md:hidden z-40 flex items-center gap-3 shadow-lg">
-        <div className="w-9 h-9 flex-shrink-0"><SportIcon sport={ev.sport} className="w-full h-full object-contain" emojiClassName="text-2xl" /></div>
+        <div className="text-2xl">{sport.emoji}</div>
         <div className="flex-1 min-w-0">
           <div className="font-bold text-[14px] text-[#222] truncate">{ev.title}</div>
           <div className="text-[13px] text-[#717171]">

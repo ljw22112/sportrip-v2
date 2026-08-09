@@ -67,20 +67,25 @@ export function Header({ showSearch=false }: { showSearch?: boolean }) {
 
         {showSearch && (
           <>
-            {/* ── 15개 종목 탭 ── */}
-            <div className="border-t border-[#EBEBEB]">
-              <nav className="max-w-[1760px] mx-auto px-5 md:px-10 flex overflow-x-auto"
+            {/* ── 15개 종목 탭 — 지도 카테고리와 동일 스타일 ── */}
+            <div className="border-t border-[#EBEBEB] bg-white">
+              <nav className="max-w-[1760px] mx-auto px-5 md:px-10 flex overflow-x-auto py-3 gap-2"
                 style={{scrollbarWidth:'none'}}>
-                {SPORTS_15.filter(s=>s.key!=='전체').concat([SPORTS_15[0]]).map(sp=>{
+                {SPORTS_15.map(sp=>{
                   const active = activeSport === sp.key;
                   return (
                     <Link key={sp.key}
                       href={sp.key==='전체'?'/events':`/events?sport=${encodeURIComponent(sp.key)}`}
                       onClick={()=>setActiveSport(sp.key)}
-                      className={`flex items-center gap-2 px-4 py-3 flex-shrink-0 border-b-2 transition-all whitespace-nowrap -mb-px
-                        ${active ? 'border-[#222] text-[#222]' : 'border-transparent text-[#717171] hover:text-[#222] hover:border-[#DDD]'}`}>
-                      <span className="text-xl leading-none">{sp.emoji}</span>
-                      <span className={`text-[13px] ${active?'font-bold':'font-medium'}`}>{sp.label}</span>
+                      className={`flex flex-col items-center justify-center gap-1 px-3 py-2.5 flex-shrink-0 rounded-2xl border-2 transition-all min-w-[64px]
+                        ${active
+                          ? 'border-[#0B5C43] bg-[#0B5C43] text-white shadow-md'
+                          : 'border-[#EBEBEB] bg-white text-[#333] hover:border-[#0B5C43] hover:bg-[#E7F1EC]'
+                        }`}>
+                      <span className="text-2xl leading-none">{sp.emoji}</span>
+                      <span className={`text-[11px] leading-tight text-center whitespace-nowrap ${active?'font-bold text-white':'font-semibold text-[#333]'}`}>
+                        {sp.label}
+                      </span>
                     </Link>
                   );
                 })}

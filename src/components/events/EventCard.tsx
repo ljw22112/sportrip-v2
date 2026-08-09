@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { SportEvent } from '@/types';
 import { calcDday } from '@/lib/data';
 import { getSportInfo } from '@/lib/sports';
-import { SportIcon } from './SportIcon';
 import { useState, useEffect, useCallback, useId } from 'react';
 
 function fmtDate(ds: string) {
@@ -45,10 +44,10 @@ export function EventCard({ event }: { event: SportEvent }) {
             {calcDday(event.start)}
           </div>
         )}
-        {/* 종목 캐릭터 (이미지/이모지) */}
+        {/* 종목 캐릭터 (이모지/아이콘) */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <div className="w-[70%] md:w-[65%] mb-2 select-none">
-            <SportIcon sport={event.sport} className="w-full h-auto object-contain" emojiClassName="text-[60px] md:text-[72px] leading-none block" />
+          <div className="text-[60px] md:text-[72px] leading-none mb-2 select-none">
+            {sport.emoji}
           </div>
           <div className="text-[11px] font-bold px-3 py-1 rounded-full text-white"
             style={{background: sport.color}}>
@@ -94,9 +93,9 @@ export function EventCardHorizontal({ event }: { event: SportEvent }) {
   return (
     <Link href={`/events/${event.id}`}
       className="flex gap-4 py-4 border-b border-[#E8E8E6] items-center hover:bg-[#F7F7F6] px-2 -mx-2 rounded-xl transition-colors">
-      <div className="w-14 h-14 flex-shrink-0 rounded-xl flex items-center justify-center p-1.5 border-2"
+      <div className="w-14 h-14 flex-shrink-0 rounded-xl flex items-center justify-center text-3xl border-2"
         style={{borderColor: sport.color + '55', background: sport.color + '11'}}>
-        <SportIcon sport={event.sport} className="w-full h-full object-contain" emojiClassName="text-3xl" />
+        {sport.emoji}
       </div>
       <div className="flex-1 min-w-0">
         <div className="font-bold text-[14px] text-[#222] truncate">{event.title}</div>

@@ -6,7 +6,6 @@ import { KoreaMap } from '@/components/events/KoreaMap';
 import { Header } from '@/components/layout/Header';
 import { EVENTS, REGIONS, getDynamicEvents } from '@/lib/data';
 import { SPORTS_15 } from '@/lib/sports';
-import { SportIcon } from '@/components/events/SportIcon';
 import { Search, X, SlidersHorizontal, Map } from 'lucide-react';
 
 type Tab = 'all'|'month'|'week';
@@ -80,11 +79,7 @@ function EventsContent() {
                     className={`flex-shrink-0 flex items-center gap-1.5 px-3.5 py-2 rounded-full text-[13px] font-bold border-2 transition-all
                       ${active ? 'text-white border-transparent' : 'bg-white text-[#333] border-[#E0E0E0] hover:border-[#333]'}`}
                     style={active ? {background:sp.color, borderColor:sp.color} : {}}>
-                    <span className="h-5 w-6 flex items-center justify-center flex-shrink-0">
-                      {sp.icon
-                        ? <SportIcon sport={sp.key} className="h-full w-full object-contain" />
-                        : <span className="text-base leading-none">{sp.emoji}</span>}
-                    </span>
+                    <span className="text-base">{sp.emoji}</span>
                     <span>{sp.label}</span>
                   </button>
                 );
