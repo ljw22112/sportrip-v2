@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <circle cx="50" cy="50" r="48" fill="#EBF5FB"/>
+  <circle cx="50" cy="50" r="46" fill="none" stroke="#1C1C1E" stroke-width="2" stroke-dasharray="3 7"/>
+  <!-- 야구공 -->
+  <circle cx="72" cy="22" r="12" fill="white" stroke="#1C1C1E" stroke-width="2.5"/>
+  <path d="M64 18 Q68 22 64 26" fill="none" stroke="#E4572E" stroke-width="1.5"/>
+  <path d="M80 18 Q76 22 80 26" fill="none" stroke="#E4572E" stroke-width="1.5"/>
+  <!-- 배트 -->
+  <line x1="20" y1="78" x2="60" y2="38" stroke="#1C1C1E" stroke-width="5" stroke-linecap="round"/>
+  <line x1="18" y1="82" x2="26" y2="74" stroke="#1C1C1E" stroke-width="8" stroke-linecap="round"/>
+  <!-- 머리 (헬멧) -->
+  <circle cx="44" cy="42" r="8" fill="#C8F542" stroke="#1C1C1E" stroke-width="2.5"/>
+  <path d="M36 42 Q40 32 50 38" fill="#1C1C1E" stroke="none"/>
+  <!-- 몸통 -->
+  <line x1="44" y1="50" x2="42" y2="70" stroke="#1C1C1E" stroke-width="3.5" stroke-linecap="round"/>
+  <!-- 팔 -->
+  <line x1="43" y1="56" x2="28" y2="50" stroke="#1C1C1E" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="43" y1="58" x2="56" y2="50" stroke="#1C1C1E" stroke-width="3.5" stroke-linecap="round"/>
+  <!-- 다리 -->
+  <line x1="42" y1="70" x2="32" y2="86" stroke="#1C1C1E" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="42" y1="70" x2="54" y2="84" stroke="#1C1C1E" stroke-width="3.5" stroke-linecap="round"/>
+</svg>

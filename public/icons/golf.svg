@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <circle cx="50" cy="50" r="48" fill="#E9F7EF"/>
+  <circle cx="50" cy="50" r="46" fill="none" stroke="#1C1C1E" stroke-width="2" stroke-dasharray="3 7"/>
+  <!-- 필드 언덕 -->
+  <ellipse cx="50" cy="90" rx="45" ry="20" fill="#C8F542" opacity="0.5"/>
+  <!-- 홀 깃발 -->
+  <line x1="72" y1="30" x2="72" y2="78" stroke="#1C1C1E" stroke-width="2"/>
+  <path d="M72 30 L88 38 L72 46 Z" fill="#E4572E"/>
+  <!-- 골프공 -->
+  <circle cx="38" cy="76" r="5" fill="white" stroke="#1C1C1E" stroke-width="2"/>
+  <!-- 머리 (모자) -->
+  <circle cx="38" cy="22" r="8" fill="#C8F542" stroke="#1C1C1E" stroke-width="2.5"/>
+  <path d="M28 22 L48 22" stroke="#1C1C1E" stroke-width="3" stroke-linecap="round"/>
+  <!-- 몸통 -->
+  <line x1="38" y1="30" x2="36" y2="56" stroke="#1C1C1E" stroke-width="3.5" stroke-linecap="round"/>
+  <!-- 팔 (스윙 자세) -->
+  <line x1="36" y1="40" x2="16" y2="36" stroke="#1C1C1E" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="36" y1="42" x2="55" y2="35" stroke="#1C1C1E" stroke-width="3.5" stroke-linecap="round"/>
+  <!-- 클럽 -->
+  <line x1="54" y1="34" x2="40" y2="74" stroke="#1C1C1E" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="38" y1="72" x2="44" y2="78" stroke="#1C1C1E" stroke-width="3" stroke-linecap="round"/>
+  <!-- 다리 -->
+  <line x1="36" y1="56" x2="26" y2="74" stroke="#1C1C1E" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="36" y1="56" x2="46" y2="72" stroke="#1C1C1E" stroke-width="3.5" stroke-linecap="round"/>
+</svg>

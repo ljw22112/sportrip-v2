@@ -79,10 +79,11 @@ export function Header({ showSearch=false }: { showSearch?: boolean }) {
                       onClick={()=>setActiveSport(sp.key)}
                       className={`flex flex-col items-center justify-center gap-1 px-3 py-2.5 flex-shrink-0 rounded-2xl border-2 transition-all min-w-[64px]
                         ${active
-                          ? 'border-[#0B5C43] bg-[#0B5C43] text-white shadow-md'
-                          : 'border-[#EBEBEB] bg-white text-[#333] hover:border-[#0B5C43] hover:bg-[#E7F1EC]'
+                          ? 'border-[#0B5C43] bg-[#0B5C43] shadow-md'
+                          : 'border-[#EBEBEB] bg-white hover:border-[#0B5C43] hover:bg-[#E7F1EC]'
                         }`}>
-                      <span className="text-2xl leading-none">{sp.emoji}</span>
+                      <img src={sp.icon} alt={sp.label}
+                        className={`w-9 h-9 object-contain ${active?'brightness-0 invert':''}`}/>
                       <span className={`text-[11px] leading-tight text-center whitespace-nowrap ${active?'font-bold text-white':'font-semibold text-[#333]'}`}>
                         {sp.label}
                       </span>

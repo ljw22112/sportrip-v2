@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <circle cx="50" cy="50" r="48" fill="#F5F5F5"/>
+  <circle cx="50" cy="50" r="46" fill="none" stroke="#1C1C1E" stroke-width="2" stroke-dasharray="3 7"/>
+  <!-- 트로피 -->
+  <rect x="38" y="62" width="24" height="6" rx="2" fill="#C8F542" stroke="#1C1C1E" stroke-width="2"/>
+  <rect x="44" y="68" width="12" height="8" rx="1" fill="#C8F542" stroke="#1C1C1E" stroke-width="2"/>
+  <rect x="36" y="76" width="28" height="5" rx="2" fill="#C8F542" stroke="#1C1C1E" stroke-width="2"/>
+  <!-- 트로피 컵 -->
+  <path d="M30 22 L30 50 Q30 62 50 62 Q70 62 70 50 L70 22 Z" fill="#F0D060" stroke="#1C1C1E" stroke-width="2.5"/>
+  <path d="M30 28 Q18 28 18 40 Q18 52 30 48" fill="none" stroke="#1C1C1E" stroke-width="2.5"/>
+  <path d="M70 28 Q82 28 82 40 Q82 52 70 48" fill="none" stroke="#1C1C1E" stroke-width="2.5"/>
+  <!-- 별 -->
+  <path d="M50 30 L53 38 L62 38 L55 43 L58 52 L50 47 L42 52 L45 43 L38 38 L47 38 Z" fill="#C8F542" stroke="#1C1C1E" stroke-width="1.5"/>
+</svg>

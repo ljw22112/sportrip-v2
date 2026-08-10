@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <circle cx="50" cy="50" r="48" fill="#EBF5FB"/>
+  <circle cx="50" cy="50" r="46" fill="none" stroke="#1C1C1E" stroke-width="2" stroke-dasharray="3 7"/>
+  <!-- 물결 -->
+  <path d="M8 72 Q20 65 32 72 Q44 79 56 72 Q68 65 80 72 Q88 79 94 72" fill="none" stroke="#2980B9" stroke-width="3" stroke-linecap="round"/>
+  <path d="M8 82 Q20 75 32 82 Q44 89 56 82 Q68 75 80 82 Q88 89 94 82" fill="none" stroke="#2980B9" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+  <!-- 수영 캐릭터 -->
+  <circle cx="30" cy="40" r="9" fill="#C8F542" stroke="#1C1C1E" stroke-width="2.5"/>
+  <!-- 수경 -->
+  <path d="M22 40 Q26 36 30 40 Q34 36 38 40" fill="none" stroke="#1C1C1E" stroke-width="2"/>
+  <!-- 몸통 (수평) -->
+  <line x1="30" y1="49" x2="75" y2="52" stroke="#1C1C1E" stroke-width="4" stroke-linecap="round"/>
+  <!-- 팔 (앞으로 뻗기) -->
+  <line x1="30" y1="40" x2="8" y2="34" stroke="#1C1C1E" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="50" y1="50" x2="30" y2="60" stroke="#1C1C1E" stroke-width="3.5" stroke-linecap="round"/>
+  <!-- 발차기 -->
+  <line x1="75" y1="52" x2="88" y2="45" stroke="#1C1C1E" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="75" y1="52" x2="90" y2="58" stroke="#1C1C1E" stroke-width="3.5" stroke-linecap="round"/>
+</svg>

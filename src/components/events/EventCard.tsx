@@ -44,12 +44,11 @@ export function EventCard({ event }: { event: SportEvent }) {
             {calcDday(event.start)}
           </div>
         )}
-        {/* 종목 캐릭터 (이모지/아이콘) */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <div className="text-[60px] md:text-[72px] leading-none mb-2 select-none">
-            {sport.emoji}
-          </div>
-          <div className="text-[11px] font-bold px-3 py-1 rounded-full text-white"
+        {/* 종목 캐릭터 SVG */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center p-4">
+          <img src={sport.icon} alt={sport.label}
+            className="w-3/5 h-3/5 object-contain drop-shadow-sm select-none"/>
+          <div className="text-[11px] font-bold px-3 py-1 rounded-full text-white mt-2"
             style={{background: sport.color}}>
             {event.sport}
           </div>
