@@ -150,6 +150,9 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
               <TourSection title="음식점" icon="🍽️" sampleItems={tour.food} lat={ev.lat} lng={ev.lng} contentTypeId="39"/>
               <TourSection title="숙박" icon="🏨" sampleItems={tour.hotel} lat={ev.lat} lng={ev.lng} contentTypeId="32"/>
             </section>
+            <p className="text-[12px] text-[#AAAAAA] mt-2 mb-8">
+              출처: ⓒ한국관광공사 | 한국관광공사 국문 관광정보 서비스
+            </p>
           </div>
 
           {/* ── 우측 사이드 (데스크톱) ── */}

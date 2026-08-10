@@ -14,7 +14,7 @@ interface Props {
   sampleItems: TourSpot[];      // 즉시 표시 (샘플)
   lat: number;
   lng: number;
-  contentTypeId: string;        // TourAPI 타입
+  contentTypeId: string;        // ⓒ한국관광공사 타입
 }
 
 const TYPE_COLOR: Record<string,string> = {
@@ -68,7 +68,7 @@ export function TourSection({ title, icon, sampleItems, lat, lng, contentTypeId 
           showApi  ? 'bg-[#E7F1EC] text-[#0B5C43]' :
                      'bg-gray-100 text-gray-500'
         }`}>
-          {loading ? '로딩 중...' : showApi ? '🌐 TourAPI 실데이터' : '📋 샘플 데이터'}
+          {loading ? '로딩 중...' : showApi ? '🌐 ⓒ한국관광공사 실데이터' : '📋 샘플 데이터'}
         </span>
       </div>
 

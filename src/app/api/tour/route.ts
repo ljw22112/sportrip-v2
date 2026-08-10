@@ -42,7 +42,7 @@ export async function GET(req: NextRequest) {
     });
 
     const res = await fetch(`${BASE_URL}?${params}`, {
-      next: { revalidate: 604800 }, // 7일 캐시
+      cache: 'no-store', // 실시간 호출 필수 (공모전 규정)
     });
 
     if (!res.ok) throw new Error(`TourAPI HTTP ${res.status}`);
@@ -69,13 +69,13 @@ export async function GET(req: NextRequest) {
     }));
 
     return NextResponse.json({ items: result, source: 'tourapi' }, {
-      headers: { 'Cache-Control': 'public, s-maxage=604800, stale-while-revalidate=86400' }
+      headers: { 'Cache-Control': 'no-store, no-cache, must-revalidate' }
     });
 
   } catch (err: any) {
     console.error('TourAPI 오류:', err.message);
     return NextResponse.json({ items: [], error: err.message, source: 'error' }, {
-      headers: { 'Cache-Control': 'public, s-maxage=3600' }
+      headers: { 'Cache-Control': 'no-store' }
     });
   }
 }

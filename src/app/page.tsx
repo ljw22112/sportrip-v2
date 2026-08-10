@@ -215,7 +215,7 @@ export default function HomePage() {
             </div>
             <div className="ml-auto text-right text-[13px]">
               등록 대회 {EVENTS.length}건 · 예정 대회 {dynEv.filter(e=>e.status!=='done').length}건<br/>
-              관광 정보: 한국관광공사 TourAPI
+              출처: ⓒ한국관광공사
             </div>
           </div>
           <div className="border-t border-[#EBEBEB] px-5 md:px-10 py-3.5 text-center text-[13px] text-[#AAAAAA]">
