@@ -41,7 +41,7 @@ export function KakaoMap({ events, className }: Props) {
     if (!loaded || !mapRef.current || mapInstanceRef.current) return;
     const map = new window.kakao.maps.Map(mapRef.current, {
       center: new window.kakao.maps.LatLng(36.5, 127.8),
-      level: 8,
+      level: 13,
     });
     map.addControl(new window.kakao.maps.ZoomControl(), window.kakao.maps.ControlPosition.RIGHT);
     mapInstanceRef.current = map;
