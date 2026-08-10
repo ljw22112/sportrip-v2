@@ -79,7 +79,7 @@ export default function HomePage() {
             즐기고 오세요
           </h1>
           <p className="text-[#717171] mt-2 text-[15px] hidden md:block">
-            전국 스포츠 대회 일정과 개최지 주변 관광지·맛집·숙소, 지역 축제까지 한곳에서 확인하세요.
+            전국 스포츠 대회 일정과 개최지 주변 관광지·맛집·숙소, 지역 축제까지 스포트립에서 확인하세요.
           </p>
         </div>
 
@@ -137,9 +137,9 @@ export default function HomePage() {
         </section>
 
         {/* 캐러셀 3개 */}
-        <EventRow title="전체 대회" href="/events" events={upcoming}/>
-        <EventRow title="이번달의 대회" href="/events?tab=month" events={thisMonthEv.length>0?thisMonthEv:upcoming.slice(0,10)}/>
-        <EventRow title="이번주의 대회" href="/events?tab=week" events={weekEvs.length>0?weekEvs:upcoming.slice(0,6)}/>
+        <EventRow title="전체 대회" href="/events" events={upcoming.slice(0,6)}/>
+        <EventRow title="이번달의 대회" href="/events?tab=month" events={thisMonthEv.length>0?thisMonthEv.slice(0,6):upcoming.slice(0,6)}/>
+        <EventRow title="이번주의 대회" href="/events?tab=week" events={weekEvs.length>0?weekEvs.slice(0,6):upcoming.slice(0,6)}/>
 
         {/* 지역별 둘러보기 */}
         <section className="max-w-[1760px] mx-auto px-5 md:px-10 py-7 border-t border-[#EBEBEB]">
@@ -214,7 +214,7 @@ export default function HomePage() {
               <p className="text-[13px] text-[#AAAAAA]">SpoTrip · 2026 관광데이터 활용 공모전</p>
             </div>
             <div className="ml-auto text-right text-[13px]">
-              등록 대회 {EVENTS.length}건 · 예정 대회 {dynEv.filter(e=>e.status!=='done').length}건<br/>
+              
               출처: ⓒ한국관광공사
             </div>
           </div>

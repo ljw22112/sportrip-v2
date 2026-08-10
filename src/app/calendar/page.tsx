@@ -1,7 +1,7 @@
 'use client';
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { getDynamicEvents } from '@/lib/data';
+import { getDynamicEvents, getAllEvents } from '@/lib/data';
 import { SPORTS_15 } from '@/lib/sports';
 import { Header } from '@/components/layout/Header';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -86,8 +86,8 @@ export default function CalendarPage() {
         </span>
         {evs.slice(0,MAX).map((ev,i)=>(
           <Link key={i} href={`/events/${ev.id}`}
-            className="block mb-0.5 px-1.5 py-0.5 rounded text-[10px] md:text-[11px] font-semibold text-white truncate leading-tight hover:opacity-80 transition-opacity"
-            style={{background:getColor(ev.region)}}>
+            className="block mb-0.5 px-1.5 py-0.5 rounded text-[10px] md:text-[11px] font-semibold truncate leading-tight hover:opacity-80 transition-opacity border"
+            style={{color:getColor(ev.region),borderColor:getColor(ev.region)+'55',background:getColor(ev.region)+'11'}}>
             <span className="opacity-75 mr-0.5">{ev.region}</span>{ev.title}
           </Link>
         ))}
@@ -126,7 +126,7 @@ export default function CalendarPage() {
         </p>
 
         {/* ── 종목 필터 칩 ── */}
-        <div className="flex gap-2 overflow-x-auto pb-2 mb-5" style={{scrollbarWidth:'none'}}>
+        <div className="flex gap-2 overflow-x-auto pb-3 mb-5 pt-1" style={{scrollbarWidth:'none'}}>
           {SPORTS_15.map(sp=>(
             <button key={sp.key} onClick={()=>setActiveSport(sp.label)}
               className={`flex items-center gap-2 px-3.5 py-2 rounded-full text-[13px] font-semibold flex-shrink-0 border-2 transition-all
@@ -134,7 +134,7 @@ export default function CalendarPage() {
                   ? 'bg-[#0B5C43] border-[#0B5C43]'
                   : 'bg-white text-[#222] border-[#EBEBEB] hover:border-[#0B5C43] hover:bg-[#E7F1EC]'}`}>
               <img src={sp.icon} alt={sp.label}
-                className={`w-6 h-6 object-contain ${activeSport===sp.label?'brightness-0 invert':''}`}/>
+                className={`w-7 h-7 object-contain flex-shrink-0 ${activeSport===sp.label?'brightness-0 invert':''}`}/>
               <span className={activeSport===sp.label?'text-white':''}>{sp.label}</span>
             </button>
           ))}

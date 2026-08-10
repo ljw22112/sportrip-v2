@@ -3,7 +3,7 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { SportEvent } from '@/types';
 import { EventCard } from './EventCard';
-import { KoreaMap } from './KoreaMap';
+import { KakaoMap } from './KakaoMap';
 import { ArrowLeft, X, Map } from 'lucide-react';
 import { calcDday } from '@/lib/data';
 
@@ -15,7 +15,7 @@ export function RegionListView({ region, events, onBack }: { region:string; even
   return (
     <div className="flex min-h-screen">
       {/* 목록 */}
-      <div className="flex-1 min-w-0 px-4 md:px-20 py-4">
+      <div className="flex-1 min-w-0 px-4 md:px-10 py-4">
         <button onClick={onBack} className="flex items-center gap-1.5 text-[13px] text-[--muted] mb-4 hover:text-[--ink] transition-colors">
           <ArrowLeft className="w-4 h-4"/> 처음으로
         </button>
@@ -39,7 +39,7 @@ export function RegionListView({ region, events, onBack }: { region:string; even
         {/* 모바일 지도 */}
         {showMap&&(
           <div className="relative bg-[#D8E4DA] border border-[--line] rounded-2xl overflow-hidden h-56 mb-4 md:hidden">
-            <KoreaMap events={events} className="w-full h-full"/>
+            <KakaoMap events={events} className="w-full h-full"/>
             <button onClick={()=>setShowMap(false)} className="absolute top-2 right-2 bg-[--ink] text-white rounded-full px-3 py-1 text-xs font-bold">목록 보기</button>
           </div>
         )}
@@ -60,7 +60,7 @@ export function RegionListView({ region, events, onBack }: { region:string; even
       {/* 데스크톱 지도 */}
       <aside className="hidden md:block w-[380px] flex-shrink-0 sticky top-0 h-screen border-l border-[--line]">
         <div className="relative w-full h-full bg-[#D8E4DA]">
-          <KoreaMap events={events} className="w-full h-full"/>
+          <KakaoMap events={events} className="w-full h-full"/>
           <div className="absolute right-3 top-3 flex flex-col bg-white rounded-xl overflow-hidden shadow-sm">
             <button className="w-8 h-8 text-sm font-bold border-b border-[--line]">+</button>
             <button className="w-8 h-8 text-sm font-bold">−</button>

@@ -77,7 +77,7 @@ export function Header({ showSearch=false }: { showSearch?: boolean }) {
                     <Link key={sp.key}
                       href={sp.key==='전체'?'/events':`/events?sport=${encodeURIComponent(sp.key)}`}
                       onClick={()=>setActiveSport(sp.key)}
-                      className={`flex flex-col items-center justify-center gap-1 px-3 py-2.5 flex-shrink-0 rounded-2xl border-2 transition-all min-w-[64px]
+                      className={`flex flex-col items-center justify-center gap-1 px-3 py-3 flex-shrink-0 rounded-2xl border-2 transition-all min-w-[72px]
                         ${active
                           ? 'border-[#0B5C43] bg-[#0B5C43] shadow-md'
                           : 'border-[#EBEBEB] bg-white hover:border-[#0B5C43] hover:bg-[#E7F1EC]'
@@ -99,14 +99,14 @@ export function Header({ showSearch=false }: { showSearch?: boolean }) {
                 <form onSubmit={handleSubmit}
                   className="flex items-stretch bg-white border-2 border-[#DDDDDD] rounded-2xl hover:border-[#222] transition-colors focus-within:border-[#222]"
                   style={{height:64}}>
-                  <div className="flex-1 flex flex-col justify-center px-6 min-w-0">
+                  <div className="flex-1 flex flex-col justify-center px-8 min-w-0">
                     <label className="text-[11px] font-bold tracking-wider text-[#222] mb-0.5">대회 검색</label>
                     <input value={region} onChange={e=>setRegion(e.target.value)}
                       placeholder="지역명 또는 대회명으로 검색"
                       className="text-[15px] text-[#717171] bg-transparent outline-none placeholder:text-[#AAAAAA]"/>
                   </div>
                   <div className="w-px bg-[#EBEBEB] my-3"/>
-                  <div className="flex flex-col justify-center px-6 min-w-[160px]">
+                  <div className="flex flex-col justify-center px-8 min-w-[160px]">
                     <label className="text-[11px] font-bold tracking-wider text-[#222] mb-0.5">날짜</label>
                     <select value={month} onChange={e=>setMonth(e.target.value)}
                       className="text-[15px] text-[#717171] bg-transparent outline-none cursor-pointer">
@@ -115,7 +115,7 @@ export function Header({ showSearch=false }: { showSearch?: boolean }) {
                     </select>
                   </div>
                   <div className="w-px bg-[#EBEBEB] my-3"/>
-                  <div className="flex flex-col justify-center px-6 min-w-[160px]">
+                  <div className="flex flex-col justify-center px-8 min-w-[160px]">
                     <label className="text-[11px] font-bold tracking-wider text-[#222] mb-0.5">종목</label>
                     <select value={sportSel} onChange={e=>setSportSel(e.target.value)}
                       className="text-[15px] text-[#717171] bg-transparent outline-none cursor-pointer">

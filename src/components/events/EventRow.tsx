@@ -34,12 +34,12 @@ export function EventRow({ title, href, events }: { title:string; href:string; e
         /* 모바일: 2열 그리드 / 데스크톱: 가로 스크롤 7열 */
         <>
           {/* 모바일 그리드 */}
-          <div className="grid grid-cols-2 gap-3 md:hidden">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 md:hidden">
             {events.slice(0,6).map(e=><EventCard key={e.id} event={e}/>)}
           </div>
           {/* 데스크톱 스크롤 */}
           <div ref={ref} className="hidden md:grid gap-4 overflow-x-auto pb-1"
-            style={{gridAutoFlow:'column', gridAutoColumns:'calc((100% - 6*16px)/7)', scrollSnapType:'x mandatory', scrollbarWidth:'none'}}>
+            style={{gridAutoFlow:'column', gridAutoColumns:'calc((100% - 5*16px)/6)', scrollSnapType:'x mandatory', scrollbarWidth:'none'}}>
             {events.map(e=>(
               <div key={e.id} style={{scrollSnapAlign:'start'}}>
                 <EventCard event={e}/>
