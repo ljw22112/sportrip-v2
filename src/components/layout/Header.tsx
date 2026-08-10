@@ -169,6 +169,10 @@ export function Header({ showSearch=false }: { showSearch?: boolean }) {
             <Link href="/events" className="flex items-center gap-3 px-4 py-3 hover:bg-[#F7F7F7] text-[14px] font-medium text-[#222]" onClick={()=>setMenuOpen(false)}>
               ❤️ 저장한 대회
             </Link>
+            <div className="border-t border-[#EBEBEB] my-1"/>
+            <Link href="/about" className="flex items-center gap-3 px-4 py-3 hover:bg-[#F7F7F7] text-[14px] font-medium text-[#222]" onClick={()=>setMenuOpen(false)}>
+              ℹ️ 스포트립 소개
+            </Link>
           </div>
         )}
       </header>
