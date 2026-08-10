@@ -48,8 +48,17 @@ export default function HomePage() {
   const [weekEvs, setWeekEvs] = useState<ReturnType<typeof getDynamicEvents>>([]);
   const dynEv = getDynamicEvents();
   const today = new Date();
-  const upcoming = dynEv.filter(e=>e.status!=='done').sort((a,b)=>calcN(a.start)-calcN(b.start)).slice(0,20);
-  const thisMonthEv = dynEv.filter(e=>new Date(e.start).getMonth()===today.getMonth()&&e.status!=='done');
+  const upcoming = dynEv.filter(e=>e.status!=='done').sort((a,b)=>{
+    const dateDiff = calcN(a.start)-calcN(b.start);
+    if (dateDiff !== 0) return dateDiff;
+    return a.title.localeCompare(b.title, 'ko');
+  }).slice(0,20);
+  const thisMonthEv = dynEv.filter(e=>new Date(e.start).getMonth()===today.getMonth()&&e.status!=='done')
+    .sort((a,b)=>{
+      const dateDiff = a.start.localeCompare(b.start);
+      if (dateDiff !== 0) return dateDiff;
+      return a.title.localeCompare(b.title, 'ko');
+    });
 
   useEffect(()=>{
     const t = new Date();
