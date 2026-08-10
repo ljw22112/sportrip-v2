@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <circle cx="50" cy="50" r="48" fill="#f0f9f0"/>
+  <circle cx="50" cy="50" r="46" fill="none" stroke="#1C1C1E" stroke-width="2" stroke-dasharray="3 7"/>
+  <!-- 바퀴 2개 -->
+  <circle cx="28" cy="65" r="18" fill="none" stroke="#1C1C1E" stroke-width="3"/>
+  <circle cx="72" cy="65" r="18" fill="none" stroke="#1C1C1E" stroke-width="3"/>
+  <!-- 바퀴 살 -->
+  <line x1="28" y1="47" x2="28" y2="83" stroke="#1C1C1E" stroke-width="1.5"/>
+  <line x1="10" y1="65" x2="46" y2="65" stroke="#1C1C1E" stroke-width="1.5"/>
+  <line x1="72" y1="47" x2="72" y2="83" stroke="#1C1C1E" stroke-width="1.5"/>
+  <line x1="54" y1="65" x2="90" y2="65" stroke="#1C1C1E" stroke-width="1.5"/>
+  <!-- 프레임 -->
+  <line x1="28" y1="65" x2="50" y2="45" stroke="#1C1C1E" stroke-width="3" stroke-linecap="round"/>
+  <line x1="50" y1="45" x2="72" y2="65" stroke="#1C1C1E" stroke-width="3" stroke-linecap="round"/>
+  <line x1="50" y1="45" x2="42" y2="65" stroke="#1C1C1E" stroke-width="3" stroke-linecap="round"/>
+  <!-- 안장 -->
+  <line x1="46" y1="42" x2="58" y2="42" stroke="#1C1C1E" stroke-width="3" stroke-linecap="round"/>
+  <!-- 핸들 -->
+  <line x1="62" y1="38" x2="72" y2="44" stroke="#1C1C1E" stroke-width="3" stroke-linecap="round"/>
+  <!-- 머리 -->
+  <circle cx="67" cy="30" r="8" fill="#C8F542" stroke="#1C1C1E" stroke-width="2.5"/>
+  <!-- 몸통 -->
+  <line x1="64" y1="38" x2="58" y2="48" stroke="#1C1C1E" stroke-width="3" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,69 @@
+name: 📅 매주 금요일 대회 데이터 자동 업데이트
+
+on:
+  schedule:
+    - cron: '0 0 * * 5'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    name: 전국대회정보 수집 및 업데이트
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 체크아웃
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: ⚙️ Node.js 설정
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: 🏃 대회 데이터 수집
+        env:
+          DATA_GO_KR_KEY: ${{ secrets.DATA_GO_KR_KEY }}
+        run: node scripts/fetch-events.js
+
+      - name: 🔍 변경사항 확인
+        id: diff
+        run: |
+          if git diff --quiet src/lib/data.ts; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "ℹ️ 새 대회 없음"
+          else
+            COUNT=$(git diff src/lib/data.ts | grep -c '^+.*{id:' || echo 0)
+            echo "changed=true"  >> $GITHUB_OUTPUT
+            echo "count=$COUNT"  >> $GITHUB_OUTPUT
+            echo "✅ 새 대회 ${COUNT}건 발견"
+          fi
+
+      - name: 📤 GitHub API로 파일 업데이트
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # 현재 파일의 SHA 가져오기 (API 업데이트에 필요)
+          FILE_SHA=$(gh api \
+            repos/${{ github.repository }}/contents/src/lib/data.ts \
+            --jq '.sha')
+
+          echo "현재 파일 SHA: $FILE_SHA"
+
+          # 파일 내용을 base64로 인코딩
+          CONTENT=$(base64 -w 0 src/lib/data.ts)
+
+          # GitHub API로 직접 파일 업데이트 (push 충돌 없음)
+          gh api \
+            repos/${{ github.repository }}/contents/src/lib/data.ts \
+            --method PUT \
+            --field message="🤖 대회 데이터 자동 업데이트 (+${{ steps.diff.outputs.count }}건) $(date +'%Y-%m-%d')" \
+            --field content="$CONTENT" \
+            --field sha="$FILE_SHA" \
+            --field branch="main"
+
+          echo "✅ GitHub API 업데이트 완료 → Vercel 자동 재배포"

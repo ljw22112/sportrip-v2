@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <circle cx="50" cy="50" r="48" fill="#f0f9f0"/>
+  <circle cx="50" cy="50" r="46" fill="none" stroke="#1C1C1E" stroke-width="2" stroke-dasharray="3 7"/>
+  <!-- 라켓 (큰) -->
+  <ellipse cx="68" cy="32" rx="17" ry="20" fill="none" stroke="#1C1C1E" stroke-width="2.5"/>
+  <line x1="52" y1="32" x2="84" y2="32" stroke="#1C1C1E" stroke-width="1.5"/>
+  <line x1="68" y1="12" x2="68" y2="52" stroke="#1C1C1E" stroke-width="1.5"/>
+  <line x1="56" y1="20" x2="80" y2="44" stroke="#1C1C1E" stroke-width="1.5"/>
+  <line x1="56" y1="44" x2="80" y2="20" stroke="#1C1C1E" stroke-width="1.5"/>
+  <line x1="55" y1="52" x2="44" y2="64" stroke="#1C1C1E" stroke-width="3" stroke-linecap="round"/>
+  <!-- 공 -->
+  <circle cx="22" cy="28" r="7" fill="#C8F542" stroke="#1C1C1E" stroke-width="2"/>
+  <path d="M17 24 Q22 22 27 24" fill="none" stroke="#1C1C1E" stroke-width="1.5"/>
+  <path d="M17 32 Q22 34 27 32" fill="none" stroke="#1C1C1E" stroke-width="1.5"/>
+  <!-- 머리 -->
+  <circle cx="40" cy="46" r="8" fill="#C8F542" stroke="#1C1C1E" stroke-width="2.5"/>
+  <!-- 몸통 -->
+  <line x1="40" y1="54" x2="38" y2="76" stroke="#1C1C1E" stroke-width="3.5" stroke-linecap="round"/>
+  <!-- 팔 -->
+  <line x1="39" y1="62" x2="20" y2="56" stroke="#1C1C1E" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="39" y1="60" x2="52" y2="62" stroke="#1C1C1E" stroke-width="3.5" stroke-linecap="round"/>
+  <!-- 다리 -->
+  <line x1="38" y1="76" x2="26" y2="90" stroke="#1C1C1E" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="38" y1="76" x2="50" y2="88" stroke="#1C1C1E" stroke-width="3.5" stroke-linecap="round"/>
+</svg>

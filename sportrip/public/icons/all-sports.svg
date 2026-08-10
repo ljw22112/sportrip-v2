@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <circle cx="50" cy="50" r="48" fill="#FEFDE7"/>
+  <circle cx="50" cy="50" r="46" fill="none" stroke="#1C1C1E" stroke-width="2" stroke-dasharray="3 7"/>
+  <!-- 메달 -->
+  <circle cx="50" cy="42" r="22" fill="#F0D060" stroke="#1C1C1E" stroke-width="2.5"/>
+  <circle cx="50" cy="42" r="16" fill="#D4AC0D" stroke="#1C1C1E" stroke-width="1.5"/>
+  <text x="50" y="48" text-anchor="middle" font-size="18" font-weight="bold" fill="#1C1C1E">1</text>
+  <!-- 리본 -->
+  <path d="M34 24 L28 8 L38 16 L50 8 L62 16 L72 8 L66 24" fill="#C8F542" stroke="#1C1C1E" stroke-width="2"/>
+  <!-- 별 -->
+  <path d="M50 72 L54 82 L64 82 L56 88 L60 98 L50 92 L40 98 L44 88 L36 82 L46 82 Z" fill="#C8F542" stroke="#1C1C1E" stroke-width="1.5"/>
+</svg>

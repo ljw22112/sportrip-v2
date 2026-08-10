@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <circle cx="50" cy="50" r="48" fill="#E9F7EF"/>
+  <circle cx="50" cy="50" r="46" fill="none" stroke="#1C1C1E" stroke-width="2" stroke-dasharray="3 7"/>
+  <!-- 산 -->
+  <path d="M10 82 L40 30 L55 55 L65 38 L90 82 Z" fill="#C8F542" stroke="#1C1C1E" stroke-width="2"/>
+  <path d="M62 38 L65 30 L68 38" fill="white" stroke="#1C1C1E" stroke-width="1.5"/>
+  <!-- 달리는 캐릭터 -->
+  <circle cx="40" cy="22" r="7" fill="#1C1C1E"/>
+  <circle cx="40" cy="22" r="4" fill="#C8F542"/>
+  <line x1="40" y1="29" x2="38" y2="42" stroke="#1C1C1E" stroke-width="3" stroke-linecap="round"/>
+  <line x1="38" y1="34" x2="28" y2="30" stroke="#1C1C1E" stroke-width="3" stroke-linecap="round"/>
+  <line x1="38" y1="36" x2="48" y2="40" stroke="#1C1C1E" stroke-width="3" stroke-linecap="round"/>
+  <line x1="38" y1="42" x2="30" y2="52" stroke="#1C1C1E" stroke-width="3" stroke-linecap="round"/>
+  <line x1="38" y1="42" x2="48" y2="54" stroke="#1C1C1E" stroke-width="3" stroke-linecap="round"/>
+</svg>

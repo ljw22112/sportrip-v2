@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 130" width="500" height="130">
+  <g transform="translate(0,5)">
+    <!-- 점선 원 — dasharray 키워서 더 잘 보이게 -->
+    <circle cx="60" cy="60" r="42" fill="none" stroke="#1C1C1E" stroke-width="2.8"
+      stroke-linecap="round" stroke-dasharray="3 7.2" opacity="0.75"/>
+    <!-- 몸통 (자전거 프레임) -->
+    <rect x="40" y="49" width="40" height="22" rx="11" fill="none" stroke="#1C1C1E" stroke-width="8"/>
+    <!-- 머리 (라임색 원) -->
+    <circle cx="60" cy="18" r="7.5" fill="#C8F542" stroke="#1C1C1E" stroke-width="2"/>
+    <!-- 바퀴 -->
+    <circle cx="90" cy="89.7" r="5.5" fill="#1C1C1E"/>
+    <circle cx="30" cy="89.7" r="5.5" fill="#1C1C1E"/>
+  </g>
+  <!-- 스포트립 텍스트 -->
+  <g transform="translate(150,-15.2) scale(1.18)" fill="none" stroke="#1C1C1E" stroke-width="9" stroke-linecap="round">
+    <path d="M 28 55 C 28 47,6 47,6 58 C 6 68,28 67,28 79 C 28 87,6 87,6 81"/>
+    <path d="M 46 51 L 46 118"/>
+    <circle cx="63" cy="68" r="17"/>
+    <circle cx="113" cy="68" r="17"/>
+    <path d="M 156 36 L 156 78 Q 156 90 168 90"/>
+    <path d="M 146 52 L 170 52"/>
+    <path d="M 187 50 L 187 90"/>
+    <path d="M 187 64 Q 187 50 203 50"/>
+    <path d="M 220 50 L 220 90"/>
+    <circle cx="220" cy="34" r="6.5" fill="#C8F542" stroke="#1C1C1E" stroke-width="2"/>
+    <path d="M 237 51 L 237 118"/>
+    <circle cx="254" cy="68" r="17"/>
+  </g>
+</svg>
