@@ -71,16 +71,16 @@ function EventsContent() {
           <div className="px-4 md:px-10 py-5">
 
             {/* 15개 종목 칩 */}
-            <div className="flex overflow-x-auto gap-2 mb-5 pb-1" style={{scrollbarWidth:'none'}}>
+            <div className="flex flex-wrap gap-2 mb-5 pb-1 pt-1">
               {SPORTS_15.map(sp=>{
                 const active = sport===sp.key||(sp.key==='전체'&&!sport);
                 return (
                   <button key={sp.key} onClick={()=>setSport(sp.key==='전체'?'':sp.key)}
-                    className={`flex-shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-full text-[13px] font-bold border-2 transition-all
+                    className={`flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] md:text-[13px] font-bold border-2 transition-all
                       ${active ? 'text-white border-transparent' : 'bg-white text-[#333] border-[#E0E0E0] hover:border-[#333]'}`}
                     style={active ? {background:sp.color, borderColor:sp.color} : {}}>
                     <img src={sp.icon} alt={sp.label}
-                      className={`w-6 h-6 object-contain ${active?'brightness-0 invert':''}`}/>
+                      className={`w-5 h-5 md:w-6 md:h-6 object-contain flex-shrink-0 ${active?'brightness-0 invert':''}`}/>
                     <span>{sp.label}</span>
                   </button>
                 );
