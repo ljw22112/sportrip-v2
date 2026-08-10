@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { EVENTS, getDynamicEvents } from '@/lib/data';
 import { EventRow } from '@/components/events/EventRow';
-import { KoreaMap } from '@/components/events/KoreaMap';
+import { KakaoMap as KoreaMap } from '@/components/events/KakaoMap';
 import { Header } from '@/components/layout/Header';
 import { RegionListView } from '@/components/events/RegionListView';
 import { getSportInfo } from '@/lib/sports';

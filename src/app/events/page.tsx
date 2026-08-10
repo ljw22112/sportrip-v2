@@ -2,7 +2,7 @@
 import { useState, useMemo, Suspense, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { EventCard, EventCardSkeleton, EventCardHorizontal } from '@/components/events/EventCard';
-import { KoreaMap } from '@/components/events/KoreaMap';
+import { KakaoMap as KoreaMap } from '@/components/events/KakaoMap';
 import { Header } from '@/components/layout/Header';
 import { EVENTS, REGIONS, getDynamicEvents } from '@/lib/data';
 import { SPORTS_15 } from '@/lib/sports';
