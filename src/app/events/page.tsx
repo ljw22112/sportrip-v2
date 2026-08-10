@@ -71,7 +71,7 @@ function EventsContent() {
           <div className="px-4 md:px-10 py-5">
 
             {/* 15개 종목 칩 */}
-            <div className="flex overflow-x-auto gap-2 mb-5 pb-2 pt-1" style={{scrollbarWidth:'none', WebkitOverflowScrolling:'touch'}}>
+            <div className="flex flex-wrap gap-2 mb-5 pb-1 pt-1">
               {SPORTS_15.map(sp=>{
                 const active = sport===sp.key||(sp.key==='전체'&&!sport);
                 return (
