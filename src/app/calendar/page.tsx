@@ -2,6 +2,7 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { getDynamicEvents } from '@/lib/data';
+import { SPORTS_15 } from '@/lib/sports';
 import { Header } from '@/components/layout/Header';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -15,23 +16,7 @@ const getColor = (r:string) => REGION_COLOR[r]||'#34495e';
 const MONTHS_KR = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
 const DAYS = ['일','월','화','수','목','금','토'];
 
-const SPORT_LIST = [
-  {label:'전체', icon:'🌐'},
-  {label:'마라톤', icon:'🏃'},
-  {label:'러닝', icon:'💨'},
-  {label:'사이클', icon:'🚴'},
-  {label:'배드민턴', icon:'🏸'},
-  {label:'수영', icon:'🏊'},
-  {label:'축구', icon:'⚽'},
-  {label:'테니스', icon:'🎾'},
-  {label:'농구', icon:'🏀'},
-  {label:'배구', icon:'🏐'},
-  {label:'야구', icon:'⚾'},
-  {label:'태권도', icon:'🥋'},
-  {label:'골프', icon:'⛳'},
-  {label:'종합', icon:'🏅'},
-  {label:'기타', icon:'🏆'},
-];
+// SPORT_LIST → SPORTS_15 사용
 
 function fmtDate(ds:string){
   const[y,m,d]=ds.split('-').map(Number);
@@ -142,14 +127,15 @@ export default function CalendarPage() {
 
         {/* ── 종목 필터 칩 ── */}
         <div className="flex gap-2 overflow-x-auto pb-2 mb-5" style={{scrollbarWidth:'none'}}>
-          {SPORT_LIST.map(({label,icon})=>(
-            <button key={label} onClick={()=>setActiveSport(label)}
-              className={`flex items-center gap-1.5 px-3.5 py-2 rounded-full text-[13px] font-semibold flex-shrink-0 border transition-all
-                ${activeSport===label
-                  ? 'bg-[#0B5C43] text-white border-[#0B5C43]'
-                  : 'bg-white text-[#222] border-[#DDDDDD] hover:border-[#222]'}`}>
-              <span className="text-base leading-none">{icon}</span>
-              {label}
+          {SPORTS_15.map(sp=>(
+            <button key={sp.key} onClick={()=>setActiveSport(sp.label)}
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-full text-[13px] font-semibold flex-shrink-0 border-2 transition-all
+                ${activeSport===sp.label
+                  ? 'bg-[#0B5C43] border-[#0B5C43]'
+                  : 'bg-white text-[#222] border-[#EBEBEB] hover:border-[#0B5C43] hover:bg-[#E7F1EC]'}`}>
+              <img src={sp.icon} alt={sp.label}
+                className={`w-6 h-6 object-contain ${activeSport===sp.label?'brightness-0 invert':''}`}/>
+              <span className={activeSport===sp.label?'text-white':''}>{sp.label}</span>
             </button>
           ))}
         </div>
@@ -208,7 +194,12 @@ export default function CalendarPage() {
         <div className="md:hidden">
           {monthEvents.length===0?(
             <div className="text-center py-12 border border-dashed border-[#E8E8E6] rounded-2xl">
-              <div className="text-4xl mb-3">{activeSport==='전체'?'📅':SPORT_LIST.find(s=>s.label===activeSport)?.icon||'🏆'}</div>
+              <div className="flex justify-center mb-3">
+                {activeSport==='전체'
+                  ? <span className="text-5xl">📅</span>
+                  : <img src={SPORTS_15.find(s=>s.label===activeSport)?.icon||'/icons/etc.svg'}
+                      alt={activeSport} className="w-16 h-16 object-contain"/>}
+              </div>
               <p className="text-[#717171] text-sm font-medium">
                 {activeSport==='전체'?'이 달에는 예정된 대회가 없습니다.':
                   `이 달에는 ${activeSport} 대회가 없습니다.`}
@@ -233,9 +224,8 @@ export default function CalendarPage() {
                     <div className="text-xs text-[#717171] mt-0.5">{e.region} · {e.sport}</div>
                     <div className="text-xs text-[#717171] mt-0.5">{fmtDate(e.start)} · {e.participants}</div>
                   </div>
-                  <span className="text-xl flex-shrink-0">
-                    {SPORT_LIST.find(s=>s.label===e.sport)?.icon||'🏆'}
-                  </span>
+                  <img src={SPORTS_15.find(s=>s.label===e.sport)?.icon||'/icons/etc.svg'}
+                    alt={e.sport} className="w-8 h-8 object-contain flex-shrink-0"/>
                 </Link>
               ))}
             </div>
@@ -262,7 +252,7 @@ export default function CalendarPage() {
                     <div className="text-xs text-[#717171] mt-0.5">{e.region} · {e.sport} · {e.participants}</div>
                   </div>
                   <div className="flex items-center gap-3 flex-shrink-0">
-                    <span className="text-xl">{SPORT_LIST.find(s=>s.label===e.sport)?.icon||'🏆'}</span>
+                    <span className="text-xl">{SPORTS_15.find(s=>s.label===e.sport)?.icon||'/icons/etc.svg'}</span>
                     <span className="text-xs text-[#717171]">{e.start}</span>
                   </div>
                 </Link>
@@ -275,7 +265,10 @@ export default function CalendarPage() {
         {monthEvents.length===0&&(
           <div className="hidden md:flex flex-col items-center justify-center py-16 border border-dashed border-[#E8E8E6] rounded-2xl">
             <div className="text-5xl mb-4">
-              {activeSport==='전체'?'📅':SPORT_LIST.find(s=>s.label===activeSport)?.icon||'🏆'}
+              {activeSport==='전체'
+                ? <span className="text-5xl">📅</span>
+                : <img src={SPORTS_15.find(s=>s.label===activeSport)?.icon||'/icons/etc.svg'}
+                    alt={activeSport} className="w-16 h-16 object-contain"/>}
             </div>
             <p className="font-semibold text-[#222] mb-1">
               {activeSport==='전체'?'이 달에는 예정된 대회가 없습니다.':
