@@ -79,7 +79,7 @@ export default function HomePage() {
   return (
     <>
       <Header showSearch/>
-      <main>
+      <main style={{background:"#F7F5F0"}}>
         {/* 히어로 */}
         <div className="max-w-[1760px] mx-auto px-5 md:px-10 pt-6 pb-2 text-center">
           <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight leading-snug">
@@ -147,8 +147,12 @@ export default function HomePage() {
 
         {/* 캐러셀 3개 */}
         <EventRow title="전체 대회" href="/events" events={upcoming.slice(0,6)}/>
-        <EventRow title="이번달의 대회" href="/events?tab=month" events={thisMonthEv.length>0?thisMonthEv.slice(0,6):upcoming.slice(0,6)}/>
-        <EventRow title="이번주의 대회" href="/events?tab=week" events={weekEvs.length>0?weekEvs.slice(0,6):upcoming.slice(0,6)}/>
+        {thisMonthEv.length > 0 && (
+          <EventRow title="이번달의 대회" href="/events?tab=month" events={thisMonthEv.slice(0,6)}/>
+        )}
+        {weekEvs.length > 0 && (
+          <EventRow title="이번주의 대회" href="/events?tab=week" events={weekEvs.slice(0,6)}/>
+        )}
 
         {/* 지역별 둘러보기 */}
         <section className="max-w-[1760px] mx-auto px-5 md:px-10 py-7 border-t border-[#EBEBEB]">
@@ -164,8 +168,7 @@ export default function HomePage() {
                     border: `2.5px solid ${(REGION_COLOR[r]||{border:'#EBEBEB'}).border}`,
                     background: (REGION_COLOR[r]||{bg:'#F7F7F6'}).bg,
                   }}>
-                  <span className="block text-2xl mb-1">{(REGION_COLOR[r]||{emoji:'📍'}).emoji}</span>
-                  <b className="block text-[16px] md:text-[18px] font-extrabold tracking-tight"
+                  <b className="block text-[18px] md:text-[20px] font-extrabold tracking-tight mt-1"
                     style={{color:(REGION_COLOR[r]||{text:'#222'}).text}}>{r}</b>
                   <span className={`text-[13px] mt-1 block font-bold ${cnt?'text-[#E4572E]':'text-[#AAAAAA]'}`}>
                     {cnt?`예정 ${cnt}건`:'없음'}
@@ -221,6 +224,7 @@ export default function HomePage() {
                 <span className="font-extrabold text-[18px] text-[#1B1F1D] tracking-[-0.05em]">스포트립</span>
               </div>
               <p className="text-[13px] text-[#AAAAAA]">SpoTrip · 2026 관광데이터 활용 공모전</p>
+              <p className="text-[12px] text-[#CCCCCC] mt-1">💡 하트 저장은 이 기기 브라우저에만 저장됩니다</p>
             </div>
             <div className="ml-auto text-right text-[13px]">
               

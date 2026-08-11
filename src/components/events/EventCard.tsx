@@ -35,13 +35,15 @@ export function EventCard({ event }: { event: SportEvent }) {
     <article className="relative group cursor-pointer">
       {/* 썸네일 — 테두리만, 흰 배경, 종목 캐릭터 */}
       <Link href={`/events/${event.id}`}
-        className="relative block rounded-2xl overflow-hidden border-2 hover:border-[--green] transition-all bg-white"
-        style={{aspectRatio:'1/1', borderColor: sport.color + '55'}}>
-        {/* D-day 배지 */}
+        className="relative block rounded-2xl overflow-hidden border-2 hover:border-[--green] transition-all"
+        style={{aspectRatio:'1/1', borderColor: sport.color + '55', background:'#F7F5F0'}}>
+        {/* D-day — 크게 */}
         {event.status !== 'done' && (
-          <div className="absolute top-2.5 left-2.5 text-white text-[11px] font-bold px-2.5 py-1 rounded-full z-10"
-            style={{background: sport.color}}>
-            {calcDday(event.start)}
+          <div className="absolute top-0 left-0 right-0 flex items-center justify-center pt-3 z-10">
+            <span className="text-[22px] font-black tracking-tighter leading-none"
+              style={{color: sport.color}}>
+              {calcDday(event.start)}
+            </span>
           </div>
         )}
         {/* 종목 캐릭터 SVG */}
@@ -63,7 +65,11 @@ export function EventCard({ event }: { event: SportEvent }) {
       {/* 하트 */}
       <button onClick={handleHeart} aria-label={saved?'저장 해제':'저장'}
         className="absolute top-2.5 right-2.5 w-8 h-8 flex items-center justify-center text-lg z-10 hover:scale-110 transition-transform">
-        {saved ? '❤️' : '🤍'}
+        <svg width="18" height="18" viewBox="0 0 24 24" fill={saved?"#E4572E":"none"}
+          stroke={saved?"#E4572E":"#717171"} strokeWidth="2.5" strokeLinecap="round"
+          style={{transform:saved?'scale(1.2)':'scale(1)', transition:'transform 0.2s cubic-bezier(0.34,1.56,0.64,1)'}}>
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
       </button>
       {/* 텍스트 */}
       <Link href={`/events/${event.id}`} className="block pt-2 px-0.5">

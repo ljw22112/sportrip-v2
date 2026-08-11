@@ -11,6 +11,20 @@ import { BackButton } from '@/components/events/BackButton';
 import { SaveButton } from '@/components/events/SaveButton';
 import { ExternalLink, MapPin, Calendar, Users } from 'lucide-react';
 
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const ev = EVENTS.find(e => String(e.id) === id);
+  if (!ev) return {};
+  return {
+    title: `${ev.title} | 스포트립`,
+    description: `${ev.region} ${ev.sport} 대회 · ${ev.start} · ${ev.venue}. 개최지 주변 관광지·맛집·숙박 정보도 확인하세요.`,
+    openGraph: {
+      title: ev.title,
+      description: `${ev.region} ${ev.sport} · ${ev.start}`,
+    },
+  };
+}
+
 export async function generateStaticParams() {
   return EVENTS.map(e => ({ id: String(e.id) }));
 }

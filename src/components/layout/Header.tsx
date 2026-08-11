@@ -46,7 +46,7 @@ export function Header({ showSearch=false }: { showSearch?: boolean }) {
             <div className="flex-1"/>
             {/* 우측 버튼들 */}
             <div className="flex items-center gap-1">
-              <Link href="/events" className="hidden md:flex items-center gap-1.5 text-[14px] font-semibold text-[#222] hover:bg-[#F7F7F7] px-3 py-2 rounded-full transition-colors">
+              <Link href="/saved" className="hidden md:flex items-center gap-1.5 text-[14px] font-semibold text-[#222] hover:bg-[#F7F7F7] px-3 py-2 rounded-full transition-colors">
                 <Heart className="w-4 h-4"/> 저장
               </Link>
               <button onClick={()=>setMenuOpen(v=>!v)}
@@ -166,7 +166,7 @@ export function Header({ showSearch=false }: { showSearch?: boolean }) {
             <Link href="/calendar" className="flex items-center gap-3 px-4 py-3 hover:bg-[#F7F7F7] text-[14px] font-medium text-[#222]" onClick={()=>setMenuOpen(false)}>
               📅 월간 캘린더
             </Link>
-            <Link href="/events" className="flex items-center gap-3 px-4 py-3 hover:bg-[#F7F7F7] text-[14px] font-medium text-[#222]" onClick={()=>setMenuOpen(false)}>
+            <Link href="/saved" className="flex items-center gap-3 px-4 py-3 hover:bg-[#F7F7F7] text-[14px] font-medium text-[#222]" onClick={()=>setMenuOpen(false)}>
               ❤️ 저장한 대회
             </Link>
             <div className="border-t border-[#EBEBEB] my-1"/>
