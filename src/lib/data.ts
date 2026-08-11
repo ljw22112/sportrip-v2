@@ -3,6 +3,59 @@ import{SportEvent}from'@/types';
 export const SPORTS=['전체','마라톤','종합','배드민턴','수영','축구','테니스','사이클','골프','야구','농구','배구','태권도','유도','기타'];
 export const REGIONS=['전체 지역','서울','부산','대구','인천','광주','대전','울산','경기','강원','충북','충남','전북','전남','경북','경남','세종','제주'];
 
+export type VerifiedStatus = 'verified' | 'unverified' | 'public';
+
+export function calcVerified(id: number, url: string): VerifiedStatus {
+  if (id >= 200) return 'public'; // 공공데이터 자동수집
+  if (!url) return 'unverified';
+  try {
+    const domain = new URL(url).hostname.replace('www.', '');
+    const knownDomains = [
+      'marathon.jtbc.com','chuncheonmarathon.com','daegumarathon.co.kr',
+      'tourdekorea.or.kr','koreabaseball.com','kbl.or.kr','kovo.co.kr',
+      'kleague.com','kfa.or.kr','badmintonkorea.org','swimming.or.kr',
+      'koreataekwondo.org','judo.or.kr','kgto.co.kr','sports.or.kr',
+      'kosad.or.kr','kaaf.or.kr','koreacycling.or.kr','kortennis.co.kr',
+      'ironman.com','triathlon.or.kr',
+    ];
+    if (knownDomains.some(d => domain.includes(d.replace('www.',''))))
+      return 'verified';
+  } catch {}
+  return 'unverified';
+}
+
+export const VERIFIED_LABELS = {
+  verified:   { text: '✅ 검증됨',     color: '#0B5C43', bg: '#E7F1EC' },
+  unverified: { text: '⚠️ 미확인',     color: '#B7791F', bg: '#FEFCE8' },
+  public:     { text: '📋 공공데이터', color: '#1A5276', bg: '#EBF5FB' },
+};
+
+export type RegistrationStatus = 'open' | 'closing' | 'closed' | 'tba';
+
+export function calcRegistrationStatus(start: string, deadline?: string): RegistrationStatus {
+  const today = new Date();
+  const startDate = new Date(start);
+  const daysToStart = Math.ceil((startDate.getTime() - today.getTime()) / 86400000);
+  if (!deadline) {
+    if (daysToStart < 0) return 'closed';
+    if (daysToStart <= 7) return 'closing';
+    if (daysToStart <= 60) return 'open';
+    return 'tba';
+  }
+  const deadlineDate = new Date(deadline);
+  const daysToDeadline = Math.ceil((deadlineDate.getTime() - today.getTime()) / 86400000);
+  if (daysToDeadline < 0) return 'closed';
+  if (daysToDeadline <= 7) return 'closing';
+  return 'open';
+}
+
+export const REG_STATUS_LABELS = {
+  open:    { text: '접수 중',    color: '#0B5C43', bg: '#E7F1EC' },
+  closing: { text: '마감 임박',  color: '#C0392B', bg: '#FDEDEC' },
+  closed:  { text: '접수 마감', color: '#717171', bg: '#F7F7F6' },
+  tba:     { text: '추후 공지', color: '#1A5276', bg: '#EBF5FB' },
+};
+
 export function calcDday(s:string):string{
   const d=Math.ceil((new Date(s).getTime()-Date.now())/86400000);
   return d>0?`D-${d}`:d===0?'D-Day':'종료';

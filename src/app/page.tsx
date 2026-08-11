@@ -81,15 +81,37 @@ export default function HomePage() {
       <Header showSearch/>
       <main style={{background:"#F7F5F0"}}>
         {/* 히어로 */}
-        <div className="max-w-[1760px] mx-auto px-5 md:px-10 pt-6 pb-2 text-center">
-          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight leading-snug">
-            대회 보러 가는 길,{' '}
-            <span style={{background:'linear-gradient(transparent 62%,#D6F14E 62%)'}}>그 지역까지</span>{' '}
-            즐기고 오세요
-          </h1>
-          <p className="text-[#717171] mt-2 text-[15px] hidden md:block">
-            전국 스포츠 대회 일정과 개최지 주변 관광지·맛집·숙소, 지역 축제까지 스포트립에서 확인하세요.
-          </p>
+        <div className="max-w-[1760px] mx-auto px-5 md:px-10 pt-6 pb-4">
+          <div className="flex flex-col md:flex-row md:items-end gap-4 md:gap-8">
+            <div>
+              <p className="text-[13px] font-bold text-[#0B5C43] mb-1">전국 스포츠 대회 일정 + 개최지 여행 정보를 한곳에</p>
+              <h1 className="text-[26px] md:text-[34px] font-extrabold tracking-tight leading-tight">
+                대회 보러 가는 길,<br/>
+                <span style={{background:'linear-gradient(transparent 60%,#D6F14E 60%)'}}>그 지역까지 즐기고 오세요</span>
+              </h1>
+            </div>
+            {/* 3단계 사용법 */}
+            <div className="hidden md:flex items-center gap-0 ml-auto flex-shrink-0">
+              {[
+                {step:'①', icon:'🔍', label:'대회 찾기'},
+                {step:'②', icon:'🌿', label:'주변 정보'},
+                {step:'③', icon:'✈️', label:'여행 계획'},
+              ].map((s,i)=>(
+                <div key={i} className="flex items-center">
+                  <div className="flex flex-col items-center px-4">
+                    <span className="text-2xl">{s.icon}</span>
+                    <span className="text-[11px] font-bold text-[#0B5C43] mt-0.5">{s.step} {s.label}</span>
+                  </div>
+                  {i<2 && <span className="text-[#DDDDDD] text-xl">→</span>}
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* 예정 대회 수 */}
+          <div className="flex items-center gap-2 mt-3">
+            <span className="text-[28px] font-black text-[#0B5C43] tracking-tight">{dynEv.filter(e=>e.status!=='done').length}</span>
+            <span className="text-[15px] font-semibold text-[#222]">건의 대회가 여러분을 기다리고 있어요</span>
+          </div>
         </div>
 
         {/* 지도 + 캘린더 나란히 */}

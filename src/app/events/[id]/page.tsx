@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { EVENTS, calcDday, calcStatus } from '@/lib/data';
+import { EVENTS, calcDday, calcStatus, calcVerified, VERIFIED_LABELS, calcRegistrationStatus, REG_STATUS_LABELS } from '@/lib/data';
 import { Header } from '@/components/layout/Header';
 import { getTourData } from '@/lib/courses';
 import { TourSection } from '@/components/events/TourSection';
@@ -42,6 +42,10 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
   const tour  = getTourData(ev.region);
   const dday  = calcDday(ev.start);
   const isDone = calcStatus(ev.start, ev.end) === 'done';
+  const verifiedStatus = calcVerified(ev.id, ev.url||'');
+  const verifiedLabel  = VERIFIED_LABELS[verifiedStatus];
+  const regStatus      = calcRegistrationStatus(ev.start);
+  const regLabel       = REG_STATUS_LABELS[regStatus];
   const sport = getSportInfo(ev.sport);
 
   return (
@@ -102,6 +106,14 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                 ) : (
                   <span className="text-[15px] text-[#AAAAAA]">준비 중</span>
                 )}
+              </div>
+              <div className="flex items-center gap-4 px-5 py-3 bg-[#F7F7F6]">
+                <span className="text-[13px] text-[#AAAAAA]">정보가 정확하지 않나요?</span>
+                <a href="https://forms.gle/example" target="_blank" rel="noopener"
+                  className="text-[13px] font-semibold text-[#0B5C43] hover:underline">
+                  정보 수정 제보하기 →
+                </a>
+                <span className="text-[11px] text-[#AAAAAA] ml-auto">{verifiedLabel.text} · 8.11 확인</span>
               </div>
             </div>
 
@@ -193,7 +205,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                   <a href={ev.url} target="_blank" rel="noopener noreferrer"
                     className="block w-full text-center py-4 rounded-xl font-bold text-[16px] text-white transition-colors"
                     style={{background:sport.color}}>
-                    공식 사이트 바로가기 ↗
+                    🎽 바로 접수하기 ↗
                   </a>
                 ) : (
                   <div className="block w-full text-center py-4 rounded-xl text-[15px] text-[#AAAAAA] bg-[#F7F7F6]">

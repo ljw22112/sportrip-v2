@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { SportEvent } from '@/types';
-import { calcDday } from '@/lib/data';
+import { calcDday, calcVerified, VERIFIED_LABELS, calcRegistrationStatus, REG_STATUS_LABELS } from '@/lib/data';
 import { getSportInfo } from '@/lib/sports';
 import { useState, useEffect, useCallback, useId } from 'react';
 
@@ -75,6 +75,18 @@ export function EventCard({ event }: { event: SportEvent }) {
       <Link href={`/events/${event.id}`} className="block pt-2 px-0.5">
         <div className="font-bold text-[13px] text-[#222] truncate leading-tight">{event.title}</div>
         <div className="text-[12px] text-[#717171] mt-0.5 leading-tight">{event.region} · {event.sport} · {fmtDate(event.start)}</div>
+        <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
+          {(() => {
+            const regStatus = calcRegistrationStatus(event.start);
+            const regLabel = REG_STATUS_LABELS[regStatus];
+            return <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{color:regLabel.color,background:regLabel.bg}}>{regLabel.text}</span>;
+          })()}
+          {(() => {
+            const vs = calcVerified(event.id, event.url||'');
+            const vl = VERIFIED_LABELS[vs];
+            return <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{color:vl.color,background:vl.bg}}>{vl.text}</span>;
+          })()}
+        </div>
       </Link>
     </article>
   );
