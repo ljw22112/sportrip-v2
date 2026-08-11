@@ -44,6 +44,12 @@ export function Header({ showSearch=false }: { showSearch?: boolean }) {
               </span>
             </Link>
             <div className="flex-1"/>
+            {/* 중앙 텍스트 네비 */}
+            <div className="hidden md:flex items-center gap-6 ml-6">
+              <Link href="/about" className="text-[13px] font-semibold text-[#555] hover:text-[#0B5C43] transition-colors">
+                스포트립 소개
+              </Link>
+            </div>
             {/* 우측 버튼들 */}
             <div className="flex items-center gap-1">
               <Link href="/saved" className="hidden md:flex items-center gap-1.5 text-[14px] font-semibold text-[#222] hover:bg-[#F7F7F7] px-3 py-2 rounded-full transition-colors">
