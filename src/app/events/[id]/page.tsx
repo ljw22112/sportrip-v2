@@ -4,6 +4,7 @@ import { EVENTS, calcDday, calcStatus } from '@/lib/data';
 import { Header } from '@/components/layout/Header';
 import { getTourData } from '@/lib/courses';
 import { TourSection } from '@/components/events/TourSection';
+import { CourseSection } from '@/components/events/CourseSection';
 import { getSportInfo } from '@/lib/sports';
 import { ShareButton } from '@/components/events/ShareButton';
 import { BackButton } from '@/components/events/BackButton';
@@ -139,6 +140,15 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
               <h2 className="text-[22px] font-extrabold tracking-tight mb-5">
                 대회 장소 주변 여행 정보
               </h2>
+              {/* 여행 코스 추천 */}
+              <CourseSection
+                eventTitle={ev.title}
+                region={ev.region}
+                lat={ev.lat}
+                lng={ev.lng}
+              />
+              <div className="border-t border-[#EBEBEB] my-6"/>
+              <h2 className="text-[22px] font-extrabold tracking-tight mb-5">주변 관광 정보</h2>
               <TourSection title="행사·축제" icon="🎊" sampleItems={tour.festival} lat={ev.lat} lng={ev.lng} contentTypeId="15"/>
               <TourSection title="역사 관광지" icon="🏛️" sampleItems={tour.attraction} lat={ev.lat} lng={ev.lng} contentTypeId="12"/>
               <TourSection title="문화·레포츠" icon="🎭" sampleItems={tour.culture} lat={ev.lat} lng={ev.lng} contentTypeId="14"/>
