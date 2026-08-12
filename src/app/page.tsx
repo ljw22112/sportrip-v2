@@ -116,12 +116,11 @@ export default function HomePage() {
               const col=REGION_COLOR[r]||{border:'#EBEBEB',text:'#222'};
               return (
                 <button key={r} onClick={()=>setSelectedRegion(r)}
-                  className="rounded-2xl py-5 px-3 text-center transition-all hover:shadow-md bg-white"
-                  style={{border:`2.5px solid ${col.border}`}}>
-                  <b className="block text-[18px] md:text-[20px] font-extrabold tracking-tight mt-1"
-                    style={{color:col.text}}>{r}</b>
-                  <span className={`text-[13px] mt-1 block font-bold ${cnt?'text-[#E4572E]':'text-[#AAAAAA]'}`}>
-                    {cnt?`예정 ${cnt}건`:'없음'}
+                  className="rounded-xl py-3 px-2 text-center transition-all hover:bg-[#E7F1EC] hover:shadow-sm border border-[#E0E0E0]"
+                  style={{background:'transparent'}}>
+                  <b className="block text-[15px] font-extrabold text-[#222]">{r}</b>
+                  <span className={`text-[11px] block font-bold mt-0.5 ${cnt?'text-[#0B5C43]':'text-[#CCCCCC]'}`}>
+                    {cnt?`${cnt}개`:'없음'}
                   </span>
                 </button>
               );
@@ -165,7 +164,7 @@ export default function HomePage() {
                 <img src="/logo.svg" alt="" className="h-8 w-8"/>
                 <span className="font-extrabold text-[18px] text-white tracking-[-0.05em]">스포트립</span>
               </div>
-              <p className="text-[12px]">SpoTrip · 2026 관광데이터 활용 공모전</p>
+              <p className="text-[12px]">SporTrip · 2026 관광데이터 활용 공모전</p>
               <p className="text-[12px] mt-1">출처: ⓒ한국관광공사 (kto.visitkorea.or.kr)</p>
               <p className="text-[12px] mt-1">💡 하트 저장은 이 기기 브라우저에만 저장됩니다</p>
             </div>

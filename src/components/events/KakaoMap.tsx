@@ -194,11 +194,7 @@ export function KakaoMap({ events, className }: Props) {
             </div>
           </div>
         )}
-        {!popup && loaded && (
-          <div className="absolute left-2 bottom-2 bg-white/90 rounded-full text-[11px] text-[#717171] px-3 py-1.5 z-10">
-            원을 클릭하면 대회 목록이 표시됩니다
-          </div>
-        )}
+
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { SportEvent } from '@/types';
-import { calcDday, calcVerified, VERIFIED_LABELS, calcRegistrationStatus, REG_STATUS_LABELS, calcScale, SCALE_LABELS } from '@/lib/data';
+import { calcDday, calcVerified, VERIFIED_LABELS, calcRegistrationStatus, REG_STATUS_LABELS } from '@/lib/data';
 import { getSportInfo } from '@/lib/sports';
 import { useState, useEffect, useCallback, useId } from 'react';
 
@@ -39,11 +39,12 @@ export function EventCard({ event }: { event: SportEvent }) {
         style={{aspectRatio:'1/1', borderColor: sport.color + '55', background:'#F7F5F0'}}>
         {/* D-day — 크게 */}
         {event.status !== 'done' && (
-          <div className="absolute top-0 left-0 right-0 flex items-center justify-center pt-3 z-10">
-            <span className="text-[22px] font-black tracking-tighter leading-none"
+          <div className="absolute top-0 left-0 right-0 flex items-center justify-center gap-2 pt-3 z-10">
+            <span className="text-[26px] font-black tracking-tighter leading-none"
               style={{color: sport.color}}>
               {calcDday(event.start)}
             </span>
+            <span className="text-[13px] font-bold text-[#555] mt-1">{event.region}</span>
           </div>
         )}
         {/* 종목 캐릭터 SVG */}
@@ -59,7 +60,7 @@ export function EventCard({ event }: { event: SportEvent }) {
         <div className="absolute bottom-0 left-0 right-0 px-3 py-2.5"
           style={{background: sport.color + 'EE'}}>
           <div className="text-white font-bold text-[13px] tracking-tight">{fmtDate(event.start)}</div>
-          <div className="text-white/80 text-[11px] mt-0.5">{event.region}</div>
+
         </div>
       </Link>
       {/* 하트 */}
@@ -73,7 +74,7 @@ export function EventCard({ event }: { event: SportEvent }) {
       </button>
       {/* 텍스트 */}
       <Link href={`/events/${event.id}`} className="block pt-2 px-0.5">
-        <div className="font-bold text-[13px] text-[#222] truncate leading-tight">{event.title}</div>
+        <div className="font-bold text-[14px] text-[#222] truncate leading-tight">{event.title}</div>
         <div className="text-[12px] text-[#717171] mt-0.5 leading-tight">{event.region} · {event.sport} · {fmtDate(event.start)}</div>
         <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
           {(() => {
@@ -86,11 +87,7 @@ export function EventCard({ event }: { event: SportEvent }) {
             const vl = VERIFIED_LABELS[vs];
             return <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{color:vl.color,background:vl.bg}}>{vl.text}</span>;
           })()}
-          {(() => {
-            const sl = calcScale(event.participants);
-            const lb = SCALE_LABELS[sl];
-            return <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{color:lb.color,background:lb.bg}}>{lb.text}</span>;
-          })()}
+
         </div>
       </Link>
     </article>

@@ -33,7 +33,7 @@ export function Header({ showSearch=false }: { showSearch?: boolean }) {
         <div className="flex items-center h-20 gap-6">
           {/* 로고 */}
           <Link href="/" className="flex-shrink-0 flex items-center gap-2">
-            <Image src="/logo.svg" alt="SpoTrip" width={96} height={96} priority
+            <Image src="/logo.svg" alt="SporTrip" width={96} height={96} priority
               className="h-24 w-24"/>
             <span className="font-extrabold text-[22px] text-[#1B1F1D] hidden md:block"
               style={{letterSpacing:'-0.05em'}}>
