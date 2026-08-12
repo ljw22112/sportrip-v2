@@ -41,7 +41,7 @@ export function EventCard({ event }: { event: SportEvent }) {
         {event.status !== 'done' && (
           <div className="absolute top-0 left-0 right-0 flex items-center justify-center gap-2 pt-3 z-10">
             <span className="text-[26px] font-black tracking-tighter leading-none"
-              style={{color: sport.color}}>
+              style={{color: sport?.color || '#555'}}>
               {calcDday(event.start)}
             </span>
             <span className="text-[13px] font-bold text-[#555] mt-1">{event.region}</span>

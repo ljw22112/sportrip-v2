@@ -14,6 +14,7 @@ export const SPORTS_15 = [
   { key:'태권도',  label:'태권도',  emoji:'🥋', color:'#922B21',  icon:'/icons/taekwondo.png' },
   { key:'골프',    label:'골프',    emoji:'⛳', color:'#1E8449',  icon:'/icons/golf.png' },
   { key:'종합',    label:'종합',    emoji:'🏅', color:'#B7950B',  icon:'/icons/multi.png' },
+  { key:'유도',    label:'유도',    emoji:'🥋', color:'#7D3C98',  icon:'/icons/judo.png' },
   { key:'기타',    label:'기타',    emoji:'🏆', color:'#616A6B',  icon:'/icons/etc.png' },
 ];
 

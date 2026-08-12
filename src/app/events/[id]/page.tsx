@@ -45,7 +45,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
   const verifiedStatus = calcVerified(ev.id, ev.url||'');
   const verifiedLabel  = VERIFIED_LABELS[verifiedStatus];
   const regStatus      = calcRegistrationStatus(ev.start);
-  const scaleLevel     = calcScale(ev.participants);
+  const scaleLevel     = calcScale(ev.participants || '0');
   const scaleLabel     = SCALE_LABELS[scaleLevel];
   const regLabel       = REG_STATUS_LABELS[regStatus];
   const sport = getSportInfo(ev.sport);
