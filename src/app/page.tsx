@@ -8,6 +8,7 @@ import { Header } from '@/components/layout/Header';
 import { RegionListView } from '@/components/events/RegionListView';
 import { getSportInfo } from '@/lib/sports';
 import { CalendarDays } from 'lucide-react';
+import { MiniCalendar } from '@/components/events/MiniCalendar';
 
 const REGIONS_LIST = ['서울','부산','대구','인천','광주','대전','울산','세종','경기','강원','충북','충남','전북','전남','경북','경남','제주'];
 
@@ -68,14 +69,14 @@ export default function HomePage() {
         {/* ── 히어로 ── */}
         <section style={{background:'#0B5C43'}}>
           <div className="max-w-[1760px] mx-auto px-5 md:px-10 py-12 md:py-16">
-            <p className="text-[13px] font-bold text-[#D6F14E] mb-2">전국 스포츠 대회 일정 + 개최지 여행 정보를 한곳에</p>
+            <p className="text-[16px] md:text-[20px] font-bold text-[#D6F14E] mb-3">전국 스포츠 대회 일정 + 개최지 여행 정보를 한곳에</p>
             <h1 className="text-[28px] md:text-[40px] font-extrabold text-white tracking-tight leading-tight mb-4">
               대회 보러 가는 길,<br/>
-              <span style={{background:'linear-gradient(transparent 60%,#D6F14E 60%)'}}>그 지역까지 즐기고 오세요</span>
+              <span className="text-[#D6F14E]">그 지역까지 즐기고 오세요</span>
             </h1>
             <div className="flex items-center gap-2">
               <span className="text-[32px] font-black text-[#D6F14E] tracking-tight">{dynEv.filter(e=>e.status!=='done').length}</span>
-              <span className="text-[16px] font-semibold text-white">건의 대회가 여러분을 기다리고 있어요</span>
+              <span className="text-[16px] font-semibold text-white">개의 대회가 여러분을 기다리고 있어요</span>
             </div>
           </div>
         </section>
@@ -94,37 +95,8 @@ export default function HomePage() {
             <div className="flex-1 relative bg-[#C8DCE8] rounded-2xl overflow-hidden" style={{aspectRatio:'1/1',maxHeight:'520px'}}>
               <KoreaMap events={EVENTS} className="w-full h-full"/>
             </div>
-            <div className="hidden md:flex flex-col flex-1 rounded-2xl overflow-hidden bg-white" style={{aspectRatio:'1/1',maxHeight:'520px'}}>
-              <div className="px-5 py-4 bg-[#F7F5F0]">
-                <div className="font-bold text-[16px]">
-                  {today.getMonth()+1}월 예정 대회
-                  <span className="ml-2 text-[13px] text-[#0B5C43] font-semibold">{thisMonthEv.length}건</span>
-                </div>
-              </div>
-              <div className="flex-1 overflow-y-auto px-3 py-2">
-                {thisMonthEv.slice(0,12).map(e=>{
-                  const sp=getSportInfo(e.sport);
-                  return (
-                    <Link key={e.id} href={`/events/${e.id}`}
-                      className="flex items-center gap-3 py-2.5 border-b border-[#F5F5F5] last:border-0 hover:bg-[#F7F7F6] rounded-xl px-2 -mx-2 transition-colors">
-                      <div className="w-9 h-9 flex-shrink-0 rounded-xl border-2 flex items-center justify-center p-1.5"
-                        style={{borderColor:sp.color+'55',background:sp.color+'11'}}>
-                        <img src={sp.icon} alt={sp.label} className="w-full h-full object-contain"/>
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="font-semibold text-[13px] text-[#222] truncate">{e.title}</div>
-                        <div className="text-[12px] text-[#717171]">{e.region} · {e.start.slice(5).replace('-','/')}</div>
-                      </div>
-                    </Link>
-                  );
-                })}
-                {thisMonthEv.length===0&&<div className="text-center py-8 text-[13px] text-[#717171]">이번달 예정 대회가 없습니다</div>}
-              </div>
-              <div className="px-4 py-3">
-                <Link href="/calendar" className="block text-center text-[13px] font-bold text-[#0B5C43] hover:underline">
-                  월간 캘린더로 전체 보기 ›
-                </Link>
-              </div>
+            <div className="hidden md:flex flex-col flex-1 rounded-2xl overflow-hidden border border-[#EBEBEB]" style={{aspectRatio:'1/1',maxHeight:'520px'}}>
+              <MiniCalendar events={dynEv.filter(e=>e.status!=='done')}/>
             </div>
           </div>
         </section>
