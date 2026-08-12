@@ -57,7 +57,10 @@ export const REG_STATUS_LABELS = {
 };
 
 export function calcDday(s:string):string{
-  const d=Math.ceil((new Date(s).getTime()-Date.now())/86400000);
+  // Asia/Seoul 타임존 기준으로 오늘 날짜 계산
+  const nowKR = new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Seoul'}));
+  const target = new Date(s + 'T00:00:00+09:00');
+  const d=Math.ceil((target.getTime()-nowKR.getTime())/86400000);
   return d>0?`D-${d}`:d===0?'D-Day':'종료';
 }
 export function calcStatus(s:string,e:string):'upcoming'|'ongoing'|'done'{

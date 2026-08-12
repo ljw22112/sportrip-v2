@@ -180,9 +180,15 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
               <TourSection title="문화·레포츠" icon="🎭" sampleItems={tour.culture} lat={ev.lat} lng={ev.lng} contentTypeId="14"/>
               <TourSection title="음식점" icon="🍽️" sampleItems={tour.food} lat={ev.lat} lng={ev.lng} contentTypeId="39"/>
               <TourSection title="숙박" icon="🏨" sampleItems={tour.hotel} lat={ev.lat} lng={ev.lng} contentTypeId="32"/>
+
+            {/* 면책 문구 */}
+            <div className="mt-8 p-4 bg-[#F7F7F6] border border-[#EBEBEB] rounded-xl text-[12px] text-[#AAAAAA] leading-relaxed">
+              ⚠️ <strong>참가 신청 전 반드시 공식 사이트에서 확인하세요.</strong> 대회 일정·장소·접수 정보는 변경될 수 있습니다.
+              대회 정보 출처: 공공데이터포털 전국대회정보 표준데이터 | 관광 정보 출처: ⓒ한국관광공사 (kto.visitkorea.or.kr)
+            </div>
             </section>
             <p className="text-[12px] text-[#AAAAAA] mt-2 mb-8">
-              출처: ⓒ한국관광공사
+              출처: ⓒ한국관광공사 | 한국관광공사 국문 관광정보 서비스 (api.visitkorea.or.kr)
             </p>
           </div>
 
