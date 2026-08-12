@@ -14,9 +14,10 @@ const RADIUS      = 10000; // 반경 10km
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const lat  = searchParams.get('lat');
-  const lng  = searchParams.get('lng');
-  const type = searchParams.get('type') || '12'; // 기본: 관광지
+  const lat         = searchParams.get('lat');
+  const lng         = searchParams.get('lng');
+  const type        = searchParams.get('type') || '12';
+  const barrierFree = searchParams.get('barrierFree') === '1';
 
   if (!lat || !lng) {
     return NextResponse.json({ error: '위도·경도 필요' }, { status: 400 });

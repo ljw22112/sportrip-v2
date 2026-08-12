@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { EVENTS, getDynamicEvents } from '@/lib/data';
+import { WizardSearch } from '@/components/events/WizardSearch';
 import { EventRow } from '@/components/events/EventRow';
 import { KakaoMap as KoreaMap } from '@/components/events/KakaoMap';
 import { Header } from '@/components/layout/Header';
@@ -113,6 +114,18 @@ export default function HomePage() {
             <span className="text-[15px] font-semibold text-[#222]">건의 대회가 여러분을 기다리고 있어요</span>
           </div>
         </div>
+
+        {/* 대화형 맞춤 대회 추천 */}
+        <section className="max-w-[1760px] mx-auto px-5 md:px-10 py-6 border-b border-[#EBEBEB]">
+          <div className="bg-[#0B5C43] rounded-2xl px-6 md:px-10 py-7 text-white">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-[22px] font-black tracking-tight">맞춤 대회 찾기</span>
+              <span className="text-[12px] font-semibold bg-[#D6F14E] text-[#1A2E0A] px-2.5 py-0.5 rounded-full ml-2">스포트립 추천</span>
+            </div>
+            <p className="text-white/70 text-[13px] mb-5">종목·지역·기간을 선택하면 맞춤 대회를 찾아드려요</p>
+            <WizardSearch events={dynEv}/>
+          </div>
+        </section>
 
         {/* 지도 + 캘린더 나란히 */}
         <section className="max-w-[1760px] mx-auto px-5 md:px-10 pt-4 pb-2">

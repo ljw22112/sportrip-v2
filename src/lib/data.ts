@@ -3,6 +3,21 @@ import{SportEvent}from'@/types';
 export const SPORTS=['전체','마라톤','종합','배드민턴','수영','축구','테니스','사이클','골프','야구','농구','배구','태권도','유도','기타'];
 export const REGIONS=['전체 지역','서울','부산','대구','인천','광주','대전','울산','경기','강원','충북','충남','전북','전남','경북','경남','세종','제주'];
 
+export type ScaleLevel = 'small' | 'medium' | 'large' | 'xlarge';
+export function calcScale(participants: string): ScaleLevel {
+  const n = parseInt(participants.replace(/[^0-9]/g,'')) || 0;
+  if (n <= 1000) return 'small';
+  if (n <= 5000) return 'medium';
+  if (n <= 15000) return 'large';
+  return 'xlarge';
+}
+export const SCALE_LABELS = {
+  small:  { text: '소규모',  sub: '1,000명 이하',  color: '#555',    bg: '#F7F7F6' },
+  medium: { text: '중규모',  sub: '5,000명 이하',  color: '#1A5276', bg: '#EBF5FB' },
+  large:  { text: '대규모',  sub: '15,000명 이하', color: '#B7791F', bg: '#FEFCE8' },
+  xlarge: { text: '초대형',  sub: '15,000명 이상', color: '#922B21', bg: '#FDEDEC' },
+};
+
 export type VerifiedStatus = 'verified' | 'unverified' | 'public';
 
 export function calcVerified(id: number, url: string): VerifiedStatus {

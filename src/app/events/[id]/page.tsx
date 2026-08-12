@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { EVENTS, calcDday, calcStatus, calcVerified, VERIFIED_LABELS, calcRegistrationStatus, REG_STATUS_LABELS } from '@/lib/data';
+import { EVENTS, calcDday, calcStatus, calcVerified, VERIFIED_LABELS, calcRegistrationStatus, REG_STATUS_LABELS, calcScale, SCALE_LABELS } from '@/lib/data';
 import { Header } from '@/components/layout/Header';
 import { getTourData } from '@/lib/courses';
 import { TourSection } from '@/components/events/TourSection';
@@ -45,6 +45,8 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
   const verifiedStatus = calcVerified(ev.id, ev.url||'');
   const verifiedLabel  = VERIFIED_LABELS[verifiedStatus];
   const regStatus      = calcRegistrationStatus(ev.start);
+  const scaleLevel     = calcScale(ev.participants);
+  const scaleLabel     = SCALE_LABELS[scaleLevel];
   const regLabel       = REG_STATUS_LABELS[regStatus];
   const sport = getSportInfo(ev.sport);
 
@@ -180,6 +182,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
               <TourSection title="문화·레포츠" icon="🎭" sampleItems={tour.culture} lat={ev.lat} lng={ev.lng} contentTypeId="14"/>
               <TourSection title="음식점" icon="🍽️" sampleItems={tour.food} lat={ev.lat} lng={ev.lng} contentTypeId="39"/>
               <TourSection title="숙박" icon="🏨" sampleItems={tour.hotel} lat={ev.lat} lng={ev.lng} contentTypeId="32"/>
+              <TourSection title="무장애 여행 (장애인·고령자·영유아)" icon="♿" sampleItems={[]} lat={ev.lat} lng={ev.lng} contentTypeId="15" barrierFree={true}/>
 
             {/* 면책 문구 */}
             <div className="mt-8 p-4 bg-[#F7F7F6] border border-[#EBEBEB] rounded-xl text-[12px] text-[#AAAAAA] leading-relaxed">

@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { SportEvent } from '@/types';
-import { calcDday, calcVerified, VERIFIED_LABELS, calcRegistrationStatus, REG_STATUS_LABELS } from '@/lib/data';
+import { calcDday, calcVerified, VERIFIED_LABELS, calcRegistrationStatus, REG_STATUS_LABELS, calcScale, SCALE_LABELS } from '@/lib/data';
 import { getSportInfo } from '@/lib/sports';
 import { useState, useEffect, useCallback, useId } from 'react';
 
@@ -85,6 +85,11 @@ export function EventCard({ event }: { event: SportEvent }) {
             const vs = calcVerified(event.id, event.url||'');
             const vl = VERIFIED_LABELS[vs];
             return <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{color:vl.color,background:vl.bg}}>{vl.text}</span>;
+          })()}
+          {(() => {
+            const sl = calcScale(event.participants);
+            const lb = SCALE_LABELS[sl];
+            return <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{color:lb.color,background:lb.bg}}>{lb.text}</span>;
           })()}
         </div>
       </Link>

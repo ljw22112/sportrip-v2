@@ -15,9 +15,10 @@ interface Props {
   lat: number;
   lng: number;
   contentTypeId: string;
+  barrierFree?: boolean;
 }
 
-export function TourSection({ title, icon, sampleItems, lat, lng, contentTypeId }: Props) {
+export function TourSection({ title, icon, sampleItems, lat, lng, contentTypeId, barrierFree }: Props) {
   const [apiItems, setApiItems] = useState<ApiSpot[]>([]);
   const [loading, setLoading] = useState(true);
   const [source, setSource] = useState<'sample'|'api'|'error'>('sample');
