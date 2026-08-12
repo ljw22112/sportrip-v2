@@ -4,7 +4,7 @@ import { EVENTS, calcDday, calcStatus, calcVerified, VERIFIED_LABELS, calcRegist
 import { Header } from '@/components/layout/Header';
 import { getTourData } from '@/lib/courses';
 import { TourSection } from '@/components/events/TourSection';
-import { CourseSection } from '@/components/events/CourseSection';
+import { AICourseSection } from '@/components/events/AICourseSection';
 import { getSportInfo } from '@/lib/sports';
 import { ShareButton } from '@/components/events/ShareButton';
 import { BackButton } from '@/components/events/BackButton';
@@ -168,10 +168,13 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
               <h2 className="text-[22px] font-extrabold tracking-tight mb-5">
                 대회 장소 주변 여행 정보
               </h2>
-              {/* 여행 코스 추천 */}
-              <CourseSection
+              {/* AI 여행 코스 추천 */}
+              <AICourseSection
                 eventTitle={ev.title}
                 region={ev.region}
+                venue={ev.venue}
+                date={ev.start}
+                sport={ev.sport}
                 lat={ev.lat}
                 lng={ev.lng}
               />
