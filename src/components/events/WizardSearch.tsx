@@ -74,22 +74,22 @@ export function WizardSearch({ events }: Props) {
       {/* 지역 + 기간 + 버튼 */}
       <div className="flex flex-col gap-3 flex-shrink-0 w-full md:w-[200px]">
         <div>
-          <div className="text-[11px] font-bold text-white/60 mb-1.5">② 어느 지역?</div>
+          <div className="text-[12px] font-bold text-white mb-1.5">② 어느 지역?</div>
           <select
             value={region}
             onChange={e => setRegion(e.target.value)}
-            className="w-full bg-white/10 border border-white/20 text-white rounded-xl px-3 py-2.5 text-[14px] outline-none cursor-pointer">
+            className="w-full bg-white border border-white/30 text-[#222] rounded-xl px-3 py-2.5 text-[14px] outline-none cursor-pointer">
             {REGIONS.map(r => (
               <option key={r} value={r === '전체' ? '' : r}>{r}</option>
             ))}
           </select>
         </div>
         <div>
-          <div className="text-[11px] font-bold text-white/60 mb-1.5">③ 언제?</div>
+          <div className="text-[12px] font-bold text-white mb-1.5">③ 언제?</div>
           <select
             value={period}
             onChange={e => setPeriod(e.target.value)}
-            className="w-full bg-white/10 border border-white/20 text-white rounded-xl px-3 py-2.5 text-[14px] outline-none cursor-pointer">
+            className="w-full bg-white border border-white/30 text-[#222] rounded-xl px-3 py-2.5 text-[14px] outline-none cursor-pointer">
             {PERIODS.map(p => (
               <option key={p.value} value={p.value}>{p.label}</option>
             ))}
