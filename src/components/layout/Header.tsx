@@ -112,7 +112,7 @@ export function Header({ showSearch=false }: { showSearch?: boolean }) {
                       className="text-[15px] text-[#717171] bg-transparent outline-none placeholder:text-[#AAAAAA]"/>
                   </div>
                   <div className="w-px bg-[#EBEBEB] my-3"/>
-                  <div className="flex flex-col justify-center px-8 min-w-[160px]">
+                  <div className="flex-1 flex flex-col justify-center px-8">
                     <label className="text-[11px] font-bold tracking-wider text-[#222] mb-0.5">날짜</label>
                     <select value={month} onChange={e=>setMonth(e.target.value)}
                       className="text-[15px] text-[#717171] bg-transparent outline-none cursor-pointer">
@@ -121,7 +121,7 @@ export function Header({ showSearch=false }: { showSearch?: boolean }) {
                     </select>
                   </div>
                   <div className="w-px bg-[#EBEBEB] my-3"/>
-                  <div className="flex flex-col justify-center px-8 min-w-[160px]">
+                  <div className="flex-1 flex flex-col justify-center px-8">
                     <label className="text-[11px] font-bold tracking-wider text-[#222] mb-0.5">종목</label>
                     <select value={sportSel} onChange={e=>setSportSel(e.target.value)}
                       className="text-[15px] text-[#717171] bg-transparent outline-none cursor-pointer">
