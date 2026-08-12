@@ -149,6 +149,11 @@ function merge(rawItems) {
   const existingTitles = new Set(
     [...src.matchAll(/title:'([^']+)'/g)].map(m => m[1])
   );
+  // 제목+날짜+지역 복합키로 중복 체크
+  const existingDedupKeys = new Set(
+    [...src.matchAll(/title:'([^']+)'[^}]*start:'([^']+)'[^}]*region:'([^']+)'/g)]
+      .map(m => dedupKey(m[1], m[2], m[3]))
+  );
 
   const cutoff = new Date();
   cutoff.setDate(cutoff.getDate() - 14);
