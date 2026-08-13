@@ -57,22 +57,32 @@ ${nearbySpots?.length > 0
 }`;
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 1500,
-        messages: [{ role: 'user', content: prompt }],
-      }),
-    });
+    const res = await fetch(
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-goog-api-key': process.env.GEMINI_API_KEY || '',
+        },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { maxOutputTokens: 1500 },
+        }),
+      }
+    );
+
+    if (!res.ok) {
+      const errBody = await res.text();
+      throw new Error(`Gemini API 오류 (${res.status}): ${errBody}`);
+    }
 
     const data = await res.json();
-    const text = data.content?.[0]?.text || '';
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
 
     // JSON 파싱
     const jsonMatch = text.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) throw new Error('JSON 파싱 실패');
+    if (!jsonMatch) throw new Error('JSON 파싱 실패: ' + text.slice(0, 200));
     const course = JSON.parse(jsonMatch[0]);
 
     return NextResponse.json({ ok: true, course });
