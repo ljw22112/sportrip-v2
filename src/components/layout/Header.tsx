@@ -28,15 +28,17 @@ export function Header({ showSearch=false, heroSlot }: { showSearch?: boolean; h
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-sm">
+    <header className="sticky top-0 z-50 bg-[#0B5C43] shadow-md">
       {/* ── 탑바 ── */}
-      <div className="max-w-[1760px] mx-auto px-5 md:px-10">
+      <div className="max-w-[1760px] mx-auto px-5 md:px-10 border-b border-white/10">
         <div className="flex items-center h-20 gap-6">
-          {/* 로고 */}
+          {/* 로고 — 어두운 색 SVG라 흰 배경칩으로 감싸서 가독성 확보 */}
           <Link href="/" className="flex-shrink-0 flex items-center gap-2">
-            <Image src="/logo.svg" alt="SporTrip" width={96} height={96} priority
-              className="h-24 w-24"/>
-            <span className="font-extrabold text-[22px] text-[#1B1F1D] hidden md:block"
+            <div className="bg-white rounded-2xl p-1.5 flex items-center justify-center">
+              <Image src="/logo.svg" alt="SporTrip" width={96} height={96} priority
+                className="h-14 w-14 md:h-16 md:w-16"/>
+            </div>
+            <span className="font-extrabold text-[22px] text-white hidden md:block"
               style={{letterSpacing:'-0.05em'}}>
               스포트립
             </span>
@@ -45,30 +47,30 @@ export function Header({ showSearch=false, heroSlot }: { showSearch?: boolean; h
           {/* 중앙 네비 — 햄버거 없이 전부 노출 */}
           <nav className="hidden md:flex items-center gap-6 flex-1 justify-center">
             <Link href="/about"
-              className="text-[16px] font-bold text-[#333] hover:text-[#0B5C43] transition-colors">
+              className="text-[16px] font-bold text-white hover:text-[#D6F14E] transition-colors">
               스포트립 소개
             </Link>
             <Link href="/events"
-              className="text-[16px] font-bold text-[#333] hover:text-[#0B5C43] transition-colors">
+              className="text-[16px] font-bold text-white hover:text-[#D6F14E] transition-colors">
               대회 찾기
             </Link>
             <Link href="/calendar"
-              className="text-[16px] font-bold text-[#333] hover:text-[#0B5C43] transition-colors">
+              className="text-[16px] font-bold text-white hover:text-[#D6F14E] transition-colors">
               캘린더
             </Link>
             <Link href="/saved"
-              className="text-[16px] font-bold text-[#333] hover:text-[#0B5C43] transition-colors">
+              className="text-[16px] font-bold text-white hover:text-[#D6F14E] transition-colors">
               저장한 대회
             </Link>
           </nav>
 
           {/* 우측 */}
           <div className="flex items-center gap-2 ml-auto md:ml-0">
-            <Link href="/saved" className="hidden md:flex items-center gap-1.5 text-[14px] font-semibold text-[#0B5C43] hover:bg-[#E7F1EC] px-3 py-2 rounded-full transition-colors">
+            <Link href="/saved" className="hidden md:flex items-center gap-1.5 text-[14px] font-semibold text-white hover:bg-white/15 px-3 py-2 rounded-full transition-colors">
               <Heart className="w-4 h-4"/> 저장
             </Link>
             <button onClick={() => setMobileSearchOpen(v=>!v)}
-              className="md:hidden w-9 h-9 flex items-center justify-center rounded-full border border-[#DDDDDD]">
+              className="md:hidden w-9 h-9 flex items-center justify-center rounded-full border border-white/40 text-white">
               {mobileSearchOpen ? <X className="w-4 h-4"/> : <Search className="w-4 h-4"/>}
             </button>
           </div>
