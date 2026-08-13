@@ -93,7 +93,7 @@ export function AICourseSection({ eventTitle, region, venue, date, sport, lat, l
           <Sparkles className="w-3.5 h-3.5"/>
           AI 추천 여행 코스
         </div>
-        <span className="text-[11px] text-[#717171]">Powered by Claude</span>
+        <span className="text-[11px] text-[#717171]">Powered by Gemini</span>
       </div>
       <p className="text-[13px] text-[#717171] mb-4">
         대회 일정과 {region} 주변 관광 정보를 분석해 맞춤 여행 코스를 생성합니다.
@@ -109,7 +109,7 @@ export function AICourseSection({ eventTitle, region, venue, date, sport, lat, l
           {loading ? (
             <>
               <div className="w-8 h-8 border-3 border-[#0B5C43] border-t-transparent rounded-full animate-spin"/>
-              <span className="text-[14px] font-bold text-[#0B5C43]">Claude가 코스를 짜고 있어요...</span>
+              <span className="text-[14px] font-bold text-[#0B5C43]">Gemini가 코스를 짜고 있어요...</span>
               <span className="text-[12px] text-[#717171]">TourAPI 관광 정보 분석 중</span>
             </>
           ) : (
@@ -126,7 +126,7 @@ export function AICourseSection({ eventTitle, region, venue, date, sport, lat, l
           <div className="bg-gradient-to-r from-[#0B5C43] to-[#1A8A63] text-white rounded-2xl px-5 py-4 mb-4 flex items-start gap-3">
             <Sparkles className="w-5 h-5 flex-shrink-0 mt-0.5 text-[#D6F14E]"/>
             <div>
-              <div className="text-[11px] font-bold text-[#D6F14E] mb-0.5">Claude 추천 코스</div>
+              <div className="text-[11px] font-bold text-[#D6F14E] mb-0.5">Gemini 추천 코스</div>
               <div className="text-[15px] font-bold">{course.intro}</div>
             </div>
           </div>
