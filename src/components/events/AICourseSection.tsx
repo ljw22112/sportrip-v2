@@ -44,6 +44,7 @@ export function AICourseSection({ eventTitle, region, venue, date, sport, lat, l
   const [error, setError] = useState('');
   const [openDay, setOpenDay] = useState<number | null>(0);
   const [generated, setGenerated] = useState(false);
+  const [userPrompt, setUserPrompt] = useState('');
 
   const generate = async () => {
     setLoading(true);
@@ -70,7 +71,7 @@ export function AICourseSection({ eventTitle, region, venue, date, sport, lat, l
       const res = await fetch('/api/ai-course', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ eventTitle, region, venue, date, sport, nearbySpots }),
+        body: JSON.stringify({ eventTitle, region, venue, date, sport, nearbySpots, userPrompt }),
       });
       const data = await res.json();
       if (!data.ok) throw new Error(data.error || 'AI 응답 오류');
@@ -98,6 +99,18 @@ export function AICourseSection({ eventTitle, region, venue, date, sport, lat, l
       <p className="text-[13px] text-[#717171] mb-4">
         대회 일정과 {region} 주변 관광 정보를 분석해 맞춤 여행 코스를 생성합니다.
       </p>
+
+      {/* 요청사항 입력 */}
+      {!generated && (
+        <textarea
+          value={userPrompt}
+          onChange={(e) => setUserPrompt(e.target.value)}
+          disabled={loading}
+          placeholder="예: 아이랑 같이 가요 / 맛집 위주로 짜주세요 / 예산은 넉넉해요 (선택 입력)"
+          rows={2}
+          className="w-full text-[13px] px-3.5 py-3 mb-3 rounded-xl border border-[#DDDDDD] focus:outline-none focus:border-[#0B5C43] resize-none placeholder:text-[#AAAAAA]"
+        />
+      )}
 
       {/* 생성 버튼 또는 결과 */}
       {!generated ? (
@@ -201,7 +214,7 @@ export function AICourseSection({ eventTitle, region, venue, date, sport, lat, l
           </div>
 
           {/* 다시 생성 */}
-          <button onClick={()=>{setCourse(null);setGenerated(false);}}
+          <button onClick={()=>{setCourse(null);setGenerated(false);setUserPrompt('');}}
             className="mt-3 flex items-center gap-1.5 text-[12px] text-[#717171] hover:text-[#0B5C43] transition-colors">
             <RefreshCw className="w-3.5 h-3.5"/> 다른 코스 받기
           </button>

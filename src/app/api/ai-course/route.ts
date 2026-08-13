@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
-  const { eventTitle, region, venue, date, sport, nearbySpots } = await req.json();
+  const { eventTitle, region, venue, date, sport, nearbySpots, userPrompt } = await req.json();
 
   const prompt = `당신은 한국 스포츠 관광 전문 여행 플래너입니다.
 
@@ -17,13 +17,17 @@ export async function POST(req: NextRequest) {
 ${nearbySpots?.length > 0 
   ? nearbySpots.map((s: {name:string;addr:string;type:string}) => `- ${s.name} (${s.type}) : ${s.addr}`).join('\n')
   : '- 정보 없음 (지역 일반 추천으로 대체)'}
-
+${userPrompt?.trim() ? `
+## 사용자 추가 요청사항 (최우선 반영)
+${userPrompt.trim()}
+` : ''}
 ## 작성 규칙
 1. 총 3개 구간: "전날", "대회 당일 (경기 전·후)", "다음날"
 2. 각 구간마다 2~3개 장소 추천
 3. 각 장소는 이름, 추천 이유 (1~2문장), 예상 소요 시간, 팁을 포함
 4. 스포츠 참가자 특성 반영 (체력 회복, 단백질 식사, 스트레칭 공간 등)
 5. 가족 동반 참가자도 배려
+${userPrompt?.trim() ? '6. 위 "사용자 추가 요청사항"을 다른 규칙보다 우선해서 코스에 반영' : ''}
 
 다음 JSON 구조로만 응답하세요 (다른 텍스트 없이):
 {
