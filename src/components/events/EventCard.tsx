@@ -51,10 +51,6 @@ export function EventCard({ event }: { event: SportEvent }) {
         <div className="absolute inset-0 flex flex-col items-center justify-center p-4">
           <img src={sport.icon} alt={sport.label}
             className="w-4/5 h-4/5 object-contain drop-shadow-sm select-none"/>
-          <div className="text-[11px] font-bold px-3 py-1 rounded-full text-white mt-2"
-            style={{background: sport.color}}>
-            {event.sport}
-          </div>
         </div>
         {/* 하단 날짜 바 */}
         <div className="absolute bottom-0 left-0 right-0 px-3 py-2.5"

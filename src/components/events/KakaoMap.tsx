@@ -20,10 +20,7 @@ export function KakaoMap({ events, className }: Props) {
   const [popup, setPopup] = useState<{region:string; events:SportEvent[]} | null>(null);
   const router = useRouter();
 
-  const filtered = events.filter(e =>
-    e.status !== 'done' &&
-    (activeSport === '전체' || e.sport === activeSport)
-  );
+  const filtered = events.filter(e => e.status !== 'done');
 
   // SDK 로드
   useEffect(() => {
@@ -69,6 +66,8 @@ export function KakaoMap({ events, className }: Props) {
       const sp = getSportInfo(first.sport);
       const count = evs.length;
       const size = count >= 10 ? 50 : count >= 5 ? 42 : 36;
+      const isMatch = activeSport === '전체' || evs.some(e => e.sport === activeSport);
+      const ringSize = size + 14;
 
       // HTML 오버레이 — onclick 속성으로 직접 이벤트 연결
       const id = `marker-${region.replace(/\s/g,'')}`;
@@ -79,16 +78,28 @@ export function KakaoMap({ events, className }: Props) {
           cursor:pointer;user-select:none;
         ">
           <div style="
-            width:${size}px;height:${size}px;
-            background:${sp.color};
-            border:3px solid white;
-            border-radius:50%;
+            position:relative;
+            width:${ringSize}px;height:${ringSize}px;
             display:flex;align-items:center;justify-content:center;
-            box-shadow:0 3px 10px rgba(0,0,0,0.35);
-            font-size:${count>=10?15:14}px;
-            font-weight:900;color:white;
-            font-family:Pretendard,sans-serif;
-          ">${count}</div>
+            ${isMatch && activeSport !== '전체' ? `
+              border:3px solid #D6F14E;
+              border-radius:50%;
+              box-shadow:0 0 0 3px rgba(214,241,78,0.35);
+            ` : ''}
+          ">
+            <div style="
+              width:${size}px;height:${size}px;
+              background:${sp.color};
+              border:3px solid white;
+              border-radius:50%;
+              display:flex;align-items:center;justify-content:center;
+              box-shadow:0 3px 10px rgba(0,0,0,0.35);
+              font-size:${count>=10?15:14}px;
+              font-weight:900;color:white;
+              font-family:Pretendard,sans-serif;
+              opacity:${isMatch ? 1 : 0.55};
+            ">${count}</div>
+          </div>
           <div style="
             background:rgba(20,20,20,0.8);color:white;
             font-size:11px;font-weight:700;
@@ -119,7 +130,7 @@ export function KakaoMap({ events, className }: Props) {
       overlay.setMap(map);
       map.overlays.push(overlay);
     });
-  }, [loaded, filtered]);
+  }, [loaded, filtered, activeSport]);
 
   return (
     <div className="relative w-full h-full flex">

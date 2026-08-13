@@ -28,6 +28,7 @@ export default function CalendarPage() {
   const [year,  setYear]  = useState(today.getFullYear());
   const [month, setMonth] = useState(today.getMonth());
   const [activeSport, setActiveSport] = useState('전체');
+  const [dayPopup, setDayPopup] = useState<{ dateStr: string; events: ReturnType<typeof getDynamicEvents> } | null>(null);
 
   const allEvents = getDynamicEvents();
 
@@ -78,14 +79,17 @@ export default function CalendarPage() {
     const dow=new Date(year,month,day).getDay();
     const evs=eventMap[day]||[];
     const MAX=3; const extra=evs.length-MAX;
+    const hasEvents = evs.length>0;
     cells.push(
-      <div key={day} className="min-h-[90px] md:min-h-[110px] p-1.5 bg-white border-r border-b border-[#E8E8E6] relative">
+      <div key={day}
+        onClick={()=>{ if(hasEvents) setDayPopup({dateStr:ds, events:evs}); }}
+        className={`min-h-[90px] md:min-h-[110px] p-1.5 bg-white border-r border-b border-[#E8E8E6] relative ${hasEvents?'cursor-pointer hover:bg-[#F7FBF8] transition-colors':''}`}>
         <span className={`inline-flex items-center justify-center w-6 h-6 text-xs font-medium mb-1 rounded-full
           ${isToday?'bg-[#0B5C43] text-white font-bold':dow===0?'text-red-500':dow===6?'text-blue-500':'text-[#1B1F1D]'}`}>
           {day}
         </span>
         {evs.slice(0,MAX).map((ev,i)=>(
-          <Link key={i} href={`/events/${ev.id}`}
+          <Link key={i} href={`/events/${ev.id}`} onClick={(e)=>e.stopPropagation()}
             className="block mb-0.5 px-1.5 py-0.5 rounded text-[10px] md:text-[11px] font-semibold truncate leading-tight hover:opacity-80 transition-opacity border"
             style={{color:getColor(ev.region),borderColor:getColor(ev.region)+'55',background:getColor(ev.region)+'11'}}>
             <span className="opacity-75 mr-0.5">{ev.region}</span>{ev.title}
@@ -281,6 +285,39 @@ export default function CalendarPage() {
           </div>
         )}
       </main>
+
+      {/* ── 날짜 클릭 팝업 (지도 팝업과 동일한 패턴) ── */}
+      {dayPopup && (
+        <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/40 px-3"
+          onClick={()=>setDayPopup(null)}>
+          <div className="w-full md:w-[420px] bg-white rounded-t-2xl md:rounded-2xl shadow-xl max-h-[70vh] overflow-hidden flex flex-col"
+            onClick={(e)=>e.stopPropagation()}>
+            <div className="flex items-center justify-between px-4 py-3 border-b border-[#EEE] flex-shrink-0">
+              <div>
+                <span className="font-bold text-[16px] text-[#222]">{fmtDate(dayPopup.dateStr)}</span>
+                <span className="text-[13px] text-[#717171] ml-2">대회 {dayPopup.events.length}건</span>
+              </div>
+              <button onClick={()=>setDayPopup(null)}
+                className="text-[#717171] text-2xl w-8 h-8 flex items-center justify-center">×</button>
+            </div>
+            <div className="overflow-y-auto flex-1 px-3 py-1.5">
+              {dayPopup.events.map(ev=>(
+                <Link key={ev.id} href={`/events/${ev.id}`}
+                  className="flex items-center gap-3 py-2.5 border-b border-[#F5F5F5] last:border-0 hover:bg-[#F7F7F6] rounded-xl px-2 -mx-2 transition-colors">
+                  <div className="w-10 h-10 flex-shrink-0 rounded-xl border-2 flex items-center justify-center p-1.5"
+                    style={{borderColor:(SPORTS_15.find(s=>s.label===ev.sport)?.color||'#999')+'55', background:(SPORTS_15.find(s=>s.label===ev.sport)?.color||'#999')+'11'}}>
+                    <img src={SPORTS_15.find(s=>s.label===ev.sport)?.icon||'/icons/etc.png'} alt={ev.sport} className="w-full h-full object-contain"/>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="font-semibold text-[13px] text-[#222] truncate">{ev.title}</div>
+                    <div className="text-[12px] text-[#717171]">{ev.region} · {ev.sport}</div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

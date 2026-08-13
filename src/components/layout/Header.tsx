@@ -5,14 +5,14 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Search, Heart, X } from 'lucide-react';
 import { SPORTS_15 } from '@/lib/sports';
-
-const MONTHS = [8,9,10,11,12,3,4];
+import { DateRangePicker } from './DateRangePicker';
 
 export function Header({ showSearch=false, heroSlot }: { showSearch?: boolean; heroSlot?: React.ReactNode }) {
   const router = useRouter();
   const [activeSport, setActiveSport] = useState('전체');
   const [region, setRegion] = useState('');
-  const [month, setMonth] = useState('');
+  const [dateFrom, setDateFrom] = useState('');
+  const [dateTo, setDateTo] = useState('');
   const [sportSel, setSportSel] = useState('전체');
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
 
@@ -20,7 +20,8 @@ export function Header({ showSearch=false, heroSlot }: { showSearch?: boolean; h
     e.preventDefault();
     const p = new URLSearchParams();
     if (region) p.set('q', region);
-    if (month) p.set('month', month);
+    if (dateFrom) p.set('from', dateFrom);
+    if (dateTo) p.set('to', dateTo);
     if (sportSel !== '전체') p.set('sport', sportSel);
     router.push(`/events?${p.toString()}`);
     setMobileSearchOpen(false);
@@ -43,21 +44,21 @@ export function Header({ showSearch=false, heroSlot }: { showSearch?: boolean; h
 
           {/* 중앙 네비 — 햄버거 없이 전부 노출 */}
           <nav className="hidden md:flex items-center gap-6 flex-1 justify-center">
+            <Link href="/about"
+              className="text-[16px] font-bold text-[#333] hover:text-[#0B5C43] transition-colors">
+              스포트립 소개
+            </Link>
             <Link href="/events"
-              className="text-[14px] font-semibold text-[#333] hover:text-[#0B5C43] transition-colors">
+              className="text-[16px] font-bold text-[#333] hover:text-[#0B5C43] transition-colors">
               대회 찾기
             </Link>
             <Link href="/calendar"
-              className="text-[14px] font-semibold text-[#333] hover:text-[#0B5C43] transition-colors">
+              className="text-[16px] font-bold text-[#333] hover:text-[#0B5C43] transition-colors">
               캘린더
             </Link>
             <Link href="/saved"
-              className="text-[14px] font-semibold text-[#333] hover:text-[#0B5C43] transition-colors">
+              className="text-[16px] font-bold text-[#333] hover:text-[#0B5C43] transition-colors">
               저장한 대회
-            </Link>
-            <Link href="/about"
-              className="text-[14px] font-semibold text-[#333] hover:text-[#0B5C43] transition-colors">
-              스포트립 소개
             </Link>
           </nav>
 
@@ -118,11 +119,7 @@ export function Header({ showSearch=false, heroSlot }: { showSearch?: boolean; h
                 <div className="w-px bg-[#EBEBEB] my-3"/>
                 <div className="flex-1 flex flex-col justify-center px-8 min-w-0">
                   <label className="text-[11px] font-bold tracking-wider text-[#222] mb-0.5">날짜</label>
-                  <select value={month} onChange={e=>setMonth(e.target.value)}
-                    className="text-[15px] text-[#717171] bg-transparent outline-none cursor-pointer">
-                    <option value="">전체 기간</option>
-                    {MONTHS.map(m=><option key={m} value={m}>{m}월</option>)}
-                  </select>
+                  <DateRangePicker from={dateFrom} to={dateTo} onChange={(f,t)=>{setDateFrom(f);setDateTo(t);}}/>
                 </div>
                 <div className="w-px bg-[#EBEBEB] my-3"/>
                 <div className="flex-1 flex flex-col justify-center px-8 min-w-0">
@@ -150,11 +147,9 @@ export function Header({ showSearch=false, heroSlot }: { showSearch?: boolean; h
                   placeholder="지역명 또는 대회명"
                   className="w-full px-4 py-3.5 border-2 border-[#DDD] rounded-xl text-[15px] outline-none focus:border-[#0B5C43]"/>
                 <div className="grid grid-cols-2 gap-3">
-                  <select value={month} onChange={e=>setMonth(e.target.value)}
-                    className="px-3 py-3.5 border-2 border-[#DDD] rounded-xl text-[14px] bg-white">
-                    <option value="">전체 기간</option>
-                    {MONTHS.map(m=><option key={m} value={m}>{m}월</option>)}
-                  </select>
+                  <div className="px-3 py-3.5 border-2 border-[#DDD] rounded-xl text-[14px] bg-white">
+                    <DateRangePicker from={dateFrom} to={dateTo} onChange={(f,t)=>{setDateFrom(f);setDateTo(t);}}/>
+                  </div>
                   <select value={sportSel} onChange={e=>setSportSel(e.target.value)}
                     className="px-3 py-3.5 border-2 border-[#DDD] rounded-xl text-[14px] bg-white">
                     {SPORTS_15.map(s=><option key={s.key} value={s.key}>{s.label}</option>)}

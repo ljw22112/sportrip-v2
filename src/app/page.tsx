@@ -39,10 +39,6 @@ export default function HomePage() {
   const [weekEvs, setWeekEvs] = useState<ReturnType<typeof getDynamicEvents>>([]);
   const dynEv = getDynamicEvents();
   const today = new Date();
-  const upcoming = dynEv.filter(e=>e.status!=='done').sort((a,b)=>{
-    const d=calcN(a.start)-calcN(b.start);
-    return d!==0?d:a.title.localeCompare(b.title,'ko');
-  }).slice(0,20);
   const thisMonthEv = dynEv.filter(e=>new Date(e.start).getMonth()===today.getMonth()&&e.status!=='done')
     .sort((a,b)=>{const d=a.start.localeCompare(b.start);return d!==0?d:a.title.localeCompare(b.title,'ko');});
 
@@ -61,25 +57,26 @@ export default function HomePage() {
     </>);
   }
 
+  const heroSection = (
+    <section style={{background:'linear-gradient(135deg, #06382A 0%, #0B5C43 45%, #1A8A63 100%)'}}>
+      <div className="max-w-[1760px] mx-auto px-5 md:px-10 py-12 md:py-16">
+        <p className="text-[16px] md:text-[20px] font-bold text-[#D6F14E] mb-3">전국 스포츠 대회 일정 + 개최지 여행 정보를 한곳에</p>
+        <h1 className="text-[28px] md:text-[40px] font-extrabold text-white tracking-tight leading-tight mb-4">
+          대회 보러 가는 길,<br/>
+          <span className="text-[#D6F14E]">그 지역까지 즐기고 오세요</span>
+        </h1>
+        <div className="flex items-center gap-2">
+          <span className="text-[32px] font-black text-[#D6F14E] tracking-tight">{dynEv.filter(e=>e.status!=='done').length}</span>
+          <span className="text-[16px] font-semibold text-white">개의 대회가 여러분을 기다리고 있어요</span>
+        </div>
+      </div>
+    </section>
+  );
+
   return (
     <>
-      <Header showSearch/>
+      <Header showSearch heroSlot={heroSection}/>
       <main style={{background:'#F7F5F0'}}>
-
-        {/* ── 히어로 ── */}
-        <section style={{background:'#0B5C43'}}>
-          <div className="max-w-[1760px] mx-auto px-5 md:px-10 py-12 md:py-16">
-            <p className="text-[16px] md:text-[20px] font-bold text-[#D6F14E] mb-3">전국 스포츠 대회 일정 + 개최지 여행 정보를 한곳에</p>
-            <h1 className="text-[28px] md:text-[40px] font-extrabold text-white tracking-tight leading-tight mb-4">
-              대회 보러 가는 길,<br/>
-              <span className="text-[#D6F14E]">그 지역까지 즐기고 오세요</span>
-            </h1>
-            <div className="flex items-center gap-2">
-              <span className="text-[32px] font-black text-[#D6F14E] tracking-tight">{dynEv.filter(e=>e.status!=='done').length}</span>
-              <span className="text-[16px] font-semibold text-white">개의 대회가 여러분을 기다리고 있어요</span>
-            </div>
-          </div>
-        </section>
 
         {/* ── 지도 + 캘린더 ── */}
         <section className="max-w-[1760px] mx-auto px-5 md:px-10 py-8">
@@ -102,7 +99,6 @@ export default function HomePage() {
         </section>
 
         {/* ── 대회 캐러셀 ── */}
-        <EventRow title="다가오는 대회" href="/events" events={upcoming.slice(0,6)}/>
         {thisMonthEv.length>0 && <EventRow title="이번달의 대회" href="/events?tab=month" events={thisMonthEv.slice(0,6)}/>}
         {weekEvs.length>0 && <EventRow title="이번주의 대회" href="/events?tab=week" events={weekEvs.slice(0,6)}/>}
 

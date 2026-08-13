@@ -29,6 +29,8 @@ function EventsContent() {
   const [sport, setSport] = useState(params.get('sport')||'');
   const [keyword, setKeyword] = useState(params.get('q')||'');
   const [region, setRegion] = useState(params.get('region')||'');
+  const [dateFrom, setDateFrom] = useState(params.get('from')||'');
+  const [dateTo, setDateTo] = useState(params.get('to')||'');
   const [status, setStatus] = useState('');
   const [sort, setSort] = useState<'date'|'size'>('date');
   const [filterOpen, setFilterOpen] = useState(false);
@@ -42,7 +44,7 @@ function EventsContent() {
   },[]);
   useEffect(()=>{ if(!isMobile) setShowMap(true); },[isMobile]);
 
-  const activeCount = [region,status].filter(Boolean).length;
+  const activeCount = [region,status,dateFrom].filter(Boolean).length;
 
   const base = useMemo(()=>{
     const de = getDynamicEvents();
@@ -55,12 +57,14 @@ function EventsContent() {
     if(sport&&sport!=='전체'&&e.sport!==sport) return false;
     if(region&&e.region!==region) return false;
     if(status&&e.status!==status) return false;
+    if(dateFrom&&e.start<dateFrom) return false;
+    if(dateTo&&e.start>dateTo) return false;
     if(keyword&&!e.title.includes(keyword)&&!e.region.includes(keyword)) return false;
     return true;
   }).sort((a,b)=>sort==='date'?a.start.localeCompare(b.start):parseInt(b.participants)-parseInt(a.participants))
-  ,[base,sport,region,status,keyword,sort]);
+  ,[base,sport,region,status,dateFrom,dateTo,keyword,sort]);
 
-  const reset=()=>{setRegion('');setStatus('');setKeyword('');setSport('');};
+  const reset=()=>{setRegion('');setStatus('');setKeyword('');setSport('');setDateFrom('');setDateTo('');};
 
   return (
     <>
@@ -160,6 +164,7 @@ function EventsContent() {
             <div className="flex flex-wrap items-center gap-2 mb-4">
               <span className="text-[15px] font-bold text-[#222]">{filtered.length}건</span>
               {region&&<span onClick={()=>setRegion('')} className="flex items-center gap-1 bg-[#E7F1EC] text-[#0B5C43] text-[12px] font-bold px-2.5 py-1 rounded-full cursor-pointer">{region} <X className="w-3 h-3"/></span>}
+              {dateFrom&&<span onClick={()=>{setDateFrom('');setDateTo('');}} className="flex items-center gap-1 bg-[#E7F1EC] text-[#0B5C43] text-[12px] font-bold px-2.5 py-1 rounded-full cursor-pointer">{dateFrom}{dateTo&&dateTo!==dateFrom?` ~ ${dateTo}`:''} <X className="w-3 h-3"/></span>}
               {status&&<span onClick={()=>setStatus('')} className="flex items-center gap-1 bg-[#E7F1EC] text-[#0B5C43] text-[12px] font-bold px-2.5 py-1 rounded-full cursor-pointer">{{upcoming:'예정',done:'종료'}[status]} <X className="w-3 h-3"/></span>}
             </div>
 
