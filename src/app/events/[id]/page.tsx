@@ -178,6 +178,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                 lat={ev.lat}
                 lng={ev.lng}
               />
+              {/* startTime 필드가 EVENTS 데이터에 추가되면 위 props에 startTime={ev.startTime} 추가 */}
               <div className="border-t border-[#EBEBEB] my-6"/>
               <h2 className="text-[22px] font-extrabold tracking-tight mb-5">주변 관광 정보</h2>
               <TourSection title="행사·축제" icon="🎊" sampleItems={tour.festival} lat={ev.lat} lng={ev.lng} contentTypeId="15"/>
