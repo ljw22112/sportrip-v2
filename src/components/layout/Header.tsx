@@ -8,7 +8,7 @@ import { SPORTS_15 } from '@/lib/sports';
 
 const MONTHS = [8,9,10,11,12,3,4];
 
-export function Header({ showSearch=false }: { showSearch?: boolean }) {
+export function Header({ showSearch=false, heroSlot }: { showSearch?: boolean; heroSlot?: React.ReactNode }) {
   const router = useRouter();
   const [activeSport, setActiveSport] = useState('전체');
   const [region, setRegion] = useState('');
@@ -73,6 +73,8 @@ export function Header({ showSearch=false }: { showSearch?: boolean }) {
           </div>
         </div>
       </div>
+
+      {heroSlot}
 
       {showSearch && (
         <>
