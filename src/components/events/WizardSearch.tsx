@@ -59,7 +59,7 @@ export function WizardSearch({ events }: Props) {
                 className={[
                   'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-bold border transition-all',
                   active
-                    ? 'bg-[#D6F14E] border-[#D6F14E] text-[#1A2E0A]'
+                    ? 'bg-[bg-accent] border-[bg-accent] text-[#1A2E0A]'
                     : 'bg-white/10 border-white/20 text-white hover:bg-white/20'
                 ].join(' ')}>
                 <img src={sp.icon} alt={sp.label}
@@ -78,7 +78,7 @@ export function WizardSearch({ events }: Props) {
           <select
             value={region}
             onChange={e => setRegion(e.target.value)}
-            className="w-full bg-white border border-white/30 text-[#222] rounded-xl px-3 py-2.5 text-[14px] outline-none cursor-pointer">
+            className="w-full bg-white border border-white/30 text-ink rounded-xl px-3 py-2.5 text-[14px] outline-none cursor-pointer">
             {REGIONS.map(r => (
               <option key={r} value={r === '전체' ? '' : r}>{r}</option>
             ))}
@@ -89,7 +89,7 @@ export function WizardSearch({ events }: Props) {
           <select
             value={period}
             onChange={e => setPeriod(e.target.value)}
-            className="w-full bg-white border border-white/30 text-[#222] rounded-xl px-3 py-2.5 text-[14px] outline-none cursor-pointer">
+            className="w-full bg-white border border-white/30 text-ink rounded-xl px-3 py-2.5 text-[14px] outline-none cursor-pointer">
             {PERIODS.map(p => (
               <option key={p.value} value={p.value}>{p.label}</option>
             ))}
@@ -97,7 +97,7 @@ export function WizardSearch({ events }: Props) {
         </div>
         <button
           onClick={handleSearch}
-          className="w-full py-3 bg-[#D6F14E] text-[#1A2E0A] font-extrabold rounded-xl text-[15px] hover:opacity-90 transition-opacity">
+          className="w-full py-3 bg-[bg-accent] text-[#1A2E0A] font-extrabold rounded-xl text-[15px] hover:opacity-90 transition-opacity">
           {matchCount > 0 ? matchCount + '개 대회 찾기 →' : '대회 찾기 →'}
         </button>
       </div>

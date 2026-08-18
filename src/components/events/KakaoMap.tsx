@@ -20,7 +20,10 @@ export function KakaoMap({ events, className }: Props) {
   const [popup, setPopup] = useState<{region:string; events:SportEvent[]} | null>(null);
   const router = useRouter();
 
-  const filtered = events.filter(e => e.status !== 'done');
+  const filtered = events.filter(e =>
+    e.status !== 'done' &&
+    (activeSport === '전체' || e.sport === activeSport)
+  );
 
   // SDK 로드
   useEffect(() => {
@@ -66,8 +69,6 @@ export function KakaoMap({ events, className }: Props) {
       const sp = getSportInfo(first.sport);
       const count = evs.length;
       const size = count >= 10 ? 50 : count >= 5 ? 42 : 36;
-      const isMatch = activeSport === '전체' || evs.some(e => e.sport === activeSport);
-      const ringSize = size + 14;
 
       // HTML 오버레이 — onclick 속성으로 직접 이벤트 연결
       const id = `marker-${region.replace(/\s/g,'')}`;
@@ -78,28 +79,16 @@ export function KakaoMap({ events, className }: Props) {
           cursor:pointer;user-select:none;
         ">
           <div style="
-            position:relative;
-            width:${ringSize}px;height:${ringSize}px;
+            width:${size}px;height:${size}px;
+            background:${sp.color};
+            border:3px solid white;
+            border-radius:50%;
             display:flex;align-items:center;justify-content:center;
-            ${isMatch && activeSport !== '전체' ? `
-              border:3px solid #D6F14E;
-              border-radius:50%;
-              box-shadow:0 0 0 3px rgba(214,241,78,0.35);
-            ` : ''}
-          ">
-            <div style="
-              width:${size}px;height:${size}px;
-              background:${sp.color};
-              border:3px solid white;
-              border-radius:50%;
-              display:flex;align-items:center;justify-content:center;
-              box-shadow:0 3px 10px rgba(0,0,0,0.35);
-              font-size:${count>=10?15:14}px;
-              font-weight:900;color:white;
-              font-family:Pretendard,sans-serif;
-              opacity:${isMatch ? 1 : 0.55};
-            ">${count}</div>
-          </div>
+            box-shadow:0 3px 10px rgba(0,0,0,0.35);
+            font-size:${count>=10?15:14}px;
+            font-weight:900;color:white;
+            font-family:Pretendard,sans-serif;
+          ">${count}</div>
           <div style="
             background:rgba(20,20,20,0.8);color:white;
             font-size:11px;font-weight:700;
@@ -130,12 +119,12 @@ export function KakaoMap({ events, className }: Props) {
       overlay.setMap(map);
       map.overlays.push(overlay);
     });
-  }, [loaded, filtered, activeSport]);
+  }, [loaded, filtered]);
 
   return (
     <div className="relative w-full h-full flex">
       {/* 종목 패널 */}
-      <div className="flex-shrink-0 w-[68px] md:w-[88px] bg-white/95 border-r border-[#EBEBEB] flex flex-col overflow-y-auto z-10"
+      <div className="flex-shrink-0 w-[68px] md:w-[88px] bg-white/95 border-r border-border flex flex-col overflow-y-auto z-10"
         style={{scrollbarWidth:'none'}}>
         {SPORTS_15.map(sp => {
           const active = activeSport === sp.key;
@@ -143,7 +132,7 @@ export function KakaoMap({ events, className }: Props) {
             <button key={sp.key}
               onClick={() => { setActiveSport(sp.key); setPopup(null); }}
               className={`flex flex-col items-center justify-center gap-0.5 py-2.5 px-1 flex-shrink-0 border-b border-[#F0F0F0] transition-all
-                ${active ? 'bg-[#0B5C43]' : 'hover:bg-[#F7F7F6]'}`}>
+                ${active ? 'bg-[bg-primary]' : 'hover:bg-[#F7F7F6]'}`}>
               <img src={sp.icon} alt={sp.label}
                 className={`w-7 h-7 md:w-8 md:h-8 object-contain ${active ? 'brightness-0 invert' : ''}`}/>
               <span className={`text-[9px] md:text-[10px] font-bold leading-tight text-center
@@ -170,11 +159,11 @@ export function KakaoMap({ events, className }: Props) {
           <div className="absolute inset-x-2 bottom-2 bg-white border-2 border-[#DDD] rounded-2xl shadow-xl z-20 max-h-[55%] overflow-hidden flex flex-col">
             <div className="flex items-center justify-between px-4 py-3 border-b border-[#EEE] flex-shrink-0">
               <div>
-                <span className="font-bold text-[16px] text-[#222]">{popup.region}</span>
-                <span className="text-[13px] text-[#717171] ml-2">예정 {popup.events.length}건</span>
+                <span className="font-bold text-[16px] text-ink">{popup.region}</span>
+                <span className="text-[13px] text-muted ml-2">예정 {popup.events.length}건</span>
               </div>
               <button onClick={() => setPopup(null)}
-                className="text-[#717171] text-2xl w-8 h-8 flex items-center justify-center">×</button>
+                className="text-muted text-2xl w-8 h-8 flex items-center justify-center">×</button>
             </div>
             <div className="overflow-y-auto flex-1 px-3 py-1.5">
               {popup.events.slice(0,10).map(ev => {
@@ -187,8 +176,8 @@ export function KakaoMap({ events, className }: Props) {
                       <img src={sp.icon} alt={sp.label} className="w-full h-full object-contain"/>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="font-semibold text-[13px] text-[#222] truncate">{ev.title}</div>
-                      <div className="text-[12px] text-[#717171]">{ev.start.slice(5).replace('-','/')} · {ev.sport}</div>
+                      <div className="font-semibold text-[13px] text-ink truncate">{ev.title}</div>
+                      <div className="text-[12px] text-muted">{ev.start.slice(5).replace('-','/')} · {ev.sport}</div>
                     </div>
                     <span className="text-[12px] font-bold flex-shrink-0" style={{color:sp.color}}>
                       {ev.start.slice(5).replace('-','/')}
@@ -198,7 +187,7 @@ export function KakaoMap({ events, className }: Props) {
               })}
               {popup.events.length > 10 && (
                 <button onClick={() => router.push(`/events?region=${popup.region}`)}
-                  className="w-full text-center py-3 text-[13px] font-bold text-[#0B5C43]">
+                  className="w-full text-center py-3 text-[13px] font-bold text-[bg-primary]">
                   전체 {popup.events.length}개 보기 ›
                 </button>
               )}

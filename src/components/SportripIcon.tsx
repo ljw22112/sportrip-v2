@@ -50,7 +50,7 @@ export function SportripIcon({ name, size=20, className, strokeWidth=1.75 }: Spo
 }
 
 const TILE_TONES = {
-  brand: 'bg-[#E7F1EC] text-[#0B5C43]',
+  brand: 'bg-[bg-primary-tint] text-[bg-primary]',
   green: 'bg-emerald-50 text-emerald-600',
   amber: 'bg-amber-50 text-amber-600',
   rose:  'bg-rose-50 text-rose-500',

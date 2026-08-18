@@ -45,14 +45,14 @@ export function KoreaMap({ events, className }: Props) {
     <div className="relative w-full h-full flex">
 
       {/* ── 좌측 종목 카테고리 패널 ── */}
-      <div className="flex-shrink-0 w-[70px] md:w-[90px] bg-white/95 border-r border-[#EBEBEB] flex flex-col overflow-y-auto z-10"
+      <div className="flex-shrink-0 w-[70px] md:w-[90px] bg-white/95 border-r border-border flex flex-col overflow-y-auto z-10"
         style={{scrollbarWidth:'none', height:'100%'}}>
         {SPORTS_15.map(sp=>{
           const active = activeSport === sp.key;
           return (
             <button key={sp.key} onClick={()=>setActiveSport(sp.key)}
               className={`flex flex-col items-center justify-center gap-0.5 py-2.5 px-1 flex-shrink-0 border-b border-[#F0F0F0] transition-all
-                ${active ? 'bg-[#0B5C43]' : 'hover:bg-[#F7F7F6]'}`}>
+                ${active ? 'bg-[bg-primary]' : 'hover:bg-[#F7F7F6]'}`}>
               <img src={sp.icon} alt={sp.label}
                 className={`w-8 h-8 object-contain ${active?'brightness-0 invert':''}`}/>
               <span className={`text-[10px] md:text-[11px] font-bold leading-tight text-center
@@ -157,10 +157,10 @@ export function KoreaMap({ events, className }: Props) {
           <div className="absolute inset-x-2 bottom-2 bg-white/97 border-2 border-[#DDD] rounded-2xl shadow-xl z-20 max-h-[55%] overflow-hidden flex flex-col">
             <div className="flex items-center justify-between px-4 py-3 border-b border-[#EEE] flex-shrink-0">
               <div>
-                <span className="font-bold text-[16px] text-[#222]">{popup.region}</span>
-                <span className="text-[13px] text-[#717171] ml-2">예정 {popup.events.length}건</span>
+                <span className="font-bold text-[16px] text-ink">{popup.region}</span>
+                <span className="text-[13px] text-muted ml-2">예정 {popup.events.length}건</span>
               </div>
-              <button onClick={()=>setPopup(null)} className="text-[#717171] text-2xl font-light w-8 h-8 flex items-center justify-center">×</button>
+              <button onClick={()=>setPopup(null)} className="text-muted text-2xl font-light w-8 h-8 flex items-center justify-center">×</button>
             </div>
             <div className="overflow-y-auto flex-1 px-3 py-1.5">
               {popup.events.slice(0,10).map(ev=>{
@@ -173,15 +173,15 @@ export function KoreaMap({ events, className }: Props) {
                     <img src={sp.icon} alt={sp.label} className="w-6 h-6 object-contain"/>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="font-semibold text-[13px] text-[#222] truncate">{ev.title}</div>
-                      <div className="text-[12px] text-[#717171]">{ev.start.slice(5).replace('-','/')} · {ev.sport}</div>
+                      <div className="font-semibold text-[13px] text-ink truncate">{ev.title}</div>
+                      <div className="text-[12px] text-muted">{ev.start.slice(5).replace('-','/')} · {ev.sport}</div>
                     </div>
                   </button>
                 );
               })}
               {popup.events.length > 10 && (
                 <button onClick={()=>router.push(`/events?region=${popup.region}`)}
-                  className="w-full text-center py-3 text-[13px] font-bold text-[#0B5C43]">
+                  className="w-full text-center py-3 text-[13px] font-bold text-[bg-primary]">
                   전체 {popup.events.length}개 보기 ›
                 </button>
               )}
@@ -190,7 +190,7 @@ export function KoreaMap({ events, className }: Props) {
         )}
 
         {!popup && (
-          <div className="absolute left-2 bottom-2 bg-white/90 rounded-full text-[11px] text-[#717171] px-3 py-1.5">
+          <div className="absolute left-2 bottom-2 bg-white/90 rounded-full text-[11px] text-muted px-3 py-1.5">
             지역 원 클릭 → 대회 목록
           </div>
         )}

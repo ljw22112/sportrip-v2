@@ -29,8 +29,6 @@ function EventsContent() {
   const [sport, setSport] = useState(params.get('sport')||'');
   const [keyword, setKeyword] = useState(params.get('q')||'');
   const [region, setRegion] = useState(params.get('region')||'');
-  const [dateFrom, setDateFrom] = useState(params.get('from')||'');
-  const [dateTo, setDateTo] = useState(params.get('to')||'');
   const [status, setStatus] = useState('');
   const [sort, setSort] = useState<'date'|'size'>('date');
   const [filterOpen, setFilterOpen] = useState(false);
@@ -44,7 +42,7 @@ function EventsContent() {
   },[]);
   useEffect(()=>{ if(!isMobile) setShowMap(true); },[isMobile]);
 
-  const activeCount = [region,status,dateFrom].filter(Boolean).length;
+  const activeCount = [region,status].filter(Boolean).length;
 
   const base = useMemo(()=>{
     const de = getDynamicEvents();
@@ -57,14 +55,12 @@ function EventsContent() {
     if(sport&&sport!=='전체'&&e.sport!==sport) return false;
     if(region&&e.region!==region) return false;
     if(status&&e.status!==status) return false;
-    if(dateFrom&&e.start<dateFrom) return false;
-    if(dateTo&&e.start>dateTo) return false;
     if(keyword&&!e.title.includes(keyword)&&!e.region.includes(keyword)) return false;
     return true;
   }).sort((a,b)=>sort==='date'?a.start.localeCompare(b.start):parseInt(b.participants)-parseInt(a.participants))
-  ,[base,sport,region,status,dateFrom,dateTo,keyword,sort]);
+  ,[base,sport,region,status,keyword,sort]);
 
-  const reset=()=>{setRegion('');setStatus('');setKeyword('');setSport('');setDateFrom('');setDateTo('');};
+  const reset=()=>{setRegion('');setStatus('');setKeyword('');setSport('');};
 
   return (
     <>
@@ -94,22 +90,22 @@ function EventsContent() {
             {/* 검색 + 필터 + 지도토글 */}
             <div className="flex gap-2 mb-4">
               <div className="relative flex-1">
-                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#AAAAAA]"/>
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-faint"/>
                 <input value={keyword} onChange={e=>setKeyword(e.target.value)}
                   placeholder="대회명, 지역 검색..."
-                  className="w-full pl-10 pr-8 py-3 border-2 border-[#E0E0E0] rounded-full text-[14px] outline-none focus:border-[#0B5C43] transition-colors"/>
-                {keyword && <button onClick={()=>setKeyword('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#AAAAAA]"><X className="w-4 h-4"/></button>}
+                  className="w-full pl-10 pr-8 py-3 border-2 border-[#E0E0E0] rounded-full text-[14px] outline-none focus:border-[bg-primary] transition-colors"/>
+                {keyword && <button onClick={()=>setKeyword('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-faint"><X className="w-4 h-4"/></button>}
               </div>
               <button onClick={()=>setFilterOpen(v=>!v)}
                 className={`flex items-center gap-1.5 px-4 py-3 rounded-full border-2 text-[14px] font-semibold transition-all
-                  ${activeCount>0?'border-[#0B5C43] bg-[#0B5C43] text-white':'border-[#E0E0E0] text-[#333] hover:border-[#333]'}`}>
+                  ${activeCount>0?'border-[bg-primary] bg-[bg-primary] text-white':'border-[#E0E0E0] text-[#333] hover:border-[#333]'}`}>
                 <SlidersHorizontal className="w-4 h-4"/>
                 <span className="hidden sm:inline">필터</span>
                 {activeCount>0&&<span>{activeCount}</span>}
               </button>
               <button onClick={()=>setShowMap(v=>!v)}
                 className={`flex items-center gap-1.5 px-4 py-3 rounded-full border-2 text-[14px] font-semibold transition-all
-                  ${showMap?'border-[#0B5C43] bg-[#0B5C43] text-white':'border-[#E0E0E0] text-[#333] hover:border-[#333]'}`}>
+                  ${showMap?'border-[bg-primary] bg-[bg-primary] text-white':'border-[#E0E0E0] text-[#333] hover:border-[#333]'}`}>
                 <Map className="w-4 h-4"/>
                 <span className="hidden md:inline">{showMap?'지도 숨기기':'지도 보기'}</span>
               </button>
@@ -138,23 +134,23 @@ function EventsContent() {
                   </div>
                 </div>
                 <div className="flex justify-between mt-3">
-                  <button onClick={()=>{reset();setFilterOpen(false);}} className="text-[14px] font-bold underline text-[#717171]">전체 해제</button>
-                  <button onClick={()=>setFilterOpen(false)} className="bg-[#0B5C43] text-white px-5 py-2.5 rounded-xl text-[14px] font-bold">적용</button>
+                  <button onClick={()=>{reset();setFilterOpen(false);}} className="text-[14px] font-bold underline text-muted">전체 해제</button>
+                  <button onClick={()=>setFilterOpen(false)} className="bg-[bg-primary] text-white px-5 py-2.5 rounded-xl text-[14px] font-bold">적용</button>
                 </div>
               </div>
             )}
 
             {/* 탭 */}
-            <div className="flex border-b-2 border-[#EBEBEB] mb-5">
+            <div className="flex border-b-2 border-border mb-5">
               {(['all','month','week'] as Tab[]).map((t,i)=>(
                 <button key={t} onClick={()=>setTab(t)}
                   className={`px-4 py-3 text-[14px] font-bold border-b-2 -mb-0.5 transition-all whitespace-nowrap
-                    ${tab===t?'border-[#222] text-[#222]':'border-transparent text-[#717171] hover:text-[#222]'}`}>
+                    ${tab===t?'border-[#222] text-ink':'border-transparent text-muted hover:text-ink'}`}>
                   {['전체 대회','이번달의 대회','이번주의 대회'][i]}
                 </button>
               ))}
               <select value={sort} onChange={e=>setSort(e.target.value as 'date'|'size')}
-                className="ml-auto border-0 text-[14px] font-semibold text-[#717171] bg-white outline-none cursor-pointer self-center">
+                className="ml-auto border-0 text-[14px] font-semibold text-muted bg-white outline-none cursor-pointer self-center">
                 <option value="date">날짜순</option>
                 <option value="size">규모순</option>
               </select>
@@ -162,15 +158,14 @@ function EventsContent() {
 
             {/* 결과 수 + 태그 */}
             <div className="flex flex-wrap items-center gap-2 mb-4">
-              <span className="text-[15px] font-bold text-[#222]">{filtered.length}건</span>
-              {region&&<span onClick={()=>setRegion('')} className="flex items-center gap-1 bg-[#E7F1EC] text-[#0B5C43] text-[12px] font-bold px-2.5 py-1 rounded-full cursor-pointer">{region} <X className="w-3 h-3"/></span>}
-              {dateFrom&&<span onClick={()=>{setDateFrom('');setDateTo('');}} className="flex items-center gap-1 bg-[#E7F1EC] text-[#0B5C43] text-[12px] font-bold px-2.5 py-1 rounded-full cursor-pointer">{dateFrom}{dateTo&&dateTo!==dateFrom?` ~ ${dateTo}`:''} <X className="w-3 h-3"/></span>}
-              {status&&<span onClick={()=>setStatus('')} className="flex items-center gap-1 bg-[#E7F1EC] text-[#0B5C43] text-[12px] font-bold px-2.5 py-1 rounded-full cursor-pointer">{{upcoming:'예정',done:'종료'}[status]} <X className="w-3 h-3"/></span>}
+              <span className="text-[15px] font-bold text-ink">{filtered.length}건</span>
+              {region&&<span onClick={()=>setRegion('')} className="flex items-center gap-1 bg-[bg-primary-tint] text-[bg-primary] text-[12px] font-bold px-2.5 py-1 rounded-full cursor-pointer">{region} <X className="w-3 h-3"/></span>}
+              {status&&<span onClick={()=>setStatus('')} className="flex items-center gap-1 bg-[bg-primary-tint] text-[bg-primary] text-[12px] font-bold px-2.5 py-1 rounded-full cursor-pointer">{{upcoming:'예정',done:'종료'}[status]} <X className="w-3 h-3"/></span>}
             </div>
 
             {/* 모바일 지도 */}
             {showMap&&isMobile&&(
-              <div className="relative bg-[#C8DCE8] border-2 border-[#EBEBEB] rounded-2xl overflow-hidden h-72 mb-5">
+              <div className="relative bg-[#C8DCE8] border-2 border-border rounded-2xl overflow-hidden h-72 mb-5">
                 <KoreaMap events={filtered.filter(e=>e.status!=='done')} className="w-full h-full"/>
                 <button onClick={()=>setShowMap(false)} className="absolute top-2 right-2 bg-[#222] text-white rounded-full px-3 py-1.5 text-[12px] font-bold z-20">
                   목록 보기
@@ -180,10 +175,10 @@ function EventsContent() {
 
             {/* 빈 결과 */}
             {filtered.length===0&&(
-              <div className="border-2 border-dashed border-[#EBEBEB] rounded-2xl p-12 text-center">
+              <div className="border-2 border-dashed border-border rounded-2xl p-12 text-center">
                 <div className="text-5xl mb-4">🔍</div>
-                <p className="font-bold text-[#222] text-[16px] mb-1">조건에 맞는 대회가 없습니다</p>
-                <button onClick={reset} className="mt-4 bg-[#0B5C43] text-white px-6 py-3 rounded-xl text-[14px] font-bold">전체 초기화</button>
+                <p className="font-bold text-ink text-[16px] mb-1">조건에 맞는 대회가 없습니다</p>
+                <button onClick={reset} className="mt-4 bg-[bg-primary] text-white px-6 py-3 rounded-xl text-[14px] font-bold">전체 초기화</button>
               </div>
             )}
 
@@ -201,7 +196,7 @@ function EventsContent() {
 
         {/* 데스크톱 지도 (sticky) */}
         {showMap&&!isMobile&&(
-          <aside className="hidden md:block w-[400px] flex-shrink-0 sticky top-0 h-screen border-l-2 border-[#EBEBEB]">
+          <aside className="hidden md:block w-[400px] flex-shrink-0 sticky top-0 h-screen border-l-2 border-border">
             <div className="relative w-full h-full bg-[#C8DCE8]">
               <KoreaMap events={filtered.filter(e=>e.status!=='done')} className="w-full h-full"/>
             </div>

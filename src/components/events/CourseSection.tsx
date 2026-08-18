@@ -133,12 +133,12 @@ export function CourseSection({ eventTitle, region, lat, lng }: Props) {
   return (
     <div className="mb-8">
       <div className="flex items-center gap-2 mb-2">
-        <h3 className="text-[17px] font-bold text-[#222]">🗺️ 추천 여행 코스</h3>
-        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${isApi ? 'bg-[#E7F1EC] text-[#0B5C43]' : 'bg-gray-100 text-gray-500'}`}>
+        <h3 className="text-[17px] font-bold text-ink">🗺️ 추천 여행 코스</h3>
+        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${isApi ? 'bg-[bg-primary-tint] text-[bg-primary]' : 'bg-gray-100 text-gray-500'}`}>
           {isApi ? '🌐 ⓒ한국관광공사' : '📋 추천 코스'}
         </span>
       </div>
-      <p className="text-[13px] text-[#717171] mb-4">
+      <p className="text-[13px] text-muted mb-4">
         {eventTitle} 개최지 주변 {region} 여행 코스를 추천해 드립니다.
       </p>
 
@@ -146,7 +146,7 @@ export function CourseSection({ eventTitle, region, lat, lng }: Props) {
         {(['day','overnight'] as const).map(tab => (
           <button key={tab} onClick={() => setActiveTab(tab)}
             className={`px-4 py-2 rounded-full text-[13px] font-bold border-2 transition-all
-              ${activeTab===tab ? 'bg-[#0B5C43] border-[#0B5C43] text-white' : 'bg-white border-[#EBEBEB] text-[#555] hover:border-[#0B5C43]'}`}>
+              ${activeTab===tab ? 'bg-[bg-primary] border-[bg-primary] text-white' : 'bg-white border-border text-[#555] hover:border-[bg-primary]'}`}>
             {tab==='day' ? '🌞 당일치기' : '🌙 1박 2일'}
           </button>
         ))}
@@ -170,35 +170,35 @@ export function CourseSection({ eventTitle, region, lat, lng }: Props) {
               return (
                 <div key={t.label} className="flex gap-3 items-start relative z-10">
                   <div className="flex-shrink-0 w-[94px] text-right">
-                    <div className="inline-flex flex-col items-center bg-white border-2 border-[#0B5C43] rounded-xl px-2 py-1.5">
-                      <span className="text-[10px] font-bold text-[#0B5C43]">{t.label}</span>
-                      <span className="text-[9px] text-[#717171] flex items-center gap-0.5">
+                    <div className="inline-flex flex-col items-center bg-white border-2 border-[bg-primary] rounded-xl px-2 py-1.5">
+                      <span className="text-[10px] font-bold text-[bg-primary]">{t.label}</span>
+                      <span className="text-[9px] text-muted flex items-center gap-0.5">
                         <Clock className="w-2.5 h-2.5"/>{t.time}
                       </span>
                     </div>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-[#0B5C43] mt-3 flex-shrink-0"/>
+                  <ChevronRight className="w-4 h-4 text-[bg-primary] mt-3 flex-shrink-0"/>
                   {spot ? (
                     <div onClick={() => spot.url && window.open(spot.url, '_blank')}
-                      className={`flex-1 flex gap-3 p-3 bg-white border border-[#EBEBEB] rounded-xl transition-all ${spot.url ? 'cursor-pointer hover:border-[#0B5C43] hover:shadow-sm' : ''}`}>
+                      className={`flex-1 flex gap-3 p-3 bg-white border border-border rounded-xl transition-all ${spot.url ? 'cursor-pointer hover:border-[bg-primary] hover:shadow-sm' : ''}`}>
                       {spot.img && <img src={spot.img} alt={spot.name} className="w-16 h-16 object-cover rounded-lg flex-shrink-0"/>}
                       <div className="flex-1 min-w-0">
-                        <div className="font-bold text-[14px] text-[#222] truncate">{spot.name}</div>
+                        <div className="font-bold text-[14px] text-ink truncate">{spot.name}</div>
                         {spot.addr && (
-                          <div className="flex items-center gap-1 text-[12px] text-[#717171] mt-0.5">
+                          <div className="flex items-center gap-1 text-[12px] text-muted mt-0.5">
                             <MapPin className="w-3 h-3 flex-shrink-0"/><span className="truncate">{spot.addr}</span>
                           </div>
                         )}
                         {spot.dist > 0 && (
-                          <div className="text-[11px] text-[#AAAAAA] mt-0.5">
+                          <div className="text-[11px] text-faint mt-0.5">
                             대회장에서 {spot.dist < 1000 ? `${Math.round(spot.dist)}m` : `${(spot.dist/1000).toFixed(1)}km`}
                           </div>
                         )}
-                        {spot.url && <div className="text-[11px] text-[#0B5C43] font-semibold mt-1">자세히 보기 →</div>}
+                        {spot.url && <div className="text-[11px] text-[bg-primary] font-semibold mt-1">자세히 보기 →</div>}
                       </div>
                     </div>
                   ) : (
-                    <div className="flex-1 p-3 bg-[#F7F7F6] border border-[#EBEBEB] rounded-xl text-[13px] text-[#AAAAAA]">정보 없음</div>
+                    <div className="flex-1 p-3 bg-[#F7F7F6] border border-border rounded-xl text-[13px] text-faint">정보 없음</div>
                   )}
                 </div>
               );

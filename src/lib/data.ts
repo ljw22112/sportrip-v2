@@ -40,7 +40,7 @@ export function calcVerified(id: number, url: string): VerifiedStatus {
 }
 
 export const VERIFIED_LABELS = {
-  verified:   { text: '✅ 검증됨',     color: '#0B5C43', bg: '#E7F1EC' },
+  verified:   { text: '✅ 검증됨',     color: 'bg-primary', bg: 'bg-primary-tint' },
   unverified: { text: '⚠️ 미확인',     color: '#B7791F', bg: '#FEFCE8' },
   public:     { text: '📋 공공데이터', color: '#1A5276', bg: '#EBF5FB' },
 };
@@ -65,7 +65,7 @@ export function calcRegistrationStatus(start: string, deadline?: string): Regist
 }
 
 export const REG_STATUS_LABELS = {
-  open:    { text: '접수 중',    color: '#0B5C43', bg: '#E7F1EC' },
+  open:    { text: '접수 중',    color: 'bg-primary', bg: 'bg-primary-tint' },
   closing: { text: '마감 임박',  color: '#C0392B', bg: '#FDEDEC' },
   closed:  { text: '접수 마감', color: '#717171', bg: '#F7F7F6' },
   tba:     { text: '추후 공지', color: '#1A5276', bg: '#EBF5FB' },

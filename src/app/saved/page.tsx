@@ -28,7 +28,7 @@ export default function SavedPage() {
         <div className="flex items-center gap-3 mb-6">
           <Heart className="w-6 h-6 text-[#E4572E] fill-[#E4572E]"/>
           <h1 className="text-[22px] font-extrabold tracking-tight">저장한 대회</h1>
-          {loaded && <span className="text-[14px] text-[#717171]">{savedEvents.length}건</span>}
+          {loaded && <span className="text-[14px] text-muted">{savedEvents.length}건</span>}
         </div>
 
         {/* localStorage 안내 */}
@@ -41,12 +41,12 @@ export default function SavedPage() {
             {[1,2,3,4].map(i => <div key={i} className="aspect-square bg-gray-100 rounded-2xl animate-pulse"/>)}
           </div>
         ) : savedEvents.length === 0 ? (
-          <div className="text-center py-24 border-2 border-dashed border-[#EBEBEB] rounded-2xl">
+          <div className="text-center py-24 border-2 border-dashed border-border rounded-2xl">
             <Heart className="w-12 h-12 text-[#EBEBEB] mx-auto mb-4"/>
-            <p className="font-bold text-[16px] text-[#222] mb-1">아직 저장한 대회가 없어요</p>
-            <p className="text-[14px] text-[#717171] mb-6">대회 카드의 하트를 눌러 저장해 보세요</p>
+            <p className="font-bold text-[16px] text-ink mb-1">아직 저장한 대회가 없어요</p>
+            <p className="text-[14px] text-muted mb-6">대회 카드의 하트를 눌러 저장해 보세요</p>
             <Link href="/events"
-              className="px-6 py-3 bg-[#0B5C43] text-white font-bold rounded-xl text-[14px]">
+              className="px-6 py-3 bg-[bg-primary] text-white font-bold rounded-xl text-[14px]">
               대회 찾아보기
             </Link>
           </div>

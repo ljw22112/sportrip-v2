@@ -39,6 +39,10 @@ export default function HomePage() {
   const [weekEvs, setWeekEvs] = useState<ReturnType<typeof getDynamicEvents>>([]);
   const dynEv = getDynamicEvents();
   const today = new Date();
+  const upcoming = dynEv.filter(e=>e.status!=='done').sort((a,b)=>{
+    const d=calcN(a.start)-calcN(b.start);
+    return d!==0?d:a.title.localeCompare(b.title,'ko');
+  }).slice(0,20);
   const thisMonthEv = dynEv.filter(e=>new Date(e.start).getMonth()===today.getMonth()&&e.status!=='done')
     .sort((a,b)=>{const d=a.start.localeCompare(b.start);return d!==0?d:a.title.localeCompare(b.title,'ko');});
 
@@ -57,33 +61,32 @@ export default function HomePage() {
     </>);
   }
 
-  const heroSection = (
-    <section style={{background:'linear-gradient(135deg, #06382A 0%, #0B5C43 45%, #1A8A63 100%)'}}>
-      <div className="max-w-[1760px] mx-auto px-5 md:px-10 py-12 md:py-16">
-        <p className="text-[16px] md:text-[20px] font-bold text-[#D6F14E] mb-3">전국 스포츠 대회 일정 + 개최지 여행 정보를 한곳에</p>
-        <h1 className="text-[28px] md:text-[40px] font-extrabold text-white tracking-tight leading-tight mb-4">
-          대회 보러 가는 길,<br/>
-          <span className="text-[#D6F14E]">그 지역까지 즐기고 오세요</span>
-        </h1>
-        <div className="flex items-center gap-2">
-          <span className="text-[32px] font-black text-[#D6F14E] tracking-tight">{dynEv.filter(e=>e.status!=='done').length}</span>
-          <span className="text-[16px] font-semibold text-white">개의 대회가 여러분을 기다리고 있어요</span>
-        </div>
-      </div>
-    </section>
-  );
-
   return (
     <>
-      <Header showSearch heroSlot={heroSection}/>
-      <main style={{background:'#F7F5F0'}}>
+      <Header showSearch/>
+      <main style={{background:'bg-bg'}}>
+
+        {/* ── 히어로 ── */}
+        <section style={{background:'bg-primary'}}>
+          <div className="max-w-[1760px] mx-auto px-5 md:px-10 py-12 md:py-16">
+            <p className="text-[16px] md:text-[20px] font-bold text-[bg-accent] mb-3">전국 스포츠 대회 일정 + 개최지 여행 정보를 한곳에</p>
+            <h1 className="text-[28px] md:text-[40px] font-extrabold text-white tracking-tight leading-tight mb-4">
+              대회 보러 가는 길,<br/>
+              <span className="text-[bg-accent]">그 지역까지 즐기고 오세요</span>
+            </h1>
+            <div className="flex items-center gap-2">
+              <span className="text-[32px] font-black text-[bg-accent] tracking-tight">{dynEv.filter(e=>e.status!=='done').length}</span>
+              <span className="text-[16px] font-semibold text-white">개의 대회가 여러분을 기다리고 있어요</span>
+            </div>
+          </div>
+        </section>
 
         {/* ── 지도 + 캘린더 ── */}
         <section className="max-w-[1760px] mx-auto px-5 md:px-10 py-8">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-[20px] font-extrabold tracking-tight">지도로 한눈에 보기</h2>
             <Link href="/calendar"
-              className="flex items-center gap-2 bg-[#0B5C43] text-white font-bold text-[14px] px-5 py-2.5 rounded-xl hover:bg-[#083D2D] transition-colors">
+              className="flex items-center gap-2 bg-[bg-primary] text-white font-bold text-[14px] px-5 py-2.5 rounded-xl hover:bg-[bg-primary-hover] transition-colors">
               <CalendarDays className="w-4 h-4"/>
               캘린더 보기
             </Link>
@@ -92,30 +95,31 @@ export default function HomePage() {
             <div className="flex-1 relative bg-[#C8DCE8] rounded-2xl overflow-hidden" style={{aspectRatio:'1/1',maxHeight:'520px'}}>
               <KoreaMap events={EVENTS} className="w-full h-full"/>
             </div>
-            <div className="hidden md:flex flex-col flex-1 rounded-2xl overflow-hidden border border-[#EBEBEB]" style={{aspectRatio:'1/1',maxHeight:'520px'}}>
+            <div className="hidden md:flex flex-col flex-1 rounded-2xl overflow-hidden border border-border" style={{aspectRatio:'1/1',maxHeight:'520px'}}>
               <MiniCalendar events={dynEv.filter(e=>e.status!=='done')}/>
             </div>
           </div>
         </section>
 
         {/* ── 대회 캐러셀 ── */}
+        <EventRow title="다가오는 대회" href="/events" events={upcoming.slice(0,6)}/>
         {thisMonthEv.length>0 && <EventRow title="이번달의 대회" href="/events?tab=month" events={thisMonthEv.slice(0,6)}/>}
         {weekEvs.length>0 && <EventRow title="이번주의 대회" href="/events?tab=week" events={weekEvs.slice(0,6)}/>}
 
         {/* ── 지역별 둘러보기 ── */}
         <section className="max-w-[1760px] mx-auto px-5 md:px-10 py-8">
           <h2 className="text-[20px] md:text-[22px] font-extrabold tracking-tight mb-1">지역별로 둘러보기</h2>
-          <p className="text-[#717171] text-[14px] mb-5">가고 싶은 지역을 선택하면 그 지역의 대회를 모아 보여드립니다.</p>
+          <p className="text-muted text-[14px] mb-5">가고 싶은 지역을 선택하면 그 지역의 대회를 모아 보여드립니다.</p>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-3">
             {REGIONS_LIST.map(r=>{
               const cnt=dynEv.filter(e=>e.region===r&&e.status!=='done').length;
               const col=REGION_COLOR[r]||{border:'#EBEBEB',text:'#222'};
               return (
                 <button key={r} onClick={()=>setSelectedRegion(r)}
-                  className="rounded-xl py-3 px-2 text-center transition-all hover:bg-[#E7F1EC] hover:shadow-sm border border-[#E0E0E0]"
+                  className="rounded-xl py-3 px-2 text-center transition-all hover:bg-[bg-primary-tint] hover:shadow-sm border border-[#E0E0E0]"
                   style={{background:'transparent'}}>
-                  <b className="block text-[15px] font-extrabold text-[#222]">{r}</b>
-                  <span className={`text-[11px] block font-bold mt-0.5 ${cnt?'text-[#0B5C43]':'text-[#CCCCCC]'}`}>
+                  <b className="block text-[15px] font-extrabold text-ink">{r}</b>
+                  <span className={`text-[11px] block font-bold mt-0.5 ${cnt?'text-[bg-primary]':'text-[#CCCCCC]'}`}>
                     {cnt?`${cnt}개`:'없음'}
                   </span>
                 </button>
@@ -125,7 +129,7 @@ export default function HomePage() {
         </section>
 
         {/* ── 관광정보 KTO ── */}
-        <section style={{background:'#F0EDE8'}}>
+        <section style={{background:'bg-bg-warm'}}>
           <div className="max-w-[1760px] mx-auto px-5 md:px-10 py-8">
             <div className="flex flex-col md:flex-row gap-4 mb-6">
               <div className="flex-1 bg-white rounded-2xl px-6 py-5 flex items-center justify-between">
@@ -144,7 +148,7 @@ export default function HomePage() {
             <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
               {KTO_LINKS.map(([name,url])=>(
                 <a key={name} href={url} target="_blank" rel="noopener"
-                  className="bg-white rounded-xl px-4 py-3 text-[13px] font-medium text-[#0B5C43] hover:bg-[#E7F1EC] transition-colors">
+                  className="bg-white rounded-xl px-4 py-3 text-[13px] font-medium text-[bg-primary] hover:bg-[bg-primary-tint] transition-colors">
                   {name} ↗
                 </a>
               ))}
@@ -153,7 +157,7 @@ export default function HomePage() {
         </section>
 
         {/* ── 푸터 ── */}
-        <footer style={{background:'#1B1F1D'}} className="text-[#AAAAAA] text-[13px]">
+        <footer style={{background:'#1B1F1D'}} className="text-faint text-[13px]">
           <div className="max-w-[1760px] mx-auto px-5 md:px-10 py-8 flex flex-wrap gap-6 items-start">
             <div>
               <div className="flex items-center gap-2 mb-3">

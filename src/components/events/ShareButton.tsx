@@ -8,7 +8,7 @@ export function ShareButton({ url, title, className }: Props) {
   };
   return (
     <button onClick={share}
-      className={`flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-[14px] border-2 border-[#EBEBEB] hover:border-[#222] transition-colors ${className}`}>
+      className={`flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-[14px] border-2 border-border hover:border-[#222] transition-colors ${className}`}>
       🔗 공유하기
     </button>
   );

@@ -36,7 +36,7 @@ export function EventCard({ event }: { event: SportEvent }) {
       {/* 썸네일 — 테두리만, 흰 배경, 종목 캐릭터 */}
       <Link href={`/events/${event.id}`}
         className="relative block rounded-2xl overflow-hidden border-2 hover:border-[--green] transition-all"
-        style={{aspectRatio:'1/1', borderColor: sport.color + '55', background:'#F7F5F0'}}>
+        style={{aspectRatio:'1/1', borderColor: sport.color + '55', background:'bg-bg'}}>
         {/* D-day — 크게 */}
         {event.status !== 'done' && (
           <div className="absolute top-0 left-0 right-0 flex items-center justify-center gap-2 pt-3 z-10">
@@ -51,6 +51,10 @@ export function EventCard({ event }: { event: SportEvent }) {
         <div className="absolute inset-0 flex flex-col items-center justify-center p-4">
           <img src={sport.icon} alt={sport.label}
             className="w-4/5 h-4/5 object-contain drop-shadow-sm select-none"/>
+          <div className="text-[11px] font-bold px-3 py-1 rounded-full text-white mt-2"
+            style={{background: sport.color}}>
+            {event.sport}
+          </div>
         </div>
         {/* 하단 날짜 바 */}
         <div className="absolute bottom-0 left-0 right-0 px-3 py-2.5"
@@ -70,8 +74,8 @@ export function EventCard({ event }: { event: SportEvent }) {
       </button>
       {/* 텍스트 */}
       <Link href={`/events/${event.id}`} className="block pt-2 px-0.5">
-        <div className="font-bold text-[14px] text-[#222] truncate leading-tight">{event.title}</div>
-        <div className="text-[12px] text-[#717171] mt-0.5 leading-tight">{event.region} · {event.sport} · {fmtDate(event.start)}</div>
+        <div className="font-bold text-[14px] text-ink truncate leading-tight">{event.title}</div>
+        <div className="text-[12px] text-muted mt-0.5 leading-tight">{event.region} · {event.sport} · {fmtDate(event.start)}</div>
         <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
           {(() => {
             const regStatus = calcRegistrationStatus(event.start);
@@ -112,9 +116,9 @@ export function EventCardHorizontal({ event }: { event: SportEvent }) {
         {sport.emoji}
       </div>
       <div className="flex-1 min-w-0">
-        <div className="font-bold text-[14px] text-[#222] truncate">{event.title}</div>
-        <div className="text-[13px] text-[#717171] mt-0.5">{event.region} · {event.sport}</div>
-        <div className="text-[13px] text-[#717171] mt-0.5">
+        <div className="font-bold text-[14px] text-ink truncate">{event.title}</div>
+        <div className="text-[13px] text-muted mt-0.5">{event.region} · {event.sport}</div>
+        <div className="text-[13px] text-muted mt-0.5">
           {event.start}
           {event.status!=='done' && <span className="font-bold ml-2" style={{color:sport.color}}>{calcDday(event.start)}</span>}
         </div>

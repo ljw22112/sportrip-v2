@@ -38,7 +38,7 @@ export function MiniCalendar({ events }: Props) {
   return (
     <div className="flex flex-col h-full bg-white">
       {/* 헤더 */}
-      <div className="flex items-center justify-between px-4 py-3 bg-[#F7F5F0]">
+      <div className="flex items-center justify-between px-4 py-3 bg-[bg-bg]">
         <button onClick={prevMonth} className="p-1 rounded hover:bg-[#EBEBEB] transition-colors">
           <ChevronLeft className="w-4 h-4 text-[#555]"/>
         </button>
@@ -49,7 +49,7 @@ export function MiniCalendar({ events }: Props) {
       </div>
 
       {/* 요일 헤더 */}
-      <div className="grid grid-cols-7 text-center text-[11px] font-bold text-[#AAAAAA] py-1.5 border-b border-[#F0F0F0]">
+      <div className="grid grid-cols-7 text-center text-[11px] font-bold text-faint py-1.5 border-b border-[#F0F0F0]">
         {['월','화','수','목','금','토','일'].map(d=>(
           <div key={d} className={d==='일'?'text-red-400':d==='토'?'text-blue-400':''}>{d}</div>
         ))}
@@ -69,7 +69,7 @@ export function MiniCalendar({ events }: Props) {
             <div key={i}
               className={`border-b border-r border-[#F5F5F5] p-1 min-h-[56px] ${dayEvents.length?'hover:bg-[#F0F9F0] cursor-pointer':''}`}>
               <div className={`text-[12px] font-bold w-6 h-6 flex items-center justify-center rounded-full mx-auto mb-0.5
-                ${isToday?'bg-[#0B5C43] text-white':isSun?'text-red-400':isSat?'text-blue-400':'text-[#333]'}`}>
+                ${isToday?'bg-[bg-primary] text-white':isSun?'text-red-400':isSat?'text-blue-400':'text-[#333]'}`}>
                 {day}
               </div>
               {dayEvents.slice(0,2).map(e=>{
@@ -83,7 +83,7 @@ export function MiniCalendar({ events }: Props) {
                 );
               })}
               {dayEvents.length > 2 && (
-                <div className="text-[9px] text-[#0B5C43] font-bold text-center">+{dayEvents.length-2}</div>
+                <div className="text-[9px] text-[bg-primary] font-bold text-center">+{dayEvents.length-2}</div>
               )}
             </div>
           );
@@ -92,7 +92,7 @@ export function MiniCalendar({ events }: Props) {
 
       {/* 하단 링크 */}
       <div className="px-4 py-3 border-t border-[#F0F0F0]">
-        <Link href="/calendar" className="block text-center text-[13px] font-bold text-[#0B5C43] hover:underline">
+        <Link href="/calendar" className="block text-center text-[13px] font-bold text-[bg-primary] hover:underline">
           월간 캘린더 전체 보기 ›
         </Link>
       </div>

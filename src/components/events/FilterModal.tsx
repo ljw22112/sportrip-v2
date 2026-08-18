@@ -18,7 +18,7 @@ export function FilterModal({open,onClose,region,setRegion,status,setStatus,date
       <div className="absolute inset-0 bg-black/50" onClick={onClose}/>
       <div className="relative bg-white w-full md:w-[540px] rounded-t-3xl md:rounded-3xl z-10 max-h-[90vh] flex flex-col">
         {/* 헤더 */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-[#EBEBEB]">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-border">
           <button onClick={onClose} className="p-2 hover:bg-[#F7F7F7] rounded-full transition-colors">
             <X className="w-5 h-5"/>
           </button>
@@ -37,12 +37,12 @@ export function FilterModal({open,onClose,region,setRegion,status,setStatus,date
                     'py-3 px-2 rounded-xl text-sm font-medium border transition-all text-center',
                     (region===r||(r==='전체 지역'&&!region))
                       ?'border-[#222222] bg-[#F7F7F7] font-semibold'
-                      :'border-[#EBEBEB] hover:border-[#AAAAAA]'
+                      :'border-border hover:border-[#AAAAAA]'
                   )}>{r}</button>
               ))}
             </div>
           </div>
-          <div className="border-t border-[#EBEBEB]"/>
+          <div className="border-t border-border"/>
           {/* 대회 상태 */}
           <div>
             <h3 className="font-semibold text-[#222222] mb-3">대회 상태</h3>
@@ -51,21 +51,21 @@ export function FilterModal({open,onClose,region,setRegion,status,setStatus,date
                 <button key={s.v} onClick={()=>setStatus(s.v)}
                   className={cn(
                     'flex-1 py-3 rounded-xl text-sm font-medium border transition-all',
-                    status===s.v?'border-[#222222] bg-[#F7F7F7] font-semibold':'border-[#EBEBEB] hover:border-[#AAAAAA]'
+                    status===s.v?'border-[#222222] bg-[#F7F7F7] font-semibold':'border-border hover:border-[#AAAAAA]'
                   )}>{s.l}</button>
               ))}
             </div>
           </div>
-          <div className="border-t border-[#EBEBEB]"/>
+          <div className="border-t border-border"/>
           {/* 날짜 */}
           <div>
             <h3 className="font-semibold text-[#222222] mb-3">대회 시작일 이후</h3>
             <input type="date" value={dateFrom} onChange={e=>setDateFrom(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-[#EBEBEB] text-sm outline-none focus:border-[#222222] transition-colors"/>
+              className="w-full px-4 py-3 rounded-xl border border-border text-sm outline-none focus:border-[#222222] transition-colors"/>
           </div>
         </div>
         {/* 하단 버튼 */}
-        <div className="flex items-center justify-between px-6 py-4 border-t border-[#EBEBEB]">
+        <div className="flex items-center justify-between px-6 py-4 border-t border-border">
           <button onClick={()=>{onReset();onClose();}}
             className="text-sm font-semibold text-[#222222] underline">전체 해제</button>
           <button onClick={onClose}
