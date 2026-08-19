@@ -70,13 +70,13 @@ export default function HomePage() {
         <section style={{background:'bg-primary'}}>
           <div className="max-w-[1760px] mx-auto px-5 md:px-10 py-12 md:py-16">
             <p className="text-[16px] md:text-[20px] font-bold text-[bg-accent] mb-3">전국 스포츠 대회 일정 + 개최지 여행 정보를 한곳에</p>
-            <h1 className="text-[28px] md:text-[40px] font-extrabold text-white tracking-tight leading-tight mb-4">
+            <h1 className="text-[28px] md:text-[42px] font-black tracking-[-0.04em] leading-tight mb-4 text-white">
               대회 보러 가는 길,<br/>
               <span className="text-[bg-accent]">그 지역까지 즐기고 오세요</span>
             </h1>
             <div className="flex items-center gap-2">
               <span className="text-[32px] font-black text-[bg-accent] tracking-tight">{dynEv.filter(e=>e.status!=='done').length}</span>
-              <span className="text-[16px] font-semibold text-white">개의 대회가 여러분을 기다리고 있어요</span>
+              <span className="text-[16px] font-semibold" style={{color:'rgba(255,255,255,0.6)'}}>개의 대회가 여러분을 기다리고 있어요</span>
             </div>
           </div>
         </section>

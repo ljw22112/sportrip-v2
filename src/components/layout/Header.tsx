@@ -27,47 +27,42 @@ export function Header({ showSearch=false }: { showSearch?: boolean }) {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-sm">
-      {/* ── 탑바 ── */}
+    <header className="sticky top-0 z-50" style={{background:'#0F0F0F'}}>
+      {/* 탑바 */}
       <div className="max-w-[1760px] mx-auto px-5 md:px-10">
-        <div className="flex items-center h-20 gap-6">
-          {/* 로고 */}
-          <Link href="/" className="flex-shrink-0 flex items-center gap-2">
-            <Image src="/logo.svg" alt="SporTrip" width={96} height={96} priority
-              className="h-24 w-24"/>
-            <span className="font-extrabold text-[22px] text-ink hidden md:block"
-              style={{letterSpacing:'-0.05em'}}>
-              스포트립
-            </span>
+        <div className="flex items-center h-16 gap-6">
+          <Link href="/" className="flex-shrink-0 flex items-center gap-2.5">
+            <Image src="/logo.svg" alt="SporTrip" width={36} height={36} priority className="h-9 w-9"/>
+            <span className="font-black text-[20px] tracking-[-0.05em]"
+              style={{color:'#D4FF3F'}}>SporTrip</span>
           </Link>
 
-          {/* 중앙 네비 — 햄버거 없이 전부 노출 */}
-          <nav className="hidden md:flex items-center gap-6 flex-1 justify-center">
-            <Link href="/events"
-              className="text-[14px] font-semibold text-[#333] hover:text-[bg-primary] transition-colors">
-              대회 찾기
-            </Link>
-            <Link href="/calendar"
-              className="text-[14px] font-semibold text-[#333] hover:text-[bg-primary] transition-colors">
-              캘린더
-            </Link>
-            <Link href="/saved"
-              className="text-[14px] font-semibold text-[#333] hover:text-[bg-primary] transition-colors">
-              저장한 대회
-            </Link>
-            <Link href="/about"
-              className="text-[14px] font-semibold text-[#333] hover:text-[bg-primary] transition-colors">
-              스포트립 소개
-            </Link>
+          {/* 중앙 네비 */}
+          <nav className="hidden md:flex items-center gap-1 flex-1 justify-center">
+            {[
+              {href:'/events', label:'대회 찾기'},
+              {href:'/calendar', label:'캘린더'},
+              {href:'/saved', label:'저장한 대회'},
+              {href:'/about', label:'스포트립 소개'},
+            ].map(n=>(
+              <Link key={n.href} href={n.href}
+                className="text-[13px] font-semibold px-3 py-2 rounded-lg transition-colors"
+                style={{color:'rgba(255,255,255,.55)'}}
+                onMouseEnter={e=>(e.currentTarget.style.color='#fff')}
+                onMouseLeave={e=>(e.currentTarget.style.color='rgba(255,255,255,.55)')}>
+                {n.label}
+              </Link>
+            ))}
           </nav>
 
-          {/* 우측 */}
           <div className="flex items-center gap-2 ml-auto md:ml-0">
-            <Link href="/saved" className="hidden md:flex items-center gap-1.5 text-[14px] font-semibold text-[bg-primary] hover:bg-[bg-primary-tint] px-3 py-2 rounded-full transition-colors">
+            <Link href="/saved" className="hidden md:flex items-center gap-1.5 text-[13px] font-semibold px-3 py-2 rounded-lg transition-colors"
+              style={{color:'rgba(255,255,255,.55)'}}>
               <Heart className="w-4 h-4"/> 저장
             </Link>
             <button onClick={() => setMobileSearchOpen(v=>!v)}
-              className="md:hidden w-9 h-9 flex items-center justify-center rounded-full border border-[#DDDDDD]">
+              className="md:hidden w-9 h-9 flex items-center justify-center rounded-lg"
+              style={{background:'rgba(255,255,255,.1)',color:'#fff'}}>
               {mobileSearchOpen ? <X className="w-4 h-4"/> : <Search className="w-4 h-4"/>}
             </button>
           </div>
@@ -76,9 +71,9 @@ export function Header({ showSearch=false }: { showSearch?: boolean }) {
 
       {showSearch && (
         <>
-          {/* ── 15개 종목 탭 ── */}
-          <div className="bg-white">
-            <nav className="max-w-[1760px] mx-auto px-5 md:px-10 flex overflow-x-auto py-3 gap-2"
+          {/* 종목 탭 */}
+          <div style={{background:'#1C1C1C', borderTop:'0.5px solid rgba(255,255,255,.08)'}}>
+            <nav className="max-w-[1760px] mx-auto px-5 md:px-10 flex overflow-x-auto py-2.5 gap-1.5"
               style={{scrollbarWidth:'none'}}>
               {SPORTS_15.map(sp=>{
                 const active = activeSport === sp.key;
@@ -86,13 +81,14 @@ export function Header({ showSearch=false }: { showSearch?: boolean }) {
                   <Link key={sp.key}
                     href={sp.key==='전체'?'/events':`/events?sport=${encodeURIComponent(sp.key)}`}
                     onClick={()=>setActiveSport(sp.key)}
-                    className={[
-                      'flex flex-col items-center justify-center gap-1 px-3 py-2.5 flex-shrink-0 rounded-2xl border-2 transition-all min-w-[64px]',
-                      active ? 'border-[bg-primary] bg-[bg-primary] shadow-md' : 'border-border bg-white hover:border-[bg-primary] hover:bg-[bg-primary-tint]'
-                    ].join(' ')}>
+                    className="flex flex-col items-center justify-center gap-1 px-3 py-2 flex-shrink-0 rounded-xl transition-all min-w-[60px]"
+                    style={active
+                      ? {background:'#D4FF3F'}
+                      : {background:'rgba(255,255,255,.06)'}}>
                     <img src={sp.icon} alt={sp.label}
-                      className={`w-9 h-9 object-contain ${active?'brightness-0 invert':''}`}/>
-                    <span className={`text-[11px] leading-tight text-center whitespace-nowrap ${active?'font-bold text-white':'font-semibold text-[#333]'}`}>
+                      className={`w-8 h-8 object-contain ${active?'':'brightness-0 invert opacity-70'}`}/>
+                    <span className="text-[10px] font-bold whitespace-nowrap"
+                      style={{color: active ? '#1A2E0A' : 'rgba(255,255,255,.6)'}}>
                       {sp.label}
                     </span>
                   </Link>
@@ -101,39 +97,43 @@ export function Header({ showSearch=false }: { showSearch?: boolean }) {
             </nav>
           </div>
 
-          {/* ── 검색바 ── */}
-          <div className="hidden md:block bg-white">
-            <div className="max-w-[1760px] mx-auto px-10 py-4">
+          {/* 검색바 */}
+          <div className="hidden md:block" style={{background:'#0F0F0F', borderTop:'0.5px solid rgba(255,255,255,.08)', paddingBottom:'12px'}}>
+            <div className="max-w-[1760px] mx-auto px-10 pt-3">
               <form onSubmit={handleSubmit}
-                className="flex items-stretch bg-white border-2 border-[#DDDDDD] rounded-2xl hover:border-[#222] transition-colors focus-within:border-[#222]"
-                style={{height:64}}>
-                <div className="flex-1 flex flex-col justify-center px-8 min-w-0">
-                  <label className="text-[11px] font-bold tracking-wider text-ink mb-0.5">대회 검색</label>
+                className="flex items-stretch rounded-xl overflow-hidden border"
+                style={{height:52, background:'#fff', borderColor:'#E0E0E0'}}>
+                <div className="flex-1 flex flex-col justify-center px-6 min-w-0">
+                  <label className="text-[10px] font-bold tracking-wider" style={{color:'#A0A0A0'}}>대회 검색</label>
                   <input value={region} onChange={e=>setRegion(e.target.value)}
-                    placeholder="지역명 또는 대회명으로 검색"
-                    className="text-[15px] text-muted bg-transparent outline-none placeholder:text-faint"/>
+                    placeholder="지역명 또는 대회명"
+                    className="text-[14px] bg-transparent outline-none placeholder:text-[#CCCCCC]"
+                    style={{color:'#0F0F0F'}}/>
                 </div>
-                <div className="w-px bg-[#EBEBEB] my-3"/>
-                <div className="flex-1 flex flex-col justify-center px-8 min-w-0">
-                  <label className="text-[11px] font-bold tracking-wider text-ink mb-0.5">날짜</label>
+                <div style={{width:'0.5px', background:'#E0E0E0', margin:'10px 0'}}/>
+                <div className="flex-1 flex flex-col justify-center px-6 min-w-0">
+                  <label className="text-[10px] font-bold tracking-wider" style={{color:'#A0A0A0'}}>날짜</label>
                   <select value={month} onChange={e=>setMonth(e.target.value)}
-                    className="text-[15px] text-muted bg-transparent outline-none cursor-pointer">
+                    className="text-[14px] bg-transparent outline-none cursor-pointer"
+                    style={{color:'#0F0F0F'}}>
                     <option value="">전체 기간</option>
                     {MONTHS.map(m=><option key={m} value={m}>{m}월</option>)}
                   </select>
                 </div>
-                <div className="w-px bg-[#EBEBEB] my-3"/>
-                <div className="flex-1 flex flex-col justify-center px-8 min-w-0">
-                  <label className="text-[11px] font-bold tracking-wider text-ink mb-0.5">종목</label>
+                <div style={{width:'0.5px', background:'#E0E0E0', margin:'10px 0'}}/>
+                <div className="flex-1 flex flex-col justify-center px-6 min-w-0">
+                  <label className="text-[10px] font-bold tracking-wider" style={{color:'#A0A0A0'}}>종목</label>
                   <select value={sportSel} onChange={e=>setSportSel(e.target.value)}
-                    className="text-[15px] text-muted bg-transparent outline-none cursor-pointer">
+                    className="text-[14px] bg-transparent outline-none cursor-pointer"
+                    style={{color:'#0F0F0F'}}>
                     {SPORTS_15.map(s=><option key={s.key} value={s.key}>{s.label}</option>)}
                   </select>
                 </div>
-                <div className="flex items-center px-4">
+                <div className="flex items-center px-3">
                   <button type="submit"
-                    className="flex items-center gap-2 bg-[bg-primary] hover:bg-[bg-primary-hover] text-white font-bold text-[15px] px-6 h-12 rounded-xl transition-colors">
-                    <Search className="w-5 h-5"/> 검색
+                    className="flex items-center gap-2 font-bold text-[14px] px-5 h-10 rounded-lg transition-all"
+                    style={{background:'#D4FF3F', color:'#1A2E0A'}}>
+                    <Search className="w-4 h-4"/> 검색
                   </button>
                 </div>
               </form>
@@ -142,24 +142,28 @@ export function Header({ showSearch=false }: { showSearch?: boolean }) {
 
           {/* 모바일 검색 */}
           {mobileSearchOpen && (
-            <div className="md:hidden bg-white px-4 py-4">
+            <div className="md:hidden px-4 py-4" style={{background:'#1C1C1C'}}>
               <form onSubmit={handleSubmit} className="space-y-3">
                 <input value={region} onChange={e=>setRegion(e.target.value)} autoFocus
                   placeholder="지역명 또는 대회명"
-                  className="w-full px-4 py-3.5 border-2 border-[#DDD] rounded-xl text-[15px] outline-none focus:border-[bg-primary]"/>
-                <div className="grid grid-cols-2 gap-3">
+                  className="w-full px-4 py-3 rounded-xl text-[14px] outline-none"
+                  style={{background:'rgba(255,255,255,.08)', color:'#fff', border:'0.5px solid rgba(255,255,255,.15)'}}/>
+                <div className="grid grid-cols-2 gap-2">
                   <select value={month} onChange={e=>setMonth(e.target.value)}
-                    className="px-3 py-3.5 border-2 border-[#DDD] rounded-xl text-[14px] bg-white">
+                    className="px-3 py-3 rounded-xl text-[13px] outline-none"
+                    style={{background:'rgba(255,255,255,.08)', color:'#fff', border:'0.5px solid rgba(255,255,255,.15)'}}>
                     <option value="">전체 기간</option>
                     {MONTHS.map(m=><option key={m} value={m}>{m}월</option>)}
                   </select>
                   <select value={sportSel} onChange={e=>setSportSel(e.target.value)}
-                    className="px-3 py-3.5 border-2 border-[#DDD] rounded-xl text-[14px] bg-white">
+                    className="px-3 py-3 rounded-xl text-[13px] outline-none"
+                    style={{background:'rgba(255,255,255,.08)', color:'#fff', border:'0.5px solid rgba(255,255,255,.15)'}}>
                     {SPORTS_15.map(s=><option key={s.key} value={s.key}>{s.label}</option>)}
                   </select>
                 </div>
                 <button type="submit"
-                  className="w-full py-4 bg-[bg-primary] text-white font-bold rounded-xl text-[15px]">
+                  className="w-full py-3.5 rounded-xl font-bold text-[14px]"
+                  style={{background:'#D4FF3F', color:'#1A2E0A'}}>
                   검색하기
                 </button>
               </form>

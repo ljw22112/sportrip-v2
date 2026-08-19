@@ -1,94 +1,96 @@
 @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800;900&display=swap');
 @import "tailwindcss";
 
-/* ── Trail Design System — Concept A ── */
+/* ── PITCH Design System — DS-2 ── */
 @theme {
-  /* ── 색상 팔레트 ── */
-  --color-primary:       #1B4332;
-  --color-primary-hover: #0D2B1F;
-  --color-primary-light: #2D6A4F;
-  --color-primary-tint:  #E7F2EC;
+  /* ── 팔레트 ── */
+  --color-ink:          #0F0F0F;
+  --color-ink-90:       #1C1C1C;
+  --color-ink-80:       #2E2E2E;
+  --color-ink-60:       #6A6A6A;
+  --color-ink-40:       #A0A0A0;
+  --color-ink-20:       #CCCCCC;
+  --color-ink-10:       #E8E8E8;
+  --color-ink-05:       #F5F5F5;
 
-  --color-accent:        #D4FF3F;
-  --color-accent-dark:   #BCE020;
-  --color-accent-ink:    #1A2E0A;
+  --color-lime:         #D4FF3F;
+  --color-lime-dark:    #BCE020;
+  --color-lime-ink:     #1A2E0A;
+  --color-lime-tint:    #F0FFB0;
 
-  --color-bg:            #F8F7F2;
-  --color-bg-warm:       #F0EDE8;
-  --color-bg-card:       #FFFFFF;
+  --color-white:        #FFFFFF;
 
-  --color-ink:           #1B1F1D;
-  --color-ink-secondary: #3D405B;
-  --color-muted:         #9B9B7A;
-  --color-faint:         #C4C3B8;
+  /* ── 시맨틱 ── */
+  --color-bg:           #F5F5F5;
+  --color-surface:      #FFFFFF;
+  --color-surface-muted:#E8E8E8;
+  --color-header:       #0F0F0F;
+  --color-hero:         #1C1C1C;
 
-  --color-border:        #E5E3DC;
-  --color-border-strong: #CDCBC2;
+  --color-text:         #0F0F0F;
+  --color-text-secondary: #6A6A6A;
+  --color-text-muted:   #A0A0A0;
+  --color-text-disabled: #CCCCCC;
 
-  --color-danger:        #C0392B;
-  --color-danger-tint:   #FDEDEC;
-  --color-warning:       #E67E22;
-  --color-warning-tint:  #FEF9E7;
-  --color-success:       #1B4332;
-  --color-success-tint:  #E7F2EC;
+  --color-border:       #E0E0E0;
+  --color-border-strong:#CCCCCC;
 
-  /* ── 타이포그래피 ── */
+  --color-cta:          #D4FF3F;
+  --color-cta-hover:    #BCE020;
+  --color-cta-ink:      #1A2E0A;
+
+  --color-danger:       #E53E3E;
+  --color-danger-tint:  #FFF5F5;
+  --color-success:      #2D6A4F;
+  --color-success-tint: #F0FFF4;
+  --color-warning:      #D69E2E;
+  --color-warning-tint: #FFFFF0;
+
+  /* ── 타이포 ── */
   --font-sans: 'Pretendard', -apple-system, sans-serif;
 
-  --text-xs:   12px;
-  --text-sm:   13px;
-  --text-base: 15px;
-  --text-md:   17px;
-  --text-lg:   20px;
-  --text-xl:   26px;
-  --text-2xl:  34px;
-  --text-3xl:  48px;
-
-  /* ── 간격 ── */
-  --radius-sm:   8px;
-  --radius-md:   12px;
-  --radius-lg:   16px;
+  /* ── 여백 ── */
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   14px;
   --radius-full: 9999px;
 
   /* ── 그림자 ── */
-  --shadow-sm: 0 1px 2px rgba(27,67,50,.06), 0 4px 14px rgba(27,67,50,.06);
-  --shadow-md: 0 2px 6px rgba(27,67,50,.08), 0 12px 32px rgba(27,67,50,.12);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+  --shadow-md: 0 4px 12px rgba(0,0,0,.1), 0 2px 4px rgba(0,0,0,.06);
 }
 
-/* ── 기본 초기화 ── */
 *, *::before, *::after { box-sizing: border-box; }
 
 body {
   font-family: var(--font-sans);
   background: var(--color-bg);
-  color: var(--color-ink);
+  color: var(--color-text);
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 a { color: inherit; text-decoration: none; }
 button { font-family: inherit; cursor: pointer; border: 0; background: none; color: inherit; }
 input, select, textarea { font-family: inherit; color: inherit; }
 
-/* ── 유틸리티 ── */
 @keyframes shimmer { 0%,100%{opacity:.55} 50%{opacity:1} }
 .animate-shimmer { animation: shimmer 1.4s infinite; }
 
-/* ── 구 변수 호환 (레거시 컴포넌트) ── */
+/* ── 레거시 변수 호환 ── */
 :root {
-  --green:       var(--color-primary);
-  --green-deep:  var(--color-primary-hover);
-  --green-tint:  var(--color-primary-tint);
-  --lime:        var(--color-accent);
-  --lime-ink:    var(--color-accent-ink);
-  --signal:      var(--color-danger);
-  --ink:         var(--color-ink);
-  --muted:       var(--color-muted);
-  --paper:       var(--color-bg-card);
-  --gray:        var(--color-bg);
-  --line:        var(--color-border);
-  --line-soft:   var(--color-border);
-  --shadow-1:    var(--shadow-sm);
-  --shadow-2:    var(--shadow-md);
+  --green:      #2D6A4F;
+  --green-deep: #1A4332;
+  --green-tint: #F0FFF4;
+  --lime:       var(--color-lime);
+  --lime-ink:   var(--color-lime-ink);
+  --signal:     var(--color-danger);
+  --ink:        var(--color-text);
+  --muted:      var(--color-text-muted);
+  --paper:      var(--color-surface);
+  --gray:       var(--color-bg);
+  --line:       var(--color-border);
+  --line-soft:  var(--color-border);
+  --shadow-1:   var(--shadow-sm);
+  --shadow-2:   var(--shadow-md);
 }

@@ -41,10 +41,10 @@ export function EventCard({ event }: { event: SportEvent }) {
         {event.status !== 'done' && (
           <div className="absolute top-0 left-0 right-0 flex items-center justify-center gap-2 pt-3 z-10">
             <span className="text-[26px] font-black tracking-tighter leading-none"
-              style={{color: sport?.color || '#555'}}>
+              style={{color:'#0F0F0F', fontVariantNumeric:'tabular-nums'}}>
               {calcDday(event.start)}
             </span>
-            <span className="text-[13px] font-bold text-[#555] mt-1">{event.region}</span>
+            <span className="text-[11px] font-semibold mt-1" style={{color:'#A0A0A0'}}>{event.region}</span>
           </div>
         )}
         {/* 종목 캐릭터 SVG */}
@@ -75,17 +75,19 @@ export function EventCard({ event }: { event: SportEvent }) {
       {/* 텍스트 */}
       <Link href={`/events/${event.id}`} className="block pt-2 px-0.5">
         <div className="font-bold text-[14px] text-ink truncate leading-tight">{event.title}</div>
-        <div className="text-[12px] text-muted mt-0.5 leading-tight">{event.region} · {event.sport} · {fmtDate(event.start)}</div>
+        <div className="text-[11px] mt-0.5 leading-tight" style={{color:'#A0A0A0'}}>{event.region} · {event.sport} · {fmtDate(event.start)}</div>
         <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
           {(() => {
             const regStatus = calcRegistrationStatus(event.start);
             const regLabel = REG_STATUS_LABELS[regStatus];
-            return <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{color:regLabel.color,background:regLabel.bg}}>{regLabel.text}</span>;
+            return regStatus === 'closing'
+              ? <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{background:'#D4FF3F',color:'#1A2E0A'}}>{regLabel.text}</span>
+              : <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{color:regLabel.color,background:regLabel.bg}}>{regLabel.text}</span>;
           })()}
           {(() => {
             const vs = calcVerified(event.id, event.url||'');
             const vl = VERIFIED_LABELS[vs];
-            return <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{color:vl.color,background:vl.bg}}>{vl.text}</span>;
+            return vs === 'verified' ? <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{background:'#F0F0F0',color:'#6A6A6A'}}>{vl.text}</span> : null;
           })()}
 
         </div>
