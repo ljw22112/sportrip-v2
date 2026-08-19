@@ -1,0 +1,44 @@
+name: 전국대회정보 수집 및 업데이트
+
+on:
+  schedule:
+    - cron: '0 8 * * *'  # 매일 17:00 KST (08:00 UTC)
+  workflow_dispatch:      # 수동 실행 가능
+
+jobs:
+  fetch-events:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 소스 체크아웃
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Node.js 24 설정
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: 의존성 설치
+        run: npm ci
+
+      - name: 공공데이터 대회 정보 수집
+        env:
+          DATA_GO_KR_KEY: ${{ secrets.DATA_GO_KR_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPO: ${{ github.repository }}
+        run: node scripts/fetch-events.js
+
+      - name: 변경사항 확인 및 커밋
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add src/lib/data.ts
+          if git diff --staged --quiet; then
+            echo "변경사항 없음"
+          else
+            git commit -m "chore: 전국대회정보 자동 업데이트 $(date +'%Y-%m-%d')"
+            git push
+          fi
