@@ -50,9 +50,9 @@ export default function AboutPage() {
       <main>
 
         {/* ── 히어로 ── */}
-        <section style={{background:'linear-gradient(135deg,bg-primary 0%,#0F7A5A 60%,#145A3A 100%)'}}>
+        <section style={{background:'#1C1C1C'}}>
           <div className="max-w-[1760px] mx-auto px-6 md:px-20 py-16 md:py-24">
-            <div className="inline-flex items-center gap-2 bg-white/15 text-white text-[13px] font-semibold px-4 py-1.5 rounded-full mb-6 backdrop-blur-sm">
+            <div className="inline-flex items-center gap-2 text-[13px] font-semibold px-4 py-1.5 rounded-full mb-6" style={{background:"rgba(212,255,63,0.15)",color:"#D4FF3F"}}>
               <SportripIcon name="contest" size={15} className="text-[bg-accent]"/>
               2026 한국관광공사 관광데이터 활용 공모전 출품작
             </div>
@@ -60,7 +60,7 @@ export default function AboutPage() {
               대회 보러 가는 길,<br/>
               <span className="text-[bg-accent]">그 지역까지</span> 즐기고 오세요
             </h1>
-            <p className="text-white/75 text-[16px] md:text-[18px] mb-8 max-w-[560px] leading-relaxed">
+            <p className="text-[16px] md:text-[18px] mb-8 max-w-[560px] leading-relaxed" style={{color:"rgba(255,255,255,0.6)"}}>
               전국 스포츠 대회 일정과 개최지 주변 관광 정보를 한 번에 제공하는<br className="hidden md:block"/> 스포츠 관광 플랫폼입니다.
             </p>
             <div className="flex flex-wrap gap-3">
@@ -69,7 +69,7 @@ export default function AboutPage() {
                 대회 찾아보기
               </Link>
               <Link href="/calendar"
-                className="px-7 py-3.5 border-2 border-white/40 text-white font-bold text-[15px] rounded-xl hover:bg-white/10 transition-colors">
+                className="px-7 py-3.5 border-2 font-bold text-[15px] rounded-xl hover:bg-white/10 transition-colors" style={{borderColor:"rgba(255,255,255,0.3)",color:"#fff"}}>
                 캘린더 보기
               </Link>
             </div>

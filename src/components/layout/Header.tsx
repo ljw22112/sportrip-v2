@@ -32,7 +32,7 @@ export function Header({ showSearch=false }: { showSearch?: boolean }) {
       <div className="max-w-[1760px] mx-auto px-5 md:px-10">
         <div className="flex items-center h-16 gap-6">
           <Link href="/" className="flex-shrink-0 flex items-center gap-2.5">
-            <Image src="/logo.svg" alt="SporTrip" width={36} height={36} priority className="h-9 w-9"/>
+            <Image src="/logo.svg" alt="SporTrip" width={36} height={36} priority className="h-9 w-9 brightness-0 invert"/>
             <span className="font-black text-[20px] tracking-[-0.05em]"
               style={{color:'#D4FF3F'}}>SporTrip</span>
           </Link>

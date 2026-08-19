@@ -64,18 +64,18 @@ export default function HomePage() {
   return (
     <>
       <Header showSearch/>
-      <main style={{background:'bg-bg'}}>
+      <main style={{background:'#F5F5F5'}}>
 
         {/* ── 히어로 ── */}
-        <section style={{background:'bg-primary'}}>
+        <section style={{background:'#1C1C1C'}}>
           <div className="max-w-[1760px] mx-auto px-5 md:px-10 py-12 md:py-16">
-            <p className="text-[16px] md:text-[20px] font-bold text-[bg-accent] mb-3">전국 스포츠 대회 일정 + 개최지 여행 정보를 한곳에</p>
+            <p className="text-[16px] md:text-[20px] font-bold text-[#D4FF3F] mb-3">전국 스포츠 대회 일정 + 개최지 여행 정보를 한곳에</p>
             <h1 className="text-[28px] md:text-[42px] font-black tracking-[-0.04em] leading-tight mb-4 text-white">
               대회 보러 가는 길,<br/>
-              <span className="text-[bg-accent]">그 지역까지 즐기고 오세요</span>
+              <span className="text-[#D4FF3F]">그 지역까지 즐기고 오세요</span>
             </h1>
             <div className="flex items-center gap-2">
-              <span className="text-[32px] font-black text-[bg-accent] tracking-tight">{dynEv.filter(e=>e.status!=='done').length}</span>
+              <span className="text-[32px] font-black text-[#D4FF3F] tracking-tight">{dynEv.filter(e=>e.status!=='done').length}</span>
               <span className="text-[16px] font-semibold" style={{color:'rgba(255,255,255,0.6)'}}>개의 대회가 여러분을 기다리고 있어요</span>
             </div>
           </div>
@@ -86,7 +86,7 @@ export default function HomePage() {
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-[20px] font-extrabold tracking-tight">지도로 한눈에 보기</h2>
             <Link href="/calendar"
-              className="flex items-center gap-2 bg-[bg-primary] text-white font-bold text-[14px] px-5 py-2.5 rounded-xl hover:bg-[bg-primary-hover] transition-colors">
+              className="flex items-center gap-2 bg-[#0F0F0F] text-white font-bold text-[14px] px-5 py-2.5 rounded-xl hover:hover:bg-[#2E2E2E] transition-colors">
               <CalendarDays className="w-4 h-4"/>
               캘린더 보기
             </Link>
@@ -119,7 +119,7 @@ export default function HomePage() {
                   className="rounded-xl py-3 px-2 text-center transition-all hover:bg-[bg-primary-tint] hover:shadow-sm border border-[#E0E0E0]"
                   style={{background:'transparent'}}>
                   <b className="block text-[15px] font-extrabold text-ink">{r}</b>
-                  <span className={`text-[11px] block font-bold mt-0.5 ${cnt?'text-[bg-primary]':'text-[#CCCCCC]'}`}>
+                  <span className={`text-[11px] block font-bold mt-0.5 ${cnt?'text-[#0F0F0F]':'text-[#CCCCCC]'}`}>
                     {cnt?`${cnt}개`:'없음'}
                   </span>
                 </button>
@@ -129,7 +129,7 @@ export default function HomePage() {
         </section>
 
         {/* ── 관광정보 KTO ── */}
-        <section style={{background:'bg-bg-warm'}}>
+        <section style={{background:'#E8E8E8'}}>
           <div className="max-w-[1760px] mx-auto px-5 md:px-10 py-8">
             <div className="flex flex-col md:flex-row gap-4 mb-6">
               <div className="flex-1 bg-white rounded-2xl px-6 py-5 flex items-center justify-between">
@@ -148,7 +148,7 @@ export default function HomePage() {
             <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
               {KTO_LINKS.map(([name,url])=>(
                 <a key={name} href={url} target="_blank" rel="noopener"
-                  className="bg-white rounded-xl px-4 py-3 text-[13px] font-medium text-[bg-primary] hover:bg-[bg-primary-tint] transition-colors">
+                  className="bg-white rounded-xl px-4 py-3 text-[13px] font-medium text-[#0F0F0F] hover:bg-[bg-primary-tint] transition-colors">
                   {name} ↗
                 </a>
               ))}
@@ -157,11 +157,11 @@ export default function HomePage() {
         </section>
 
         {/* ── 푸터 ── */}
-        <footer style={{background:'#1B1F1D'}} className="text-faint text-[13px]">
+        <footer style={{background:'#0F0F0F',color:'rgba(255,255,255,0.75)'}} className="text-[13px]">
           <div className="max-w-[1760px] mx-auto px-5 md:px-10 py-8 flex flex-wrap gap-6 items-start">
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <img src="/logo.svg" alt="" className="h-8 w-8"/>
+                <img src="/logo.svg" alt="" className="h-8 w-8 brightness-0 invert"/>
                 <span className="font-extrabold text-[18px] text-white tracking-[-0.05em]">스포트립</span>
               </div>
               <p className="text-[12px]">SporTrip · 2026 관광데이터 활용 공모전</p>
@@ -173,7 +173,7 @@ export default function HomePage() {
               예정 대회 {dynEv.filter(e=>e.status!=='done').length}건
             </div>
           </div>
-          <div className="px-5 md:px-10 py-3 text-center text-[12px] text-[#555]">
+          <div className="px-5 md:px-10 py-3 text-center text-[12px]" style={{color:'rgba(255,255,255,0.35)',borderTop:'0.5px solid rgba(255,255,255,0.08)'}}>
             © 2026 스포트립
           </div>
         </footer>
