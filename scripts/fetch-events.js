@@ -149,7 +149,7 @@ function normalizeTitle(title) {
 }
 
 // 중복 키 생성 — 정규화된 제목 + 시작일 + 지역
-function dedupKey(title, start, region) {
+function dedupKey(title, start, evRgn) {
   return `${normalizeTitle(title)}|${start}|${region}`;
 }
 
@@ -234,7 +234,6 @@ function merge(rawItems) {
     process.exit(added > 0 ? 0 : 2);
   } catch (err) {
     console.error('❌ 오류:', err.message);
-    console.error('스택:', err.stack);
     process.exit(1);
   }
 })();
