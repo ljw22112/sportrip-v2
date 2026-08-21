@@ -185,20 +185,20 @@ function merge(rawItems) {
     if (!title || title.length < 2)  { skipped++; continue; }
     if (!start || start.length < 10) { skipped++; continue; }
     if (end < cutoffStr)             { skipped++; continue; }
-    const region = extractRegion(venue, title);
+    const evRegion = extractRegion(venue, title);
     // 3중 중복 체크: 제목 + 날짜 + 지역
-    const dk = dedupKey(title, start, region);
+    const dk = dedupKey(title, start, evRegion);
     if (existingTitles.has(title) || existingDedupKeys.has(dk)) { skipped++; continue; }
     const sport  = extractSport(title);
-    const coords = REGION_COORDS[region] || REGION_COORDS['기타'];
+    const coords = REGION_COORDS[evRegion] || REGION_COORDS['기타'];
     const status = calcStatus(start, end);
     const icon   = SPORT_ICON[sport] || '🏆';
     const safe   = s => String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
 
     lines.push(
       `  {id:${nextId++},title:'${safe(title)}',sport:'${sport}',icon:'${icon}',` +
-      `venue:'${safe(venue||region)}',address:'${safe(region)}',` +
-      `start:'${start}',end:'${end}',status:'${status}',region:'${region}',` +
+      `venue:'${safe(venue||evRegion)}',address:'${safe(evRegion)}',` +
+      `start:'${start}',end:'${end}',status:'${status}',region:'${evRegion}',` +
       `desc:'${safe(title)}. 주관: ${safe(org||'미확인')}.',url:'${safe(url)}',` +
       `participants:'미정',lat:${coords[0]},lng:${coords[1]},distances:''},`
     );
