@@ -51,7 +51,7 @@ function httpsGet(pageNo) {
       path: `${BASE_PATH}?${qs}`,
       method: 'GET',
       headers: { 'Accept': 'application/json' },
-      timeout: 20000,
+      timeout: 60000,
     };
 
     const req = https.request(options, res => {
@@ -88,6 +88,18 @@ function calcStatus(start, end) {
   return 'upcoming';
 }
 
+async function fetchWithRetry(fn, retries = 3) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      return await fn();
+    } catch (e) {
+      if (i === retries - 1) throw e;
+      console.log(`  ⚠️  재시도 ${i+1}/${retries-1}...`);
+      await new Promise(r => setTimeout(r, 2000 * (i + 1)));
+    }
+  }
+}
+
 async function fetchPage(pageNo) {
   const json = await httpsGet(pageNo);
 
@@ -106,7 +118,7 @@ async function fetchPage(pageNo) {
 
 async function fetchAll() {
   console.log('📡 1페이지 수집 중...');
-  const first = await fetchPage(1);
+  const first = await fetchWithRetry(() => fetchPage(1));
   console.log(`   전체: ${first.total}건`);
 
   const all = [...first.items];
@@ -115,9 +127,9 @@ async function fetchAll() {
   for (let p = 2; p <= Math.min(totalPages, 30); p++) {
     process.stdout.write(`   ${p}/${totalPages} 페이지...\r`);
     try {
-      const { items } = await fetchPage(p);
+      const { items } = await fetchWithRetry(() => fetchPage(p));
       all.push(...items);
-      await new Promise(r => setTimeout(r, 300));
+      await new Promise(r => setTimeout(r, 500));
     } catch (e) {
       console.warn(`\n   ⚠️  ${p}페이지 오류: ${e.message}`);
     }
@@ -173,11 +185,10 @@ function merge(rawItems) {
     if (!title || title.length < 2)  { skipped++; continue; }
     if (!start || start.length < 10) { skipped++; continue; }
     if (end < cutoffStr)             { skipped++; continue; }
+    const region = extractRegion(venue, title);
     // 3중 중복 체크: 제목 + 날짜 + 지역
     const dk = dedupKey(title, start, region);
     if (existingTitles.has(title) || existingDedupKeys.has(dk)) { skipped++; continue; }
-
-    const region = extractRegion(venue, title);
     const sport  = extractSport(title);
     const coords = REGION_COORDS[region] || REGION_COORDS['기타'];
     const status = calcStatus(start, end);

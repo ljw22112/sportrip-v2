@@ -44,6 +44,7 @@ export function AICourseSection({ eventTitle, region, venue, date, sport, lat, l
   const [error, setError] = useState('');
   const [openDay, setOpenDay] = useState<number | null>(0);
   const [generated, setGenerated] = useState(false);
+  const [meta, setMeta] = useState<{nearbySpots:number;verified:number;total:number;verifiedRatio:number}|null>(null);
 
   const generate = async () => {
     setLoading(true);
@@ -76,10 +77,12 @@ export function AICourseSection({ eventTitle, region, venue, date, sport, lat, l
       if (!data.ok) throw new Error(data.error || 'AI 응답 오류');
 
       setCourse(data.course);
+      if (data.meta) setMeta(data.meta);
       setGenerated(true);
       setOpenDay(0);
     } catch (e) {
-      setError('코스 생성 중 오류가 발생했어요. 다시 시도해주세요.');
+      const errMsg = e instanceof Error ? e.message : String(e);
+      setError(`오류: ${errMsg}`);
     } finally {
       setLoading(false);
     }
@@ -200,6 +203,14 @@ export function AICourseSection({ eventTitle, region, venue, date, sport, lat, l
             <p className="text-[13px] text-[#7D5A00] font-medium">{course.tip}</p>
           </div>
 
+          {/* 검증 메타 */}
+          {meta && (
+            <div className="flex items-center gap-3 mt-3 text-[11px]" style={{color:'#A0A0A0'}}>
+              <span>주변 관광지 {meta.nearbySpots}건 분석</span>
+              <span>·</span>
+              <span>TourAPI 검증 {meta.verified}/{meta.total}곳 ({meta.verifiedRatio}%)</span>
+            </div>
+          )}
           {/* 다시 생성 */}
           <button onClick={()=>{setCourse(null);setGenerated(false);}}
             className="mt-3 flex items-center gap-1.5 text-[12px] text-muted hover:text-[bg-primary] transition-colors">

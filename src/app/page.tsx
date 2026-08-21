@@ -70,7 +70,7 @@ export default function HomePage() {
         <section style={{background:'#1C1C1C'}}>
           <div className="max-w-[1760px] mx-auto px-5 md:px-10 py-12 md:py-16">
             <p className="text-[16px] md:text-[20px] font-bold text-[#D4FF3F] mb-3">전국 스포츠 대회 일정 + 개최지 여행 정보를 한곳에</p>
-            <h1 className="text-[28px] md:text-[42px] font-black tracking-[-0.04em] leading-tight mb-4 text-white">
+            <h1 className="text-[28px] md:text-[48px] font-black tracking-[-0.04em] leading-tight mb-4 text-white">
               대회 보러 가는 길,<br/>
               <span className="text-[#D4FF3F]">그 지역까지 즐기고 오세요</span>
             </h1>
@@ -108,7 +108,7 @@ export default function HomePage() {
 
         {/* ── 지역별 둘러보기 ── */}
         <section className="max-w-[1760px] mx-auto px-5 md:px-10 py-8">
-          <h2 className="text-[20px] md:text-[22px] font-extrabold tracking-tight mb-1">지역별로 둘러보기</h2>
+          <h2 className="text-[22px] md:text-[26px] font-extrabold tracking-tight mb-1">지역별로 둘러보기</h2>
           <p className="text-muted text-[14px] mb-5">가고 싶은 지역을 선택하면 그 지역의 대회를 모아 보여드립니다.</p>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-3">
             {REGIONS_LIST.map(r=>{

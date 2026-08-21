@@ -30,9 +30,19 @@ export function TourSection({ title, icon, sampleItems, lat, lng, contentTypeId,
       try {
         const res = await fetch(`/api/tour?lat=${lat}&lng=${lng}&type=${contentTypeId}`, { signal: controller.signal });
         const data = await res.json();
-        if (data.items?.length > 0) { setApiItems(data.items); setSource('api'); }
-        else setSource('sample');
-      } catch { setSource('error'); }
+        if (data.items?.length > 0) {
+          setApiItems(data.items);
+          setSource('api');
+        } else if (data.error) {
+          console.warn('TourAPI 오류:', data.error);
+          setSource('sample');
+        } else {
+          setSource('sample');
+        }
+      } catch (e) {
+        console.warn('TourSection fetch 오류:', e);
+        setSource('error');
+      }
       finally { setLoading(false); }
     })();
     return () => controller.abort();
@@ -83,8 +93,11 @@ export function TourSection({ title, icon, sampleItems, lat, lng, contentTypeId,
               const card = (
                 <div key={i}
                   className={`bg-[#F7F7F6] border border-border rounded-xl overflow-hidden transition-all
-                    ${url ? 'cursor-pointer hover:border-[bg-primary] hover:shadow-sm' : ''}`}
-                  onClick={() => url && window.open(url, '_blank')}>
+                    cursor-pointer hover:border-[bg-primary] hover:shadow-sm`}
+                  onClick={() => {
+                    if (url) window.open(url, '_blank');
+                    else window.open(`https://search.naver.com/search.naver?query=${encodeURIComponent(name)}`, '_blank');
+                  }}>
                   {img && (
                     <img src={img} alt={name} className="w-full h-24 object-cover"/>
                   )}

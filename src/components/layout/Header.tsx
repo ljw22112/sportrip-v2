@@ -1,16 +1,23 @@
 'use client';
 import Link from 'next/link';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { Search, Heart, X } from 'lucide-react';
 import { SPORTS_15 } from '@/lib/sports';
 
 const MONTHS = [8,9,10,11,12,3,4];
 
-export function Header({ showSearch=false }: { showSearch?: boolean }) {
+function HeaderInner({ showSearch=false }: { showSearch?: boolean }) {
   const router = useRouter();
-  const [activeSport, setActiveSport] = useState('전체');
+  const searchParams = useSearchParams();
+  const urlSport = searchParams.get('sport') || '전체';
+  const [activeSport, setActiveSport] = useState(urlSport);
+
+  // URL 변경 시 탭 상태 동기화
+  useEffect(() => {
+    setActiveSport(searchParams.get('sport') || '전체');
+  }, [searchParams]);
   const [region, setRegion] = useState('');
   const [month, setMonth] = useState('');
   const [sportSel, setSportSel] = useState('전체');
@@ -40,10 +47,10 @@ export function Header({ showSearch=false }: { showSearch?: boolean }) {
           {/* 중앙 네비 */}
           <nav className="hidden md:flex items-center gap-1 flex-1 justify-center">
             {[
+              {href:'/about', label:'스포트립 소개'},
               {href:'/events', label:'대회 찾기'},
               {href:'/calendar', label:'캘린더'},
               {href:'/saved', label:'저장한 대회'},
-              {href:'/about', label:'스포트립 소개'},
             ].map(n=>(
               <Link key={n.href} href={n.href}
                 className="text-[13px] font-semibold px-3 py-2 rounded-lg transition-colors"
@@ -172,5 +179,17 @@ export function Header({ showSearch=false }: { showSearch?: boolean }) {
         </>
       )}
     </header>
+  );
+}
+
+export function Header({ showSearch=false }: { showSearch?: boolean }) {
+  return (
+    <Suspense fallback={
+      <header style={{background:'#0F0F0F'}} className="sticky top-0 z-50 h-16 flex items-center px-5 md:px-10">
+        <span className="font-black text-[20px] tracking-[-0.05em]" style={{color:'#D4FF3F'}}>SporTrip</span>
+      </header>
+    }>
+      <HeaderInner showSearch={showSearch}/>
+    </Suspense>
   );
 }

@@ -27,6 +27,11 @@ function EventsContent() {
   const params = useSearchParams();
   const [tab, setTab] = useState<Tab>('all');
   const [sport, setSport] = useState(params.get('sport')||'');
+
+  // URL 파라미터 변경 시 필터 동기화
+  useEffect(() => {
+    setSport(params.get('sport') || '');
+  }, [params]);
   const [keyword, setKeyword] = useState(params.get('q')||'');
   const [region, setRegion] = useState(params.get('region')||'');
   const [status, setStatus] = useState('');
@@ -70,22 +75,6 @@ function EventsContent() {
         <div className={`flex-1 min-w-0 ${showMap&&!isMobile?'max-w-[calc(100%-400px)]':''}`}>
           <div className="px-4 md:px-10 py-5">
 
-            {/* 15개 종목 칩 */}
-            <div className="flex flex-wrap gap-2 mb-5 pb-1 pt-1">
-              {SPORTS_15.map(sp=>{
-                const active = sport===sp.key||(sp.key==='전체'&&!sport);
-                return (
-                  <button key={sp.key} onClick={()=>setSport(sp.key==='전체'?'':sp.key)}
-                    className={`flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] md:text-[13px] font-bold border-2 transition-all
-                      ${active ? 'text-white border-transparent' : 'bg-white text-[#333] border-[#E0E0E0] hover:border-[#333]'}`}
-                    style={active ? {background:sp.color, borderColor:sp.color} : {}}>
-                    <img src={sp.icon} alt={sp.label}
-                      className={`w-5 h-5 md:w-6 md:h-6 object-contain flex-shrink-0 ${active?'brightness-0 invert':''}`}/>
-                    <span>{sp.label}</span>
-                  </button>
-                );
-              })}
-            </div>
 
             {/* 검색 + 필터 + 지도토글 */}
             <div className="flex gap-2 mb-4">
