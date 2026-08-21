@@ -234,6 +234,7 @@ function merge(rawItems) {
     process.exit(added > 0 ? 0 : 2);
   } catch (err) {
     console.error('❌ 오류:', err.message);
+    console.error('스택:', err.stack);
     process.exit(1);
   }
 })();
