@@ -16,7 +16,7 @@ const REGION_POS: Record<string,[number,number]> = {
 
 const CLUSTER_COLORS = [
   '#E4572E','#2E86C1','#27AE60','#8E44AD','#D4AC0D',
-  '#C0392B','#16A085','#E67E22','#2980B9','#8E44AD',
+  '#C0392B','#16A085','#D4FF3F','#2980B9','#8E44AD',
 ];
 
 // SPORTS_15 직접 사용

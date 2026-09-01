@@ -25,8 +25,34 @@ function fmtDate(ds:string){
 
 export default function CalendarPage() {
   const today = new Date();
-  const [year,  setYear]  = useState(today.getFullYear());
-  const [month, setMonth] = useState(today.getMonth());
+  // 3. 당월 잔여 대회가 없으면 다음 달 기본 표시
+  const initialMonth = (() => {
+    const m = today.getMonth();
+    const y = today.getFullYear();
+    const todayStr = today.toISOString().slice(0,10);
+    const allEv = getDynamicEvents();
+    const hasRemainingThisMonth = allEv.some(e =>
+      new Date(e.start).getFullYear() === y &&
+      new Date(e.start).getMonth() === m &&
+      e.start >= todayStr && e.status !== 'done'
+    );
+    return hasRemainingThisMonth ? m : (m + 1) % 12;
+  })();
+  const initialYear = (() => {
+    const m = today.getMonth();
+    const nextM = (m + 1) % 12;
+    const allEv = getDynamicEvents();
+    const todayStr = today.toISOString().slice(0,10);
+    const hasRemainingThisMonth = allEv.some(e =>
+      new Date(e.start).getFullYear() === today.getFullYear() &&
+      new Date(e.start).getMonth() === m &&
+      e.start >= todayStr && e.status !== 'done'
+    );
+    if (hasRemainingThisMonth) return today.getFullYear();
+    return nextM === 0 ? today.getFullYear() + 1 : today.getFullYear();
+  })();
+  const [year,  setYear]  = useState(initialYear);
+  const [month, setMonth] = useState(initialMonth);
   const [activeSport, setActiveSport] = useState('전체');
 
   const allEvents = getDynamicEvents();
@@ -252,7 +278,7 @@ export default function CalendarPage() {
                     <div className="text-xs text-muted mt-0.5">{e.region} · {e.sport} · {e.participants}</div>
                   </div>
                   <div className="flex items-center gap-3 flex-shrink-0">
-                    <span className="text-xl">{SPORTS_15.find(s=>s.label===e.sport)?.icon||'/icons/etc.svg'}</span>
+                    <img src={SPORTS_15.find(s=>s.label===e.sport)?.icon||'/icons/etc.png'} alt={e.sport} className="w-5 h-5 object-contain flex-shrink-0"/>
                     <span className="text-xs text-muted">{e.start}</span>
                   </div>
                 </Link>

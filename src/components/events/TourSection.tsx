@@ -21,7 +21,7 @@ interface Props {
 export function TourSection({ title, icon, sampleItems, lat, lng, contentTypeId, barrierFree }: Props) {
   const [apiItems, setApiItems] = useState<ApiSpot[]>([]);
   const [loading, setLoading] = useState(true);
-  const [source, setSource] = useState<'sample'|'api'|'error'>('sample');
+  const [source, setSource] = useState<'sample'|'api'|'error'|'empty'>('sample');
   const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
@@ -30,9 +30,20 @@ export function TourSection({ title, icon, sampleItems, lat, lng, contentTypeId,
       try {
         const res = await fetch(`/api/tour?lat=${lat}&lng=${lng}&type=${contentTypeId}`, { signal: controller.signal });
         const data = await res.json();
-        if (data.items?.length > 0) { setApiItems(data.items); setSource('api'); }
-        else setSource('sample');
-      } catch { setSource('error'); }
+        if (data.items?.length > 0) {
+          setApiItems(data.items);
+          setSource('api');
+        } else if (data.error) {
+          console.warn('TourAPI 오류:', data.error);
+          setSource('sample');
+        } else {
+          setSource('sample');
+        }
+      } catch (e: any) {
+        if (e?.name === 'AbortError') { setSource('empty'); } else {
+        console.warn('TourSection fetch 오류:', e);
+        setSource('error'); }
+      }
       finally { setLoading(false); }
     })();
     return () => controller.abort();
@@ -44,6 +55,12 @@ export function TourSection({ title, icon, sampleItems, lat, lng, contentTypeId,
   const displayItems = showAll ? items : items.slice(0, SHOW);
   const hasMore = items.length > SHOW;
 
+  if (source === 'empty' && !loading) return (
+    <div className="mb-5 p-4 bg-white border border-[#E0E0E0] rounded-xl text-[13px] text-[#717171]">
+      <div className="font-semibold mb-1">{icon} {title}</div>
+      <p>이 지역에서 반경 5km 이내 관광 정보가 없어요.</p>
+    </div>
+  );
   if (items.length === 0 && !loading) return null;
 
   return (
@@ -83,8 +100,11 @@ export function TourSection({ title, icon, sampleItems, lat, lng, contentTypeId,
               const card = (
                 <div key={i}
                   className={`bg-[#F7F7F6] border border-border rounded-xl overflow-hidden transition-all
-                    ${url ? 'cursor-pointer hover:border-[bg-primary] hover:shadow-sm' : ''}`}
-                  onClick={() => url && window.open(url, '_blank')}>
+                    cursor-pointer hover:border-[bg-primary] hover:shadow-sm`}
+                  onClick={() => {
+                    if (url) window.open(url, '_blank');
+                    else window.open(`https://search.naver.com/search.naver?query=${encodeURIComponent(name)}`, '_blank');
+                  }}>
                   {img && (
                     <img src={img} alt={name} className="w-full h-24 object-cover"/>
                   )}

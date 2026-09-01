@@ -1,9 +1,9 @@
 'use client';
 import { useState, useMemo } from 'react';
-import Link from 'next/link';
 import { SportEvent } from '@/types';
 import { KakaoMap } from './KakaoMap';
-import { getSportInfo, SPORTS_15 } from '@/lib/sports';
+import { EventCard } from './EventCard';
+import { SPORTS_15 } from '@/lib/sports';
 import { ArrowLeft, X, Map, CalendarDays } from 'lucide-react';
 import { calcDday, calcRegistrationStatus, REG_STATUS_LABELS } from '@/lib/data';
 
@@ -62,41 +62,8 @@ export function RegionListView({ region, events, onBack }: { region:string; even
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {sorted.map(e => {
-              const sp = getSportInfo(e.sport);
-              const regStatus = calcRegistrationStatus(e.start);
-              const regLabel = REG_STATUS_LABELS[regStatus];
-              return (
-                <Link key={e.id} href={`/events/${e.id}`}
-                  className="bg-white rounded-2xl overflow-hidden hover:shadow-md transition-all border border-border hover:border-[bg-primary]">
-                  {/* 아이콘 영역 — 크게, 배경 없이 */}
-                  <div className="flex items-center justify-center py-8 px-4"
-                    style={{minHeight:160}}>
-                    <img src={sp.icon} alt={sp.label}
-                      className="w-24 h-24 object-contain drop-shadow-sm"/>
-                  </div>
-                  {/* 텍스트 영역 */}
-                  <div className="px-4 pb-4">
-                    <div className="flex items-center gap-1.5 mb-2 flex-wrap">
-                      <span className="text-[11px] font-bold px-2 py-0.5 rounded-full"
-                        style={{color:regLabel.color,background:regLabel.bg}}>{regLabel.text}</span>
-                      <span className="text-[11px] font-bold px-2 py-0.5 rounded-full text-[bg-primary] bg-[bg-primary-tint]">
-                        {e.sport}
-                      </span>
-                    </div>
-                    <div className="font-bold text-[15px] text-ink leading-tight mb-1.5">{e.title}</div>
-                    <div className="text-[13px] text-muted">{e.start}</div>
-                    <div className="text-[13px] text-muted">{e.venue}</div>
-                    {e.status!=='done' && (
-                      <div className="mt-2 text-[13px] font-extrabold" style={{color:sp.color}}>
-                        {calcDday(e.start)}
-                      </div>
-                    )}
-                  </div>
-                </Link>
-              );
-            })}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+            {sorted.map(e => <EventCard key={e.id} event={e}/>)}
           </div>
         )}
       </div>

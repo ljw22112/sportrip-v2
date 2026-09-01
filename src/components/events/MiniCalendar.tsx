@@ -67,8 +67,8 @@ export function MiniCalendar({ events }: Props) {
           const isSat = colIdx === 5;
           return (
             <div key={i}
-              className={`border-b border-r border-[#F5F5F5] p-1 min-h-[56px] ${dayEvents.length?'hover:bg-[#F0F9F0] cursor-pointer':''}`}>
-              <div className={`text-[12px] font-bold w-6 h-6 flex items-center justify-center rounded-full mx-auto mb-0.5
+              className={`border-b border-r border-[#F5F5F5] p-1 min-h-[64px] ${dayEvents.length?'hover:bg-[#F0F9F0] cursor-pointer':''}`}>
+              <div className={`text-[13px] font-bold w-7 h-7 flex items-center justify-center rounded-full mx-auto mb-0.5
                 ${isToday?'bg-[bg-primary] text-white':isSun?'text-red-400':isSat?'text-blue-400':'text-[#333]'}`}>
                 {day}
               </div>
@@ -76,8 +76,8 @@ export function MiniCalendar({ events }: Props) {
                 const sp = getSportInfo(e.sport);
                 return (
                   <Link key={e.id} href={`/events/${e.id}`}
-                    className="block text-[9px] leading-tight truncate rounded px-0.5 mb-0.5 font-semibold"
-                    style={{color:sp.color,background:sp.color+'15'}}>
+                    className="block text-[9px] leading-tight truncate rounded px-0.5 mb-0.5 font-bold"
+                    style={{color:'#0F0F0F',background:sp.color+'30'}}>
                     {e.title}
                   </Link>
                 );

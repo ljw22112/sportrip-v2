@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { EVENTS } from '@/lib/data';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = 'https://sportrip.co.kr';
+  const base = 'https://www.sportrip.co.kr';
   const staticPages = [
     { url: base, priority: 1.0 },
     { url: `${base}/events`, priority: 0.9 },

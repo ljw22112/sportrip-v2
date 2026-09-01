@@ -9,7 +9,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 const SERVICE_KEY = process.env.TOUR_API_KEY || '';
-const BASE_URL    = 'https://apis.data.go.kr/B551011/KorService1/locationBasedList1';
+const BASE_URL    = 'https://apis.data.go.kr/B551011/KorService2/locationBasedList2';
 const RADIUS      = 10000; // 반경 10km
 
 export async function GET(req: NextRequest) {
@@ -46,7 +46,11 @@ export async function GET(req: NextRequest) {
       cache: 'no-store', // 실시간 호출 필수 (공모전 규정)
     });
 
-    if (!res.ok) throw new Error(`TourAPI HTTP ${res.status}`);
+    if (!res.ok) {
+      const body = await res.text();
+      console.error('TourAPI 400 body:', body.slice(0, 300));
+      throw new Error(`TourAPI HTTP ${res.status}: ${body.slice(0,100)}`);
+    }
 
     const json = await res.json();
     const header = json?.response?.header;
@@ -59,22 +63,32 @@ export async function GET(req: NextRequest) {
     const items = Array.isArray(raw) ? raw : (raw ? [raw] : []);
 
     // 필요한 필드만 추출
-    const result = items.map((item: any) => ({
-      name:  item.title        || '',
-      addr:  item.addr1        || '',
-      tel:   item.tel          || '',
-      dist:  item.dist         || 0,
-      img:   item.firstimage   || '',
-      url:   item.homepage     || '',
-      desc:  item.overview     || '',
-    }));
+    const result = items.map((item: any) => {
+      const homepage = item.homepage || '';
+      const title = item.title || '';
+      // homepage 없으면 네이버 지도 검색으로 연결
+      const url = homepage
+        ? homepage
+        : title
+          ? `https://search.naver.com/search.naver?query=${encodeURIComponent(title)}`
+          : '';
+      return {
+        name:  item.title      || '',
+        addr:  item.addr1      || '',
+        tel:   item.tel        || '',
+        dist:  item.dist       || 0,
+        img:   item.firstimage || '',
+        url,
+        desc:  item.overview   || '',
+      };
+    });
 
     return NextResponse.json({ items: result, source: 'tourapi' }, {
       headers: { 'Cache-Control': 'no-store, no-cache, must-revalidate' }
     });
 
   } catch (err: any) {
-    console.error('TourAPI 오류:', err.message);
+    console.error('TourAPI 오류:', err.message, '| KEY 길이:', SERVICE_KEY.length, '| lat:', lat, 'lng:', lng);
     return NextResponse.json({ items: [], error: err.message, source: 'error' }, {
       headers: { 'Cache-Control': 'no-store' }
     });

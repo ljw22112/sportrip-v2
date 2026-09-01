@@ -1,16 +1,24 @@
 'use client';
 import Link from 'next/link';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { KakaoLoginButton } from '@/components/auth/KakaoLoginButton';
+import { useState, useEffect, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { Search, Heart, X } from 'lucide-react';
 import { SPORTS_15 } from '@/lib/sports';
 
 const MONTHS = [8,9,10,11,12,3,4];
 
-export function Header({ showSearch=false }: { showSearch?: boolean }) {
+function HeaderInner({ showSearch=false }: { showSearch?: boolean }) {
   const router = useRouter();
-  const [activeSport, setActiveSport] = useState('전체');
+  const searchParams = useSearchParams();
+  const urlSport = searchParams.get('sport') || '전체';
+  const [activeSport, setActiveSport] = useState(urlSport);
+
+  // URL 변경 시 탭 상태 동기화
+  useEffect(() => {
+    setActiveSport(searchParams.get('sport') || '전체');
+  }, [searchParams]);
   const [region, setRegion] = useState('');
   const [month, setMonth] = useState('');
   const [sportSel, setSportSel] = useState('전체');
@@ -32,18 +40,18 @@ export function Header({ showSearch=false }: { showSearch?: boolean }) {
       <div className="max-w-[1760px] mx-auto px-5 md:px-10">
         <div className="flex items-center h-16 gap-6">
           <Link href="/" className="flex-shrink-0 flex items-center gap-2.5">
-            <Image src="/logo.svg" alt="SporTrip" width={36} height={36} priority className="h-9 w-9 brightness-0 invert"/>
-            <span className="font-black text-[20px] tracking-[-0.05em]"
+            <Image src="/logo.svg" alt="SporTrip" width={64} height={64} priority className="h-16 w-16 brightness-0 invert"/>
+            <span className="font-black text-[22px] tracking-[-0.05em]"
               style={{color:'#D4FF3F'}}>SporTrip</span>
           </Link>
 
           {/* 중앙 네비 */}
           <nav className="hidden md:flex items-center gap-1 flex-1 justify-center">
             {[
+              {href:'/about', label:'스포트립 소개'},
               {href:'/events', label:'대회 찾기'},
               {href:'/calendar', label:'캘린더'},
-              {href:'/saved', label:'저장한 대회'},
-              {href:'/about', label:'스포트립 소개'},
+              {href:'/saved', label:'저장한 대회', badge:true},
             ].map(n=>(
               <Link key={n.href} href={n.href}
                 className="text-[13px] font-semibold px-3 py-2 rounded-lg transition-colors"
@@ -88,7 +96,7 @@ export function Header({ showSearch=false }: { showSearch?: boolean }) {
                     <img src={sp.icon} alt={sp.label}
                       className={`w-8 h-8 object-contain ${active?'':'brightness-0 invert opacity-70'}`}/>
                     <span className="text-[10px] font-bold whitespace-nowrap"
-                      style={{color: active ? '#1A2E0A' : 'rgba(255,255,255,.6)'}}>
+                      style={{color: active ? '#0F0F0F' : 'rgba(255,255,255,.6)'}}>
                       {sp.label}
                     </span>
                   </Link>
@@ -120,15 +128,7 @@ export function Header({ showSearch=false }: { showSearch?: boolean }) {
                     {MONTHS.map(m=><option key={m} value={m}>{m}월</option>)}
                   </select>
                 </div>
-                <div style={{width:'0.5px', background:'#E0E0E0', margin:'10px 0'}}/>
-                <div className="flex-1 flex flex-col justify-center px-6 min-w-0">
-                  <label className="text-[10px] font-bold tracking-wider" style={{color:'#A0A0A0'}}>종목</label>
-                  <select value={sportSel} onChange={e=>setSportSel(e.target.value)}
-                    className="text-[14px] bg-transparent outline-none cursor-pointer"
-                    style={{color:'#0F0F0F'}}>
-                    {SPORTS_15.map(s=><option key={s.key} value={s.key}>{s.label}</option>)}
-                  </select>
-                </div>
+
                 <div className="flex items-center px-3">
                   <button type="submit"
                     className="flex items-center gap-2 font-bold text-[14px] px-5 h-10 rounded-lg transition-all"
@@ -172,5 +172,17 @@ export function Header({ showSearch=false }: { showSearch?: boolean }) {
         </>
       )}
     </header>
+  );
+}
+
+export function Header({ showSearch=false }: { showSearch?: boolean }) {
+  return (
+    <Suspense fallback={
+      <header style={{background:'#0F0F0F'}} className="sticky top-0 z-50 h-16 flex items-center px-5 md:px-10">
+        <span className="font-black text-[22px] tracking-[-0.05em]" style={{color:'#D4FF3F'}}>SporTrip</span>
+      </header>
+    }>
+      <HeaderInner showSearch={showSearch}/>
+    </Suspense>
   );
 }

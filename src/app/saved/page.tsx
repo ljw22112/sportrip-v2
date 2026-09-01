@@ -32,8 +32,8 @@ export default function SavedPage() {
         </div>
 
         {/* localStorage 안내 */}
-        <div className="bg-[#FFF9F0] border border-[#FFE0B2] rounded-xl px-4 py-3 mb-6 text-[13px] text-[#E67E22]">
-          💡 저장한 대회는 이 기기의 브라우저에만 저장됩니다. 다른 기기에서는 보이지 않아요.
+        <div className="bg-[#FFF9F0] border border-[#FFE0B2] rounded-xl px-4 py-3 mb-6 text-[13px] text-[#7A5A00]">
+          💡 하트로 저장한 대회는 이 기기 브라우저에만 보관됩니다. 다른 기기에서는 보이지 않으며, 브라우저 데이터 삭제 시 목록이 초기화될 수 있습니다.
         </div>
 
         {!loaded ? (
@@ -46,8 +46,8 @@ export default function SavedPage() {
             <p className="font-bold text-[16px] text-ink mb-1">아직 저장한 대회가 없어요</p>
             <p className="text-[14px] text-muted mb-6">대회 카드의 하트를 눌러 저장해 보세요</p>
             <Link href="/events"
-              className="px-6 py-3 bg-[bg-primary] text-white font-bold rounded-xl text-[14px]">
-              대회 찾아보기
+              className="inline-flex items-center gap-2 px-6 py-3 font-bold rounded-xl text-[14px]" style={{background:'#0F0F0F',color:'#fff'}}>
+              대회 찾기
             </Link>
           </div>
         ) : (

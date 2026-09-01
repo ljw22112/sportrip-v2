@@ -1,3 +1,9 @@
+import type { Metadata } from 'next';
+export const metadata: Metadata = {
+  title: '서비스 소개 | 스포트립',
+  description: '스포트립은 전국 스포츠 대회 일정과 개최지 주변 관광 정보, AI 맞춤 여행 코스를 한 번에 제공하는 스포츠 관광 통합 플랫폼입니다.',
+  openGraph: { title: '서비스 소개 | 스포트립', description: '스포츠 대회와 여행을 함께, 스포트립.' },
+};
 import Link from 'next/link';
 import { Header } from '@/components/layout/Header';
 import { SportripIcon, IconTile } from '@/components/SportripIcon';
@@ -7,17 +13,18 @@ import { ExternalLink } from 'lucide-react';
 const upcomingCount = EVENTS.filter(e => e.status !== 'done').length;
 
 const FEATURES = [
+  { icon:'automation' as const, tone:'green' as const, title:'AI 여행 코스',  desc:'대회를 고르면 전날·당일·다음날 맞춤 여행 코스를 AI가 자동으로 짜드립니다. 한국관광공사 TourAPI 실데이터 기반으로 생성해 정확도가 높습니다.' },
   { icon:'findEvent'  as const, tone:'brand' as const, title:'대회 찾기',     desc:'전국 스포츠 대회 일정을 지역·종목·날짜로 검색. 15개 종목 대회를 한눈에 확인하세요.' },
-  { icon:'mapExplore' as const, tone:'brand' as const, title:'지도로 탐색',   desc:'카카오맵 기반 실제 지도에서 대회 개최지를 확인하고, 종목별 필터로 원하는 대회를 찾으세요.' },
-  { icon:'travelInfo' as const, tone:'green' as const, title:'주변 여행 정보', desc:'TourAPI 기반으로 대회 장소 주변 관광지·음식점·숙박·축제 정보를 실시간 제공합니다.' },
+  { icon:'mapExplore' as const, tone:'brand' as const, title:'지도로 탐색',   desc:'카카오맵 지도에서 대회 개최지를 확인하고, 종목별 필터로 원하는 대회를 찾으세요.' },
+  { icon:'travelInfo' as const, tone:'green' as const, title:'주변 여행 정보', desc:'TourAPI 기반으로 대회 장소 주변 관광지·음식점·숙박·축제·무장애 관광 정보를 실시간 제공합니다.' },
   { icon:'calendar'   as const, tone:'amber' as const, title:'월간 캘린더',   desc:'월별 대회 일정을 캘린더로 확인하고, 종목 필터로 원하는 대회만 골라 보세요.' },
-  { icon:'directions' as const, tone:'brand' as const, title:'길찾기 연동',   desc:'네이버 지도·카카오맵·구글 지도와 연동해 대회 장소까지 바로 길찾기가 가능합니다.' },
-  { icon:'save'       as const, tone:'rose'  as const, title:'대회 저장',     desc:'마음에 드는 대회는 저장해두세요. 로그인 없이 바로 저장되며 언제든 확인할 수 있습니다.' },
+  { icon:'save'       as const, tone:'rose'  as const, title:'대회 저장',     desc:'마음에 드는 대회는 저장해두세요. 로그인 없이 같은 기기·브라우저에서 언제든 확인할 수 있습니다.' },
 ];
 
 const DATA_SOURCES = [
-  { icon:'publicData' as const, tone:'slate' as const, name:'공공데이터포털', sub:'전국대회정보 표준데이터', desc:'국민체육진흥법에 따라 지방자치단체에서 관리하는 전국 스포츠 대회 정보를 매주 자동 수집합니다.', badge:'매주 자동 업데이트', url:'https://www.data.go.kr' },
-  { icon:'tourOrg'   as const, tone:'brand' as const, name:'한국관광공사', sub:'국문 관광정보 서비스 (TourAPI)', desc:'한국관광공사가 제공하는 고품질 관광 콘텐츠 API로 주변 관광지·음식점·숙박·축제 정보를 실시간 제공합니다.', badge:'실시간 연동', url:'https://api.visitkorea.or.kr' },
+  { icon:'publicData' as const, tone:'slate' as const, name:'공공데이터포털', sub:'전국대회정보 표준데이터', desc:'국민체육진흥법에 따라 지방자치단체에서 관리하는 전국 스포츠 대회 정보를 매일 오후 5시(KST) Vercel Cron으로 자동 수집합니다.', badge:'매일 17:00 KST 자동 업데이트', url:'https://www.data.go.kr' },
+  { icon:'tourOrg'   as const, tone:'brand' as const, name:'한국관광공사', sub:'국문 관광정보 서비스 KorService2', desc:'한국관광공사가 제공하는 고품질 관광 콘텐츠 API로 대회 장소 반경 5km 관광지·음식점·숙박·축제·문화시설 정보를 실시간 제공합니다.', badge:'실시간 연동', url:'https://api.visitkorea.or.kr' },
+  { icon:'tourOrg'   as const, tone:'green' as const, name:'한국관광공사', sub:'무장애 관광정보 서비스', desc:'장애인·고령자·영유아를 위한 무장애 관광 정보를 제공합니다. 스포츠 관광의 포용성을 높이는 핵심 데이터입니다.', badge:'실시간 연동', url:'https://api.visitkorea.or.kr' },
 ];
 
 const TECH_STACK = [
@@ -27,12 +34,13 @@ const TECH_STACK = [
   { icon:'kakaoMap'   as const, name:'Kakao Maps API', role:'지도 서비스' },
   { icon:'tourApi'    as const, name:'TourAPI',        role:'관광 정보' },
   { icon:'vercel'     as const, name:'Vercel',         role:'배포 플랫폼' },
-  { icon:'automation' as const, name:'GitHub Actions', role:'데이터 자동화' },
+  { icon:'automation' as const, name:'Vercel Cron',    role:'데이터 자동화' },
+  { icon:'automation' as const, name:'Gemini AI',      role:'AI 여행 코스 생성' },
 ];
 
 const ROADMAP = [
   { phase:'Phase 1', status:'done',    title:'대회 정보 플랫폼',  items:['전국 대회 DB 구축','카카오맵 지도 연동','종목별 필터링','월간 캘린더'] },
-  { phase:'Phase 2', status:'current', title:'여행 정보 연동',    items:['TourAPI 관광 정보 실시간 연동','길찾기 외부 지도 연결','지역별 여행 코스 추천','대회 장소 주변 정보'] },
+  { phase:'Phase 2', status:'done',    title:'여행 정보 연동',    items:['TourAPI 관광 정보 실시간 연동','AI 여행 코스 자동 생성','대회 장소 주변 정보','무장애 관광 정보 제공'] },
   { phase:'Phase 3', status:'plan',    title:'커뮤니티·고도화',   items:['회원 가입 및 로그인','대회 후기 및 평점','함께 가요 모집','알림 서비스'] },
   { phase:'Phase 4', status:'plan',    title:'비즈니스 확장',     items:['대회 주최자 등록 서비스','스포츠 브랜드 제휴','광고 플랫폼','프리미엄 구독'] },
 ];
@@ -66,7 +74,7 @@ export default function AboutPage() {
             <div className="flex flex-wrap gap-3">
               <Link href="/events"
                 className="px-7 py-3.5 bg-[bg-accent] text-[#1A2E0A] font-extrabold text-[15px] rounded-xl hover:opacity-90 transition-opacity">
-                대회 찾아보기
+                대회 찾기
               </Link>
               <Link href="/calendar"
                 className="px-7 py-3.5 border-2 font-bold text-[15px] rounded-xl hover:bg-white/10 transition-colors" style={{borderColor:"rgba(255,255,255,0.3)",color:"#fff"}}>
@@ -83,8 +91,8 @@ export default function AboutPage() {
               {[
                 {num:`${EVENTS.length}+`, label:'등록 대회', sub:'전국 스포츠 DB'},
                 {num:'17', label:'지역 커버리지', sub:'17개 시·도'},
-                {num:'15', label:'종목 카테고리', sub:'마라톤~골프'},
-                {num:'5', label:'TourAPI 카테고리', sub:'관광·음식·숙박·축제·문화'},
+                {num:'15', label:'종목 카테고리', sub:'마라톤·러닝·사이클 등'},
+                {num:'5', label:'TourAPI 카테고리', sub:'관광·음식·숙박·축제·문화·무장애'},
               ].map(s=>(
                 <div key={s.label} className="text-center">
                   <div className="text-[40px] md:text-[48px] font-black text-[bg-primary] tracking-tighter">{s.num}</div>
@@ -96,8 +104,28 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* ── 핵심 기능 ── */}
-        <section className="max-w-[1760px] mx-auto px-6 md:px-20 py-14">
+      {/* ── 사용자 시나리오 ── */}
+      <section className="max-w-[1200px] mx-auto px-5 md:px-10 py-16">
+        <div className="text-[13px] font-bold tracking-widest text-muted text-center mb-3">HOW IT WORKS</div>
+        <h2 className="text-[30px] font-black text-center tracking-tight mb-12">춘천마라톤 참가자라면 이렇게 씁니다</h2>
+        <div className="grid md:grid-cols-4 gap-4">
+          {[
+            { step:'01', icon:'🔍', title:'대회 찾기', desc:'마라톤 탭 클릭 → 강원 선택 → 10월 춘천마라톤 발견. D-day·접수 상태 한눈에 확인.' },
+            { step:'02', icon:'🗺️', title:'개최지 탐색', desc:'지도에서 춘천 클릭 → 의암호·남이섬·닭갈비 골목이 반경 5km 내 표시.' },
+            { step:'03', icon:'🤖', title:'AI 코스 생성', desc:'AI가 전날(남이섬 관광) · 당일(레이스+막국수) · 다음날(소양강 카페) 코스 자동 생성.' },
+            { step:'04', icon:'❤️', title:'저장 & 출발', desc:'대회 저장 후 길찾기 연동. 다시 찾을 땐 저장한 대회 탭에서 바로 확인.' },
+          ].map(s => (
+            <div key={s.step} className="bg-white border border-border rounded-2xl p-6 hover:shadow-md transition-all">
+              <div className="text-[11px] font-bold text-muted tracking-widest mb-3">STEP {s.step}</div>
+              <div className="text-3xl mb-3">{s.icon}</div>
+              <div className="font-extrabold text-[17px] mb-2">{s.title}</div>
+              <div className="text-[14px] text-muted leading-relaxed">{s.desc}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+      {/* ── 핵심 기능 ── */}
+      <section className="max-w-[1760px] mx-auto px-6 md:px-20 py-14">
           <div className="mb-10">
             <p className="text-[13px] font-bold text-[bg-primary] uppercase tracking-widest mb-2">FEATURES</p>
             <h2 className="text-[28px] md:text-[36px] font-extrabold tracking-tight">핵심 기능</h2>

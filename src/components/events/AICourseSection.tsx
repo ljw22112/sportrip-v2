@@ -44,6 +44,7 @@ export function AICourseSection({ eventTitle, region, venue, date, sport, lat, l
   const [error, setError] = useState('');
   const [openDay, setOpenDay] = useState<number | null>(0);
   const [generated, setGenerated] = useState(false);
+  const [meta, setMeta] = useState<{nearbySpots:number;verified:number;total:number;verifiedRatio:number}|null>(null);
 
   const generate = async () => {
     setLoading(true);
@@ -76,10 +77,21 @@ export function AICourseSection({ eventTitle, region, venue, date, sport, lat, l
       if (!data.ok) throw new Error(data.error || 'AI 응답 오류');
 
       setCourse(data.course);
+      if (data.meta) setMeta(data.meta);
       setGenerated(true);
       setOpenDay(0);
     } catch (e) {
-      setError('코스 생성 중 오류가 발생했어요. 다시 시도해주세요.');
+      const errMsg = e instanceof Error ? e.message : String(e);
+      // 사용자 친화적 메시지
+      if (errMsg.includes('503') || errMsg.includes('모든 모델 실패')) {
+        setError('AI 서버가 일시적으로 혼잡해요. 잠시 후 다시 시도해주세요.');
+      } else if (errMsg.includes('429')) {
+        setError('요청이 너무 많아요. 1분 후 다시 시도해주세요.');
+      } else if (errMsg.includes('timeout') || errMsg.includes('Timeout')) {
+        setError('응답 시간이 초과됐어요. 다시 시도해주세요.');
+      } else {
+        setError('코스 생성에 실패했어요. 다시 시도해주세요.');
+      }
     } finally {
       setLoading(false);
     }
@@ -93,7 +105,7 @@ export function AICourseSection({ eventTitle, region, venue, date, sport, lat, l
           <Sparkles className="w-3.5 h-3.5"/>
           AI 추천 여행 코스
         </div>
-        <span className="text-[11px] text-muted">Powered by Claude</span>
+        <span className="text-[11px] text-muted">Powered by Gemini</span>
       </div>
       <p className="text-[13px] text-muted mb-4">
         대회 일정과 {region} 주변 관광 정보를 분석해 맞춤 여행 코스를 생성합니다.
@@ -109,7 +121,7 @@ export function AICourseSection({ eventTitle, region, venue, date, sport, lat, l
           {loading ? (
             <>
               <div className="w-8 h-8 border-3 border-[bg-primary] border-t-transparent rounded-full animate-spin"/>
-              <span className="text-[14px] font-bold text-[bg-primary]">Claude가 코스를 짜고 있어요...</span>
+              <span className="text-[14px] font-bold text-[bg-primary]">Gemini가 코스를 짜고 있어요...</span>
               <span className="text-[12px] text-muted">TourAPI 관광 정보 분석 중</span>
             </>
           ) : (
@@ -126,7 +138,7 @@ export function AICourseSection({ eventTitle, region, venue, date, sport, lat, l
           <div className="bg-gradient-to-r from-[bg-primary] to-[#1A8A63] text-white rounded-2xl px-5 py-4 mb-4 flex items-start gap-3">
             <Sparkles className="w-5 h-5 flex-shrink-0 mt-0.5 text-[bg-accent]"/>
             <div>
-              <div className="text-[11px] font-bold text-[bg-accent] mb-0.5">Claude 추천 코스</div>
+              <div className="text-[11px] font-bold text-[bg-accent] mb-0.5">Gemini 추천 코스</div>
               <div className="text-[15px] font-bold">{course.intro}</div>
             </div>
           </div>
@@ -196,10 +208,18 @@ export function AICourseSection({ eventTitle, region, venue, date, sport, lat, l
 
           {/* 핵심 팁 */}
           <div className="bg-[#FFF9E6] border border-[#FFE0A0] rounded-xl px-4 py-3 flex items-start gap-2">
-            <Lightbulb className="w-4 h-4 text-[#E67E22] flex-shrink-0 mt-0.5"/>
+            <Lightbulb className="w-4 h-4 text-[#D4FF3F] flex-shrink-0 mt-0.5"/>
             <p className="text-[13px] text-[#7D5A00] font-medium">{course.tip}</p>
           </div>
 
+          {/* 검증 메타 */}
+          {meta && (
+            <div className="flex items-center gap-3 mt-3 text-[11px]" style={{color:'#A0A0A0'}}>
+              <span>주변 관광지 {meta.nearbySpots}건 분석</span>
+              <span>·</span>
+              <span>TourAPI 검증 {meta.verified}/{meta.total}곳 ({meta.verifiedRatio}%)</span>
+            </div>
+          )}
           {/* 다시 생성 */}
           <button onClick={()=>{setCourse(null);setGenerated(false);}}
             className="mt-3 flex items-center gap-1.5 text-[12px] text-muted hover:text-[bg-primary] transition-colors">
@@ -209,7 +229,14 @@ export function AICourseSection({ eventTitle, region, venue, date, sport, lat, l
       ) : null}
 
       {error && (
-        <div className="text-[13px] text-red-500 mt-2">{error}</div>
+        <div className="mt-3 p-4 bg-[#FFF5F5] border border-red-200 rounded-xl">
+          <p className="text-[13px] text-red-600 mb-2">{error}</p>
+          <button onClick={generate}
+            className="text-[13px] font-bold text-white px-4 py-2 rounded-lg"
+            style={{background:'#0F0F0F'}}>
+            다시 시도
+          </button>
+        </div>
       )}
     </div>
   );

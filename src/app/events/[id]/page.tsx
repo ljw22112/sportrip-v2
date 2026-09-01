@@ -71,7 +71,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
             <div className="flex items-center gap-3 mb-4">
               <div className="flex items-center gap-2 px-4 py-2 rounded-full border-2 font-bold text-[15px]"
                 style={{borderColor:sport.color, color:sport.color, background:sport.color+'11'}}>
-                <span className="text-2xl">{sport.emoji}</span>
+                <img src={sport.icon} alt={sport.label} className="w-6 h-6 object-contain"/>
                 {ev.sport}
               </div>
               {!isDone && (
@@ -111,7 +111,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
               </div>
               <div className="flex items-center gap-4 px-5 py-3 bg-[#F7F7F6]">
                 <span className="text-[13px] text-faint">정보가 정확하지 않나요?</span>
-                <a href="https://forms.gle/example" target="_blank" rel="noopener"
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSc7wwSpC-K7efg4G9NZmBxIoNC6auY4eUo7bH9CR8RONBE2NA/viewform" target="_blank" rel="noopener"
                   className="text-[13px] font-semibold text-[bg-primary] hover:underline">
                   정보 수정 제보하기 →
                 </a>
@@ -202,13 +202,19 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
           <aside className="hidden md:block sticky top-6">
             <div className="border-2 border-border rounded-2xl overflow-hidden">
               {/* 종목 캐릭터 카드 */}
-              <div className="aspect-square flex flex-col items-center justify-center bg-white border-b-2 border-border"
+              <div className="aspect-square flex flex-col items-center justify-center bg-white border-b-2 border-border relative"
                 style={{background:sport.color+'08'}}>
-                <div className="text-[80px] leading-none mb-4">{sport.emoji}</div>
                 {!isDone && (
-                  <div className="text-white font-bold text-[18px] px-5 py-2 rounded-full"
-                    style={{background:sport.color}}>{dday}</div>
+                  <div className="absolute top-4 left-0 right-0 flex justify-center z-10">
+                    <div className="text-white font-black text-[22px] px-5 py-1.5 rounded-full tracking-tight"
+                      style={{background:sport.color}}>{dday}</div>
+                  </div>
                 )}
+                <img
+                  src={sport.icon}
+                  alt={sport.label}
+                  className="w-3/4 h-3/4 object-contain drop-shadow-md mt-4"
+/>
               </div>
               <div className="p-5">
                 <div className="text-[18px] font-bold text-ink mb-1">{ev.title}</div>
@@ -236,7 +242,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
 
       {/* 모바일 하단 고정 바 */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-border px-5 py-3.5 md:hidden z-40 flex items-center gap-3 shadow-lg">
-        <div className="text-2xl">{sport.emoji}</div>
+        <img src={sport.icon} alt={sport.label} className="w-10 h-10 object-contain flex-shrink-0"/>
         <div className="flex-1 min-w-0">
           <div className="font-bold text-[14px] text-ink truncate">{ev.title}</div>
           <div className="text-[13px] text-muted">

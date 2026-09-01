@@ -131,12 +131,12 @@ export function KakaoMap({ events, className }: Props) {
           return (
             <button key={sp.key}
               onClick={() => { setActiveSport(sp.key); setPopup(null); }}
-              className={`flex flex-col items-center justify-center gap-0.5 py-2.5 px-1 flex-shrink-0 border-b border-[#F0F0F0] transition-all
-                ${active ? 'bg-[bg-primary]' : 'hover:bg-[#F7F7F6]'}`}>
+              className="flex flex-col items-center justify-center gap-0.5 py-2.5 px-1 flex-shrink-0 border-b border-[#F0F0F0] transition-all"
+              style={{background: active ? '#0F0F0F' : 'transparent'}}>
               <img src={sp.icon} alt={sp.label}
                 className={`w-7 h-7 md:w-8 md:h-8 object-contain ${active ? 'brightness-0 invert' : ''}`}/>
-              <span className={`text-[9px] md:text-[10px] font-bold leading-tight text-center
-                ${active ? 'text-white' : 'text-[#333]'}`}>{sp.label}</span>
+              <span className="text-[9px] md:text-[10px] font-bold leading-tight text-center"
+                style={{color: active ? '#D4FF3F' : '#333'}}>{sp.label}</span>
             </button>
           );
         })}
@@ -148,7 +148,8 @@ export function KakaoMap({ events, className }: Props) {
           <div className="absolute inset-0 flex items-center justify-center bg-[#E8F0E4] z-10">
             <div className="text-center">
               <div className="text-4xl mb-2">🗺️</div>
-              <p className="text-[14px] font-semibold text-[#555]">지도 불러오는 중...</p>
+              <p className="text-[14px] font-semibold text-[#555]"><div className="w-8 h-8 border-2 border-[#0F0F0F] border-t-transparent rounded-full animate-spin"/>
+          <span className="text-[13px] text-[#555] font-medium">지도 불러오는 중...</span></p>
             </div>
           </div>
         )}
