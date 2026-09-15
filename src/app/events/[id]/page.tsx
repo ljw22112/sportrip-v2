@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { EVENTS, calcDday, calcStatus, calcVerified, VERIFIED_LABELS, calcRegistrationStatus, REG_STATUS_LABELS, calcScale, SCALE_LABELS } from '@/lib/data';
+import { EVENTS, calcDday, calcStatus, calcVerified, VERIFIED_LABELS, calcRegistrationStatus, REG_STATUS_LABELS, SCALE_LABELS } from '@/lib/data';
 import { Header } from '@/components/layout/Header';
 import { getTourData } from '@/lib/courses';
 import { TourSection } from '@/components/events/TourSection';
