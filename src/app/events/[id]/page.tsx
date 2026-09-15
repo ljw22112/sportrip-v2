@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { EVENTS, calcDday, calcStatus, calcVerified, VERIFIED_LABELS, calcRegistrationStatus, REG_STATUS_LABELS, SCALE_LABELS } from '@/lib/data';
+import { EVENTS, calcDday, calcStatus, calcVerified, VERIFIED_LABELS, calcRegistrationStatus, REG_STATUS_LABELS } from '@/lib/data';
 import { Header } from '@/components/layout/Header';
 import { getTourData } from '@/lib/courses';
 import { TourSection } from '@/components/events/TourSection';
@@ -45,7 +45,6 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
   const verifiedStatus = calcVerified(ev.id, ev.url||'');
   const verifiedLabel  = VERIFIED_LABELS[verifiedStatus];
   const regStatus      = calcRegistrationStatus(ev.start);
-  const scaleLabel     = SCALE_LABELS[
   const regLabel       = REG_STATUS_LABELS[regStatus];
   const sport = getSportInfo(ev.sport);
 
