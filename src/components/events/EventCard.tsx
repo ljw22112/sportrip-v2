@@ -77,8 +77,7 @@ export function EventCard({ event }: { event: SportEvent }) {
         <div className="font-bold text-[14px] text-ink truncate leading-tight">{event.title}</div>
         <div className="text-[11px] mt-0.5 leading-tight" style={{color:'#A0A0A0'}}>{event.region} · {event.sport} · {fmtDate(event.start)}</div>
         <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
-          {(() => {
-          })()}
+
           {(() => {
             const vs = calcVerified(event.id, event.url||'');
             const vl = VERIFIED_LABELS[vs];
