@@ -87,7 +87,7 @@ export default function HomePage() {
             {/* AI 소개 */}
             <div className="mt-6 p-4 rounded-2xl" style={{background:'rgba(212,255,63,0.1)',border:'1px solid rgba(212,255,63,0.25)'}}>
               <div className="text-[13px] font-bold mb-1" style={{color:'#D4FF3F'}}>✨ AI 여행 코스</div>
-              <p className="text-[14px] text-white leading-relaxed">대회를 고르면 전날·당일·다음날 코스는 <b className="text-[#D4FF3F]">AI가 짜드립니다.</b> 한국관광공사 TourAPI 실데이터 기반.</p>
+              <p className="text-[14px] text-white leading-relaxed">대회를 고르면, 전날·당일·다음날 코스를 AI가 추천해 드려요. 한국관광공사 TourAPI 실데이터 기반이라 믿을 수 있어요.</p>
             </div>
             {/* 히어로 CTA */}
             <div className="flex gap-3 mt-6 flex-wrap">
