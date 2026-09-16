@@ -54,7 +54,7 @@ export function TourSection({ title, icon, sampleItems, lat, lng, contentTypeId,
           loading ? 'bg-gray-100 text-gray-400' :
           showApi ? 'bg-[bg-primary-tint] text-[bg-primary]' : 'bg-gray-100 text-gray-500'
         }`}>
-          {loading ? '불러오는 중...' : showApi ? '🌐 ⓒ한국관광공사' : '📋 샘플'}
+          {loading ? '불러오는 중...' : showApi ? '🌐 ⓒ한국관광공사' : ''}
         </span>
       </div>
 

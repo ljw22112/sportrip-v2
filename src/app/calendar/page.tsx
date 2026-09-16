@@ -27,7 +27,7 @@ export default function CalendarPage() {
   const today = new Date();
   const [year,  setYear]  = useState(today.getFullYear());
   const [month, setMonth] = useState(today.getMonth());
-  const [activeSport, setActiveSport] = useState('전체');
+  const [activeSport, setActiveSport] = useState<string>('전체');
 
   const allEvents = getDynamicEvents();
 
@@ -128,7 +128,7 @@ export default function CalendarPage() {
         {/* ── 종목 필터 칩 ── */}
         <div className="flex gap-2 overflow-x-auto pb-3 mb-5 pt-1" style={{scrollbarWidth:'none'}}>
           {SPORTS_15.map(sp=>(
-            <button key={sp.key} onClick={()=>setActiveSport(sp.label)}
+            <button key={sp.key} onClick={()=>{ setActiveSport(''); setTimeout(()=>setActiveSport(sp.label),0); }}
               className={`flex items-center gap-2 px-3.5 py-2 rounded-full text-[13px] font-semibold flex-shrink-0 border-2 transition-all
                 ${activeSport===sp.label
                   ? 'bg-[bg-primary] border-[bg-primary]'

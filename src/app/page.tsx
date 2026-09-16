@@ -126,7 +126,12 @@ export default function HomePage() {
         {(() => {
           const shownIds = new Set(upcoming.slice(0,6).map(e=>e.id));
           const marathons = dynEv.filter(e=>e.sport==='마라톤'&&e.status!=='done'&&!shownIds.has(e.id))
-            .sort((a,b)=>new Date(a.start).getTime()-new Date(b.start).getTime()).slice(0,6);
+            .sort((a,b)=>{
+              const aM=new Date(a.start).getMonth()===thisMonth&&new Date(a.start).getFullYear()===thisYear?0:1;
+              const bM=new Date(b.start).getMonth()===thisMonth&&new Date(b.start).getFullYear()===thisYear?0:1;
+              if(aM!==bM) return aM-bM;
+              return new Date(a.start).getTime()-new Date(b.start).getTime();
+            }).slice(0,6);
           return marathons.length>0 ? <EventRow title="마라톤 대회" href="/events?sport=마라톤" events={marathons}/> : null;
         })()}
 
