@@ -33,15 +33,11 @@ export function EventRow({ title, href, events }: { title:string; href:string; e
       ) : (
         /* 모바일: 2열 그리드 / 데스크톱: 가로 스크롤 7열 */
         <>
-          {/* 모바일 그리드 */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 md:hidden">
-            {events.slice(0,6).map(e=><EventCard key={e.id} event={e}/>)}
-          </div>
-          {/* 데스크톱 스크롤 */}
-          <div ref={ref} className="hidden md:grid gap-4 overflow-x-auto pb-1"
-            style={{gridAutoFlow:'column', gridAutoColumns:'calc((100% - 5*16px)/6)', scrollSnapType:'x mandatory', scrollbarWidth:'none'}}>
-            {events.map(e=>(
-              <div key={e.id} style={{scrollSnapAlign:'start'}}>
+          {/* 반응형 단일 그리드 — 모바일 2열 / 태블릿 3열 / 데스크톱 가로스크롤 */}
+          <div ref={ref} className="grid grid-cols-2 sm:grid-cols-3 md:flex md:gap-4 md:overflow-x-auto md:pb-2"
+            style={{scrollbarWidth:'none'}}>
+            {events.slice(0,6).map(e=>(
+              <div key={e.id} className="md:flex-none" style={{width:'clamp(150px,calc((100% - 5*16px)/6),220px)'}}>
                 <EventCard event={e}/>
               </div>
             ))}

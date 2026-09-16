@@ -194,7 +194,7 @@ export default function HomePage() {
                 <span className="font-black text-[28px] text-white tracking-[-0.05em]">스포트립</span>
               </div>
               <p className="text-[12px]">SporTrip · 2026 관광데이터 활용 공모전</p>
-              <p className="text-[12px] mt-1">출처: ⓒ한국관광공사 (kto.visitkorea.or.kr)</p>
+              <p className="text-[12px] mt-1">출처: ⓒ한국관광공사</p>
               <p className="text-[12px] mt-1">💡 하트로 저장한 대회는 이 기기 브라우저에만 보관됩니다</p>
             </div>
             <div className="ml-auto text-right text-[12px]">
