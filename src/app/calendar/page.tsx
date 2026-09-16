@@ -252,7 +252,7 @@ export default function CalendarPage() {
                     <div className="text-xs text-muted mt-0.5">{e.region} · {e.sport} · {e.participants}</div>
                   </div>
                   <div className="flex items-center gap-3 flex-shrink-0">
-                    <span className="text-xl">{SPORTS_15.find(s=>s.label===e.sport)?.icon||'/icons/etc.svg'}</span>
+                    <img src={SPORTS_15.find(s=>s.label===e.sport)?.icon||'/icons/etc.png'} alt={e.sport} className="w-5 h-5 object-contain flex-shrink-0"/>
                     <span className="text-xs text-muted">{e.start}</span>
                   </div>
                 </Link>
