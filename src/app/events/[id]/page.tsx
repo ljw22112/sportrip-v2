@@ -70,7 +70,6 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
               <div className="flex items-center gap-2 px-4 py-2 rounded-full border-2 font-bold text-[15px]"
                 style={{borderColor:sport.color, color:sport.color, background:sport.color+'11'}}>
                 <img src={sport.icon} alt={sport.label} className="w-6 h-6 object-contain"/>
-                {ev.sport}
               </div>
               {!isDone && (
                 <span className="text-white font-bold text-[15px] px-4 py-2 rounded-full"
