@@ -27,6 +27,11 @@ function EventsContent() {
   const params = useSearchParams();
   const [tab, setTab] = useState<Tab>('all');
   const [sport, setSport] = useState(params.get('sport')||'');
+
+  // URL 파라미터 변경 시 state 동기화 (헤더 종목탭 클릭 대응)
+  useEffect(() => {
+    setSport(params.get('sport')||'');
+  }, [params]);
   const [keyword, setKeyword] = useState(params.get('q')||'');
   const [region, setRegion] = useState(params.get('region')||'');
   const [status, setStatus] = useState('');
