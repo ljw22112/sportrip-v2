@@ -65,7 +65,7 @@ export default function AboutPage() {
             </p>
             <div className="flex flex-wrap gap-3">
               <Link href="/events"
-                className="px-7 py-3.5 bg-[bg-accent] text-[#1A2E0A] font-extrabold text-[15px] rounded-xl hover:opacity-90 transition-opacity">
+                className="px-7 py-3.5 bg-[bg-accent] text-white font-extrabold text-[15px] rounded-xl hover:opacity-90 transition-opacity">
                 대회 찾아보기
               </Link>
               <Link href="/calendar"
@@ -233,7 +233,7 @@ export default function AboutPage() {
               <p className="text-white/70 mt-1">{EVENTS.length}개 이상의 스포츠 대회와 주변 여행 정보를 스포트립에서 확인하세요.</p>
             </div>
             <div className="flex gap-3 flex-shrink-0">
-              <Link href="/events" className="px-7 py-3.5 bg-[bg-accent] text-[#1A2E0A] font-extrabold rounded-xl hover:opacity-90 transition-opacity text-[15px]">
+              <Link href="/events" className="px-7 py-3.5 bg-[bg-accent] text-white font-extrabold rounded-xl hover:opacity-90 transition-opacity text-[15px]">
                 대회 찾기
               </Link>
               <Link href="/calendar" className="px-7 py-3.5 border-2 border-white/40 text-white font-bold rounded-xl hover:bg-white/10 transition-colors text-[15px]">
