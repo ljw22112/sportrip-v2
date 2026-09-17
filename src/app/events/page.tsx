@@ -29,9 +29,13 @@ function EventsContent() {
   const [sport, setSport] = useState(params.get('sport')||'');
 
   // URL 파라미터 변경 시 state 동기화 (헤더 종목탭 클릭 대응)
-  useEffect(() => {
-    setSport(params.get('sport')||'');
-  }, [params]);
+  const paramSport = params.get('sport')||'';
+  const paramKeyword = params.get('q')||'';
+  const paramRegion = params.get('region')||'';
+
+  useEffect(() => { setSport(paramSport); }, [paramSport]);
+  useEffect(() => { setKeyword(paramKeyword); }, [paramKeyword]);
+  useEffect(() => { setRegion(paramRegion); }, [paramRegion]);
   const [keyword, setKeyword] = useState(params.get('q')||'');
   const [region, setRegion] = useState(params.get('region')||'');
   const [status, setStatus] = useState('');
