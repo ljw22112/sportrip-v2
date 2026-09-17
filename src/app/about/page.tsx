@@ -65,7 +65,7 @@ export default function AboutPage() {
             </p>
             <div className="flex flex-wrap gap-3">
               <Link href="/events"
-                className="px-7 py-3.5 bg-[bg-accent] text-white font-extrabold text-[15px] rounded-xl hover:opacity-90 transition-opacity">
+                className="px-7 py-3.5 font-extrabold text-[15px] rounded-xl hover:opacity-90 transition-opacity" style={{background:'#0F0F0F',color:'#fff'}}>
                 대회 찾아보기
               </Link>
               <Link href="/calendar"
