@@ -56,27 +56,46 @@ ${nearbySpots?.length > 0
   "tip": "전체 여행 핵심 팁 한 줄"
 }`;
 
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 1500,
-        messages: [{ role: 'user', content: prompt }],
-      }),
-    });
+  const GEMINI_KEY = process.env.GEMINI_API_KEY;
+  if (!GEMINI_KEY) return NextResponse.json({ ok: false, error: 'GEMINI_API_KEY 없음' }, { status: 500 });
 
-    const data = await res.json();
-    const text = data.content?.[0]?.text || '';
+  const MODELS = ['gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-2.0-flash'];
+  let lastErr = '';
 
-    // JSON 파싱
-    const jsonMatch = text.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) throw new Error('JSON 파싱 실패');
-    const course = JSON.parse(jsonMatch[0]);
+  for (const model of MODELS) {
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        const res = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_KEY}`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: prompt }] }],
+              generationConfig: { maxOutputTokens: 1500, temperature: 0.5 },
+            }),
+          }
+        );
+        if (res.status === 503 || res.status === 429) {
+          await new Promise(r => setTimeout(r, 800 * (attempt + 1)));
+          lastErr = `${model}:${res.status}`;
+          continue;
+        }
+        if (!res.ok) { lastErr = `${model}:${res.status}`; break; }
 
-    return NextResponse.json({ ok: true, course });
-  } catch (e) {
-    return NextResponse.json({ ok: false, error: String(e) }, { status: 500 });
+        const data = await res.json();
+        const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+        if (!text) { lastErr = 'empty'; break; }
+
+        const jsonMatch = text.match(/\{[\s\S]*\}/);
+        if (!jsonMatch) { lastErr = 'no-json'; break; }
+        const course = JSON.parse(jsonMatch[0]);
+        return NextResponse.json({ ok: true, course, model });
+      } catch (e: any) { lastErr = String(e); }
+    }
+  }
+
+  // 모든 모델 실패 → 지역별 기본 코스 폴백
+  return NextResponse.json({ ok: false, error: `AI 응답 실패: ${lastErr}` }, { status: 500 });
   }
 }
