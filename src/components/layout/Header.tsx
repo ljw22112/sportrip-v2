@@ -121,14 +121,6 @@ export function Header({ showSearch=false }: { showSearch?: boolean }) {
                   </select>
                 </div>
                 <div style={{width:'0.5px', background:'#E0E0E0', margin:'10px 0'}}/>
-                <div className="flex-1 flex flex-col justify-center px-6 min-w-0">
-                  <label className="text-[10px] font-bold tracking-wider" style={{color:'#A0A0A0'}}>종목</label>
-                  <select value={sportSel} onChange={e=>setSportSel(e.target.value)}
-                    className="text-[14px] bg-transparent outline-none cursor-pointer"
-                    style={{color:'#0F0F0F'}}>
-                    {SPORTS_15.map(s=><option key={s.key} value={s.key}>{s.label}</option>)}
-                  </select>
-                </div>
                 <div className="flex items-center px-3">
                   <button type="submit"
                     className="flex items-center gap-2 font-bold text-[14px] px-5 h-10 rounded-lg transition-all"
@@ -154,11 +146,6 @@ export function Header({ showSearch=false }: { showSearch?: boolean }) {
                     style={{background:'rgba(255,255,255,.08)', color:'#fff', border:'0.5px solid rgba(255,255,255,.15)'}}>
                     <option value="">전체 기간</option>
                     {MONTHS.map(m=><option key={m} value={m}>{m}월</option>)}
-                  </select>
-                  <select value={sportSel} onChange={e=>setSportSel(e.target.value)}
-                    className="px-3 py-3 rounded-xl text-[13px] outline-none"
-                    style={{background:'rgba(255,255,255,.08)', color:'#fff', border:'0.5px solid rgba(255,255,255,.15)'}}>
-                    {SPORTS_15.map(s=><option key={s.key} value={s.key}>{s.label}</option>)}
                   </select>
                 </div>
                 <button type="submit"
