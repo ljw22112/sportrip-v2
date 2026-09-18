@@ -7,6 +7,7 @@ import { ExternalLink } from 'lucide-react';
 const upcomingCount = EVENTS.filter(e => e.status !== 'done').length;
 
 const FEATURES = [
+  { icon:'automation' as const, tone:'green' as const, title:'AI 여행 코스', desc:'대회를 고르면 전날·당일·다음날 맞춤 여행 코스를 AI가 자동으로 짜드립니다. 한국관광공사 TourAPI 실데이터 기반.' },
   { icon:'findEvent'  as const, tone:'brand' as const, title:'대회 찾기',     desc:'전국 스포츠 대회 일정을 지역·종목·날짜로 검색. 15개 종목 대회를 한눈에 확인하세요.' },
   { icon:'mapExplore' as const, tone:'brand' as const, title:'지도로 탐색',   desc:'카카오맵 기반 실제 지도에서 대회 개최지를 확인하고, 종목별 필터로 원하는 대회를 찾으세요.' },
   { icon:'travelInfo' as const, tone:'green' as const, title:'주변 여행 정보', desc:'TourAPI 기반으로 대회 장소 주변 관광지·음식점·숙박·축제 정보를 실시간 제공합니다.' },
@@ -16,7 +17,7 @@ const FEATURES = [
 ];
 
 const DATA_SOURCES = [
-  { icon:'publicData' as const, tone:'slate' as const, name:'공공데이터포털', sub:'전국대회정보 표준데이터', desc:'국민체육진흥법에 따라 지방자치단체에서 관리하는 전국 스포츠 대회 정보를 매주 자동 수집합니다.', badge:'매주 자동 업데이트', url:'https://www.data.go.kr' },
+  { icon:'publicData' as const, tone:'slate' as const, name:'공공데이터포털', sub:'전국대회정보 표준데이터', desc:'국민체육진흥법에 따라 지방자치단체에서 관리하는 전국 스포츠 대회 정보를 매주 자동 수집합니다.', badge:'매일 17:00 KST 자동 업데이트 (Vercel Cron)', url:'https://www.data.go.kr' },
   { icon:'tourOrg'   as const, tone:'brand' as const, name:'한국관광공사', sub:'국문 관광정보 서비스 (TourAPI)', desc:'한국관광공사가 제공하는 고품질 관광 콘텐츠 API로 주변 관광지·음식점·숙박·축제 정보를 실시간 제공합니다.', badge:'실시간 연동', url:'https://api.visitkorea.or.kr' },
 ];
 
@@ -84,7 +85,7 @@ export default function AboutPage() {
                 {num:`${EVENTS.length}+`, label:'등록 대회', sub:'전국 스포츠 DB'},
                 {num:'17', label:'지역 커버리지', sub:'17개 시·도'},
                 {num:'15', label:'종목 카테고리', sub:'마라톤~골프'},
-                {num:'5', label:'TourAPI 카테고리', sub:'관광·음식·숙박·축제·문화'},
+                {num:'5', label:'TourAPI 카테고리', sub:'관광·음식·숙박·축제·문화·무장애'},
               ].map(s=>(
                 <div key={s.label} className="text-center">
                   <div className="text-[40px] md:text-[48px] font-black text-[bg-primary] tracking-tighter">{s.num}</div>
