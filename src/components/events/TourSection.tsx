@@ -83,8 +83,11 @@ export function TourSection({ title, icon, sampleItems, lat, lng, contentTypeId,
               const card = (
                 <div key={i}
                   className={`bg-[#F7F7F6] border border-border rounded-xl overflow-hidden transition-all
-                    ${url ? 'cursor-pointer hover:border-[bg-primary] hover:shadow-sm' : ''}`}
-                  onClick={() => url && window.open(url, '_blank')}>
+                    'cursor-pointer hover:border-[bg-primary] hover:shadow-sm hover:shadow-md transition-all'`}
+                  onClick={() => {
+                    const dest = url || `https://korean.visitkorea.or.kr/search/search-list.do?keyword=${encodeURIComponent(name)}`;
+                    window.open(dest, '_blank');
+                  }}>
                   {img && (
                     <img src={img} alt={name} className="w-full h-24 object-cover"/>
                   )}
