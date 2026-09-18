@@ -85,9 +85,8 @@ function EventsContent() {
                 const active = sport===sp.key||(sp.key==='전체'&&!sport);
                 return (
                   <button key={sp.key} onClick={()=>setSport(sp.key==='전체'?'':sp.key)}
-                    className={`flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] md:text-[13px] font-bold border-2 transition-all
-                      ${active ? 'text-white border-transparent' : 'bg-white text-[#333] border-[#E0E0E0] hover:border-[#333]'}`}
-                    style={active ? {background:sp.color, borderColor:sp.color} : {}}>
+                    className="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] md:text-[13px] font-bold border-2 transition-all bg-white"
+                    style={active ? {borderColor:sp.color, color:sp.color, boxShadow:`0 0 0 1px ${sp.color}`} : {borderColor:'#E0E0E0', color:'#333'}}>
                     <img src={sp.icon} alt={sp.label}
                       className='w-5 h-5 md:w-6 md:h-6 object-contain flex-shrink-0'/>
                     <span>{sp.label}</span>
