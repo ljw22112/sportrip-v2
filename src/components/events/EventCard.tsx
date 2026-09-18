@@ -104,9 +104,9 @@ export function EventCardHorizontal({ event }: { event: SportEvent }) {
   return (
     <Link href={`/events/${event.id}`}
       className="flex gap-4 py-4 border-b border-[#E8E8E6] items-center hover:bg-[#F7F7F6] px-2 -mx-2 rounded-xl transition-colors">
-      <div className="w-14 h-14 flex-shrink-0 rounded-xl flex items-center justify-center text-3xl border-2"
-        style={{borderColor: sport.color + '55', background: sport.color + '11'}}>
-        {sport.emoji}
+      <div className="w-14 h-14 flex-shrink-0 rounded-xl flex items-center justify-center border-2 overflow-hidden"
+        style={{borderColor: sport.color + '55', background: sport.color + '0D'}}>
+        <img src={sport.icon} alt={sport.label} className="w-10 h-10 object-contain"/>
       </div>
       <div className="flex-1 min-w-0">
         <div className="font-bold text-[14px] text-ink truncate">{event.title}</div>
