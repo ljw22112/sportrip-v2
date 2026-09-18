@@ -28,11 +28,7 @@ ${spotsText}
   "tip": "전체 팁 한 줄"
 }
 
-규칙:
-- days 반드시 3개
-- 각 구간 places 2~3개
-- TourAPI 목록 장소 우선 사용
-- type: 관광지/음식점/숙박/카페/산책 중 하나`;
+규칙: days 반드시 3개 / 각 구간 places 2~3개 / TourAPI 목록 장소 우선`;
 
   const GEMINI_KEY = process.env.GEMINI_API_KEY;
   if (!GEMINI_KEY) {
@@ -45,11 +41,15 @@ ${spotsText}
   for (const model of MODELS) {
     for (let attempt = 0; attempt < 2; attempt++) {
       try {
+        // AQ. 형식 키 → x-goog-api-key 헤더로 전송 (query param 방식 미지원)
         const res = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_KEY}`,
+          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
           {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+              'Content-Type': 'application/json',
+              'x-goog-api-key': GEMINI_KEY,
+            },
             body: JSON.stringify({
               contents: [{ parts: [{ text: prompt }] }],
               generationConfig: { maxOutputTokens: 1500, temperature: 0.5 },
@@ -61,12 +61,14 @@ ${spotsText}
           lastErr = `${model}:${res.status}`;
           continue;
         }
-        if (!res.ok) { lastErr = `${model}:${res.status}`; break; }
-
+        if (!res.ok) {
+          const errBody = await res.text();
+          lastErr = `${model}:${res.status}:${errBody.slice(0,100)}`;
+          break;
+        }
         const data = await res.json();
         const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
         if (!text) { lastErr = 'empty'; break; }
-
         const jsonMatch = text.match(/\{[\s\S]*\}/);
         if (!jsonMatch) { lastErr = 'no-json'; break; }
         const course = JSON.parse(jsonMatch[0]);
