@@ -89,7 +89,7 @@ function EventsContent() {
                       ${active ? 'text-white border-transparent' : 'bg-white text-[#333] border-[#E0E0E0] hover:border-[#333]'}`}
                     style={active ? {background:sp.color, borderColor:sp.color} : {}}>
                     <img src={sp.icon} alt={sp.label}
-                      className={`w-5 h-5 md:w-6 md:h-6 object-contain flex-shrink-0 ${active?'brightness-0 invert':''}`}/>
+                      className='w-5 h-5 md:w-6 md:h-6 object-contain flex-shrink-0'/>
                     <span>{sp.label}</span>
                   </button>
                 );

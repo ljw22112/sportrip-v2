@@ -134,7 +134,7 @@ export default function CalendarPage() {
                   ? 'bg-[bg-primary] border-[bg-primary]'
                   : 'bg-white text-ink border-border hover:border-[bg-primary] hover:bg-[bg-primary-tint]'}`}>
               <img src={sp.icon} alt={sp.label}
-                className={`w-7 h-7 object-contain flex-shrink-0 ${activeSport===sp.label?'brightness-0 invert':''}`}/>
+                className='w-7 h-7 object-contain flex-shrink-0'/>
               <span className={activeSport===sp.label?'text-white':''}>{sp.label}</span>
             </button>
           ))}
