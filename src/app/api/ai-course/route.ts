@@ -1,5 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+export async function GET() {
+  const key = process.env.GEMINI_API_KEY;
+  return NextResponse.json({
+    hasKey: !!key,
+    keyPrefix: key ? key.slice(0, 6) + '...' : 'NONE',
+  });
+}
+
 export async function POST(req: NextRequest) {
   const { eventTitle, region, venue, date, sport, nearbySpots } = await req.json();
 
@@ -27,21 +35,19 @@ ${spotsText}
   ],
   "tip": "전체 팁 한 줄"
 }
-
-규칙: days 반드시 3개 / 각 구간 places 2~3개 / TourAPI 목록 장소 우선`;
+규칙: days 반드시 3개 / 각 구간 places 2~3개`;
 
   const GEMINI_KEY = process.env.GEMINI_API_KEY;
   if (!GEMINI_KEY) {
-    return NextResponse.json({ ok: false, error: 'GEMINI_API_KEY 없음' }, { status: 500 });
+    return NextResponse.json({ ok: false, error: 'GEMINI_API_KEY 환경변수 없음 — Vercel Settings에서 등록 필요' }, { status: 500 });
   }
 
-  const MODELS = ['gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-2.0-flash'];
+  const MODELS = ['gemini-2.5-flash', 'gemini-2.5-flash-lite'];
   let lastErr = '';
 
   for (const model of MODELS) {
     for (let attempt = 0; attempt < 2; attempt++) {
       try {
-        // AQ. 형식 키 → x-goog-api-key 헤더로 전송 (query param 방식 미지원)
         const res = await fetch(
           `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
           {
@@ -56,21 +62,20 @@ ${spotsText}
             }),
           }
         );
-        if (res.status === 503 || res.status === 429) {
-          await new Promise(r => setTimeout(r, 800 * (attempt + 1)));
-          lastErr = `${model}:${res.status}`;
-          continue;
-        }
+        const rawBody = await res.text();
         if (!res.ok) {
-          const errBody = await res.text();
-          lastErr = `${model}:${res.status}:${errBody.slice(0,100)}`;
+          lastErr = `${model}:${res.status}:${rawBody.slice(0, 200)}`;
+          if (res.status === 429 || res.status === 503) {
+            await new Promise(r => setTimeout(r, 1000 * (attempt + 1)));
+            continue;
+          }
           break;
         }
-        const data = await res.json();
+        const data = JSON.parse(rawBody);
         const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-        if (!text) { lastErr = 'empty'; break; }
+        if (!text) { lastErr = `empty response from ${model}`; break; }
         const jsonMatch = text.match(/\{[\s\S]*\}/);
-        if (!jsonMatch) { lastErr = 'no-json'; break; }
+        if (!jsonMatch) { lastErr = `no JSON in response: ${text.slice(0,100)}`; break; }
         const course = JSON.parse(jsonMatch[0]);
         return NextResponse.json({ ok: true, course, model });
       } catch (e: any) {
@@ -79,5 +84,5 @@ ${spotsText}
     }
   }
 
-  return NextResponse.json({ ok: false, error: `AI 응답 실패: ${lastErr}` }, { status: 500 });
+  return NextResponse.json({ ok: false, error: lastErr }, { status: 500 });
 }
