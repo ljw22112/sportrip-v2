@@ -35,8 +35,8 @@ export function EventCard({ event }: { event: SportEvent }) {
     <article className="relative group cursor-pointer">
       {/* 썸네일 — 테두리만, 흰 배경, 종목 캐릭터 */}
       <Link href={`/events/${event.id}`}
-        className="relative block rounded-2xl overflow-hidden border-2 hover:border-[--green] transition-all"
-        style={{aspectRatio:'1/1', borderColor: sport.color + '55', background:'bg-bg'}}>
+        className="relative block rounded-2xl overflow-hidden border-2 hover:shadow-lg transition-all"
+        style={{aspectRatio:'1/1', borderColor: sport.color + '44', background: sport.color + '0D'}}>
         {/* D-day — 크게 */}
         {event.status !== 'done' && (
           <div className="absolute top-0 left-0 right-0 flex items-center justify-center gap-2 pt-2 z-10">
@@ -47,14 +47,11 @@ export function EventCard({ event }: { event: SportEvent }) {
             <span className="text-[11px] font-semibold mt-1" style={{color:'#A0A0A0'}}>{event.region}</span>
           </div>
         )}
-        {/* 종목 캐릭터 SVG */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center p-4">
+        {/* 종목 마스코트 */}
+        <div className="absolute inset-0 flex items-center justify-center">
           <img src={sport.icon} alt={sport.label}
-            className="w-3/4 h-3/4 object-contain drop-shadow-sm select-none mt-6"/>
-          <div className="text-[11px] font-bold px-3 py-1 rounded-full text-white mt-2"
-            style={{background: sport.color}}>
-            {event.sport}
-          </div>
+            className="w-4/5 h-4/5 object-contain drop-shadow select-none"
+            style={{marginTop:'8px'}}/>
         </div>
         {/* 하단 날짜 바 */}
         <div className="absolute bottom-0 left-0 right-0 px-3 py-2.5"
