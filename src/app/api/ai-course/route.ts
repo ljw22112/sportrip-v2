@@ -42,7 +42,7 @@ ${spotsText}
     return NextResponse.json({ ok: false, error: 'GEMINI_API_KEY 환경변수 없음 — Vercel Settings에서 등록 필요' }, { status: 500 });
   }
 
-  const MODELS = ['gemini-2.5-flash', 'gemini-2.5-flash-lite'];
+  const MODELS = ['gemini-2.5-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite'];
   let lastErr = '';
 
   for (const model of MODELS) {
