@@ -76,7 +76,7 @@ function EventsContent() {
 
   return (
     <>
-      <Header showSearch/>
+      <Header/>
       <div className="flex min-h-screen">
         {/* 목록 영역 */}
         <div className={`flex-1 min-w-0 ${showMap&&!isMobile?'max-w-[calc(100%-400px)]':''}`}>
@@ -125,15 +125,7 @@ function EventsContent() {
             {/* 필터 패널 */}
             {filterOpen && (
               <div className="border-2 border-[#E0E0E0] rounded-2xl p-4 mb-4 bg-white">
-                <div className="grid grid-cols-3 gap-3">
-                  <div>
-                    <div className="text-[13px] font-bold mb-1.5 text-[#333]">날짜</div>
-                    <select value={monthFilter} onChange={e=>setMonthFilter(e.target.value)}
-                      className="w-full border-2 border-[#E0E0E0] rounded-xl px-3 py-2.5 text-[14px] bg-white outline-none">
-                      <option value="">전체 기간</option>
-                      {[8,9,10,11,12].map(m=><option key={m} value={m}>{m}월</option>)}
-                    </select>
-                  </div>
+                <div className="grid grid-cols-2 gap-3">
                   <div>
                     <div className="text-[13px] font-bold mb-1.5 text-[#333]">지역</div>
                     <select value={region} onChange={e=>setRegion(e.target.value)}
@@ -227,7 +219,7 @@ export default function EventsPage() {
   return (
     <Suspense fallback={
       <>
-        <Header showSearch/>
+        <Header/>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-5 md:p-10">
           {Array.from({length:8}).map((_,i)=><EventCardSkeleton key={i}/>)}
         </div>
