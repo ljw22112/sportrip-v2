@@ -151,3 +151,25 @@ export function Header({ showSearch=false }: { showSearch?: boolean }) {
     </header>
   );
 }
+
+// 모바일 하단 탭바
+export function MobileTabBar() {
+  return (
+    <nav className="fixed bottom-0 left-0 right-0 md:hidden z-40 bg-[#0F0F0F] border-t border-white/10 flex"
+      style={{paddingBottom:'env(safe-area-inset-bottom,0px)'}}>
+      {[
+        {href:'/', icon:'🏠', label:'홈'},
+        {href:'/events', icon:'🏅', label:'대회찾기'},
+        {href:'/calendar', icon:'📅', label:'캘린더'},
+        {href:'/saved', icon:'♡', label:'저장'},
+        {href:'/about', icon:'ℹ️', label:'소개'},
+      ].map(({href,icon,label})=>(
+        <a key={href} href={href}
+          className="flex-1 flex flex-col items-center justify-center py-2 gap-0.5 text-white/60 hover:text-white transition-colors">
+          <span className="text-[20px] leading-none">{icon}</span>
+          <span className="text-[10px] font-semibold">{label}</span>
+        </a>
+      ))}
+    </nav>
+  );
+}

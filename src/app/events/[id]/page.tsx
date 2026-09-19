@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { EVENTS, calcDday, calcStatus, calcVerified, VERIFIED_LABELS, calcRegistrationStatus, REG_STATUS_LABELS } from '@/lib/data';
-import { Header } from '@/components/layout/Header';
+import { Header, MobileTabBar } from '@/components/layout/Header';
 import { getTourData } from '@/lib/courses';
 import { TourSection } from '@/components/events/TourSection';
 import { AICourseSection } from '@/components/events/AICourseSection';
@@ -238,23 +238,28 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
       </main>
 
       {/* 모바일 하단 고정 바 */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-border px-5 py-3.5 md:hidden z-40 flex items-center gap-3 shadow-lg">
-        <img src={sport.icon} alt={sport.label} className="w-10 h-10 object-contain flex-shrink-0"/>
-        <div className="flex-1 min-w-0">
-          <div className="font-bold text-[14px] text-ink truncate">{ev.title}</div>
-          <div className="text-[13px] text-muted">
-            {isDone ? '종료된 대회' : <span className="font-bold" style={{color:sport.color}}>{dday}</span>}
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-border px-4 py-3 md:hidden z-40 shadow-lg"
+        style={{paddingBottom:'calc(env(safe-area-inset-bottom,0px) + 12px)'}}>
+        <div className="flex items-center gap-2 mb-2">
+          <img src={sport.icon} alt={sport.label} className="w-8 h-8 object-contain flex-shrink-0"/>
+          <div className="flex-1 min-w-0">
+            <div className="font-bold text-[13px] text-ink truncate">{ev.title}</div>
+            <div className="text-[12px] text-muted">
+              {isDone ? '종료된 대회' : <span className="font-bold" style={{color:sport.color}}>{dday}</span>}
+            </div>
           </div>
         </div>
-        {ev.url ? (
-          <a href={ev.url} target="_blank" rel="noopener"
-            className="flex-shrink-0 text-white font-bold text-[14px] px-5 py-3 rounded-xl"
-            style={{background:sport.color}}>
-            공식 사이트 ↗
-          </a>
-        ) : (
-          <span className="flex-shrink-0 bg-[#F7F7F6] text-muted text-[14px] px-5 py-3 rounded-xl">준비 중</span>
-        )}
+        <div className="flex gap-2">
+          <SaveButton eventId={String(ev.id)} className="flex-1"/>
+          <ShareButton url={`/events/${ev.id}`} title={ev.title} className="flex-1"/>
+          {ev.url ? (
+            <a href={ev.url} target="_blank" rel="noopener"
+              className="flex-1 flex items-center justify-center text-white font-bold text-[13px] py-2.5 rounded-xl"
+              style={{background:sport.color}}>
+              공식 사이트 ↗
+            </a>
+          ) : null}
+        </div>
       </div>
     </>
   );
