@@ -134,7 +134,7 @@ export function KakaoMap({ events, className }: Props) {
               className={`flex flex-col items-center justify-center gap-0.5 py-2.5 px-1 flex-shrink-0 border-b border-[#F0F0F0] transition-all
                 ${active ? 'bg-[#D4FF3F]' : 'hover:bg-[#F7F7F6]'}`}>
               <img src={sp.icon} alt={sp.label}
-                className="w-7 h-7 md:w-8 md:h-8 object-contain"/>
+                className={`object-contain transition-all ${active ? 'w-9 h-9 md:w-10 md:h-10 drop-shadow-md scale-110' : 'w-7 h-7 md:w-8 md:h-8'}`}/>
               <span className={`text-[9px] md:text-[10px] font-bold leading-tight text-center
                 ${active ? 'text-[#0F0F0F] font-black' : 'text-[#333]'}`}>{sp.label}</span>
             </button>
