@@ -50,7 +50,7 @@ export function MiniCalendar({ events }: Props) {
 
       {/* 요일 헤더 */}
       <div className="grid grid-cols-7 text-center text-[11px] font-bold text-faint py-1.5 border-b border-[#F0F0F0]">
-        {['월','화','수','목','금','토','일'].map(d=>(
+        {['일','월','화','수','목','금','토'].map(d=>(
           <div key={d} className={d==='일'?'text-red-400':d==='토'?'text-blue-400':''}>{d}</div>
         ))}
       </div>
