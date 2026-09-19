@@ -1,7 +1,7 @@
 'use client';
 import { useState, useMemo, Suspense, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { EventCard, EventCardSkeleton, EventCardHorizontal } from '@/components/events/EventCard';
+import { EventCard, EventCardSkeleton } from '@/components/events/EventCard';
 import { KakaoMap as KoreaMap } from '@/components/events/KakaoMap';
 import { Header } from '@/components/layout/Header';
 import { EVENTS, REGIONS, getDynamicEvents } from '@/lib/data';
@@ -190,14 +190,11 @@ function EventsContent() {
               </div>
             )}
 
-            {/* 대회 목록 */}
-            {tab==='all'&&filtered.length>0&&(
+            {/* 대회 목록 — 전체/이번달/이번주 모두 동일 그리드 */}
+            {filtered.length>0&&(
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
                 {filtered.map(e=><EventCard key={e.id} event={e}/>)}
               </div>
-            )}
-            {tab!=='all'&&filtered.length>0&&(
-              <div>{filtered.map(e=><EventCardHorizontal key={e.id} event={e}/>)}</div>
             )}
           </div>
         </div>
