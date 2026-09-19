@@ -28,7 +28,8 @@ export function TourSection({ title, icon, sampleItems, lat, lng, contentTypeId,
     const controller = new AbortController();
     (async () => {
       try {
-        const res = await fetch(`/api/tour?lat=${lat}&lng=${lng}&type=${contentTypeId}`, { signal: controller.signal });
+        const bfParam = barrierFree ? '&barrierFree=1' : '';
+        const res = await fetch(`/api/tour?lat=${lat}&lng=${lng}&type=${contentTypeId}${bfParam}`, { signal: controller.signal });
         const data = await res.json();
         if (data.items?.length > 0) { setApiItems(data.items); setSource('api'); }
         else setSource('sample');
