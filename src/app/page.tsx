@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { EVENTS, getDynamicEvents } from '@/lib/data';
 import { EventRow } from '@/components/events/EventRow';
 import { KakaoMap as KoreaMap } from '@/components/events/KakaoMap';
-import { Header, MobileTabBar } from '@/components/layout/Header';
+import { Header } from '@/components/layout/Header';
 import { RegionListView } from '@/components/events/RegionListView';
 import { getSportInfo } from '@/lib/sports';
 import { CalendarDays } from 'lucide-react';
@@ -87,7 +87,7 @@ export default function HomePage() {
             {/* AI 소개 */}
             <div className="mt-6 p-4 rounded-2xl" style={{background:'rgba(212,255,63,0.1)',border:'1px solid rgba(212,255,63,0.25)'}}>
               <div className="text-[13px] font-bold mb-1" style={{color:'#D4FF3F'}}>✨ AI 여행 코스</div>
-              <p className="text-[14px] text-white leading-relaxed">대회를 고르면, 전날·당일·다음날 코스를 AI가 추천해 드려요. 한국관광공사 TourAPI 실데이터 기반이라 믿을 수 있어요.</p>
+              <p className="text-[14px] text-white leading-relaxed">대회를 고르면, 전날·당일·다음날 코스를 AI가 추천해 드려요.</p>
             </div>
             {/* 히어로 CTA */}
             <div className="flex gap-3 mt-6 flex-wrap">
@@ -212,7 +212,7 @@ export default function HomePage() {
                 <span style={{color:'#D4FF3F'}}>그 지역까지 즐기고 오세요</span>
               </h2>
               <p className="text-[13px] mb-5" style={{color:'rgba(255,255,255,0.6)'}}>
-                대회를 고르면, 전날·당일·다음날 코스를 AI가 추천해 드려요. 한국관광공사 TourAPI 실데이터 기반.
+                대회를 고르면, 전날·당일·다음날 코스를 AI가 추천해 드려요.
               </p>
               <div className="flex gap-3 flex-wrap">
                 <Link href="/events" className="font-bold text-[14px] px-5 py-2.5 rounded-xl hover:opacity-90 transition-all" style={{background:'#D4FF3F',color:'#0F0F0F'}}>
