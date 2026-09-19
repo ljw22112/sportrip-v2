@@ -28,6 +28,8 @@ export default function CalendarPage() {
   const [year,  setYear]  = useState(today.getFullYear());
   const [month, setMonth] = useState(today.getMonth());
   const [activeSport, setActiveSport] = useState<string>('전체');
+  const [keyword, setKeyword] = useState('');
+  const [searchMonth, setSearchMonth] = useState('');
 
   const allEvents = getDynamicEvents();
 
@@ -42,6 +44,7 @@ export default function CalendarPage() {
   // 이번 달 이벤트
   const monthEvents = useMemo(() =>
     filtered.filter(e => {
+      if(keyword && !e.title.includes(keyword) && !e.region.includes(keyword)) return false;
       const d = new Date(e.start);
       return d.getFullYear()===year && d.getMonth()===month;
     }).sort((a,b)=>a.start.localeCompare(b.start)),
@@ -52,6 +55,15 @@ export default function CalendarPage() {
   const nextMonth = () => { if(month===11){setYear(y=>y+1);setMonth(0);}else setMonth(m=>m+1); };
 
   const firstDay    = new Date(year,month,1).getDay();
+  // searchMonth 적용
+  useEffect(()=>{
+    if(searchMonth){
+      setMonth(parseInt(searchMonth)-1);
+      if(parseInt(searchMonth)<today.getMonth()+1) setYear(today.getFullYear()+1);
+      else setYear(today.getFullYear());
+    }
+  },[searchMonth]);
+
   const daysInMonth = new Date(year,month+1,0).getDate();
   const prevDays    = new Date(year,month,0).getDate();
   const todayStr    = today.toISOString().slice(0,10);
@@ -112,7 +124,7 @@ export default function CalendarPage() {
 
   return (
     <>
-      <Header showSearch/>
+      <Header/>
       <main className="max-w-[1760px] mx-auto px-4 md:px-20 py-5 pb-20">
         {/* 브레드크럼 */}
         <p className="text-xs text-muted mb-3">
@@ -121,9 +133,21 @@ export default function CalendarPage() {
         <h1 className="text-xl md:text-2xl font-extrabold tracking-tight mb-1">
           {year}년 {MONTHS_KR[month]} 대회 일정
         </h1>
-        <p className="text-[13px] text-muted mb-5 hidden md:block">
-          종목을 선택하면 해당 종목의 대회만 표시됩니다.
-        </p>
+        {/* ── 검색 바 ── */}
+        <div className="flex flex-wrap gap-2 mb-4">
+          <input value={keyword} onChange={e=>setKeyword(e.target.value)}
+            placeholder="대회명, 지역 검색..."
+            className="flex-1 min-w-[160px] px-4 py-2.5 border-2 border-[#E0E0E0] rounded-xl text-[14px] outline-none focus:border-[#0F0F0F]"/>
+          <select value={searchMonth} onChange={e=>setSearchMonth(e.target.value)}
+            className="px-4 py-2.5 border-2 border-[#E0E0E0] rounded-xl text-[14px] bg-white outline-none cursor-pointer">
+            <option value="">전체 기간</option>
+            {[8,9,10,11,12].map(m=><option key={m} value={m}>{m}월</option>)}
+          </select>
+          <select value={activeSport} onChange={e=>setActiveSport(e.target.value)}
+            className="px-4 py-2.5 border-2 border-[#E0E0E0] rounded-xl text-[14px] bg-white outline-none cursor-pointer">
+            {SPORTS_15.map(sp=><option key={sp.key} value={sp.label}>{sp.label}</option>)}
+          </select>
+        </div>
 
         {/* ── 종목 필터 칩 ── */}
         <div className="flex gap-2 overflow-x-auto pb-3 mb-5 pt-1" style={{scrollbarWidth:'none'}}>
