@@ -10,6 +10,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const SERVICE_KEY = process.env.TOUR_API_KEY || '';
 const BASE_URL    = 'https://apis.data.go.kr/B551011/KorService1/locationBasedList1';
+const BF_URL      = 'https://apis.data.go.kr/B551011/KorWithService1/locationBasedList1'; // 무장애 API
 const RADIUS      = 10000; // 반경 10km
 
 export async function GET(req: NextRequest) {
@@ -28,21 +29,23 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const params = new URLSearchParams({
+    const paramObj: Record<string,string> = {
       serviceKey:    SERVICE_KEY,
       numOfRows:     '6',
       pageNo:        '1',
       MobileOS:      'ETC',
       MobileApp:     'SpoTrip',
       _type:         'json',
-      contentTypeId: type,
       mapX:          lng,
       mapY:          lat,
       radius:        String(RADIUS),
-      arrange:       'E', // 거리순
-    });
+      arrange:       'E',
+    };
+    if (!barrierFree) paramObj.contentTypeId = type;
+    const params = new URLSearchParams(paramObj);
 
-    const res = await fetch(`${BASE_URL}?${params}`, {
+    const apiUrl = barrierFree ? BF_URL : BASE_URL;
+    const res = await fetch(`${apiUrl}?${params}`, {
       cache: 'no-store', // 실시간 호출 필수 (공모전 규정)
     });
 
