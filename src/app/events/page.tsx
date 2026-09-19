@@ -33,7 +33,6 @@ function EventsContent() {
   const paramKeyword = params.get('q')||'';
   const paramRegion = params.get('region')||'';
   const paramMonth = params.get('month')||'';
-  const paramMonth = params.get('month')||'';
 
   useEffect(() => { setSport(paramSport); }, [paramSport]);
   useEffect(() => { setKeyword(paramKeyword); }, [paramKeyword]);
@@ -234,4 +233,5 @@ export default function EventsPage() {
     </Suspense>
   );
 }
+
 
