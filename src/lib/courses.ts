@@ -34,6 +34,7 @@ export interface RegionTourData {
   culture:    TourSpot[];
   food:       TourSpot[];
   hotel:      TourSpot[];
+  barrier:    TourSpot[];
 }
 
 export const REGION_TOUR: Record<string, RegionTourData> = {
@@ -347,6 +348,9 @@ const DEFAULT_TOUR: RegionTourData = {
   culture:[{name:'지역 문화·레포츠 시설', addr:'경기장 인근', desc:'지역 문화시설 및 체험 활동 정보입니다.'}],
   food:[{name:'지역 맛집', addr:'경기장 인근', desc:'현지인 추천 맛집 정보입니다.'}],
   hotel:[{name:'경기장 인근 숙박', addr:'경기장 인근', desc:'경기장 접근이 편한 숙소입니다.'}],
+  barrier: [
+    { name:'한국관광공사 무장애 관광', addr:'한국관광공사 공식사이트 참조', tel:'1330', dist:0, img:'', url:'https://korean.visitkorea.or.kr' },
+  ],
 };
 
 export function getTourData(region: string): RegionTourData {

@@ -182,7 +182,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
               <TourSection title="문화·레포츠" icon="🎭" sampleItems={tour.culture} lat={ev.lat} lng={ev.lng} contentTypeId="14"/>
               <TourSection title="음식점" icon="🍽️" sampleItems={tour.food} lat={ev.lat} lng={ev.lng} contentTypeId="39"/>
               <TourSection title="숙박" icon="🏨" sampleItems={tour.hotel} lat={ev.lat} lng={ev.lng} contentTypeId="32"/>
-              <TourSection title="무장애 여행 (장애인·고령자·영유아)" icon="♿" sampleItems={[]} lat={ev.lat} lng={ev.lng} contentTypeId="15" barrierFree={true}/>
+              <TourSection title="무장애 여행 (장애인·고령자·영유아)" icon="♿" sampleItems={tour.barrier} lat={ev.lat} lng={ev.lng} contentTypeId="15" barrierFree={true}/>
 
             {/* 면책 문구 */}
             <div className="mt-8 p-4 bg-[#F7F7F6] border border-border rounded-xl text-[12px] text-faint leading-relaxed">
