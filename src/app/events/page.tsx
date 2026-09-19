@@ -1,4 +1,4 @@
-﻿'use client';
+﻿﻿'use client';
 import { useState, useMemo, Suspense, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { EventCard, EventCardSkeleton } from '@/components/events/EventCard';
