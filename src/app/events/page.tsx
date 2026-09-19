@@ -59,8 +59,8 @@ function EventsContent() {
   const base = useMemo(()=>{
     const de = getDynamicEvents();
     if(tab==='week'){const{start,end}=getWeekRange();return de.filter(e=>e.start>=start&&e.start<=end);}
+    if(monthFilter){const m=String(monthFilter).padStart(2,'0');return de.filter(e=>e.start.startsWith(`2026-${m}`));}
     if(tab==='month'){const{start,end}=getMonthRange();return de.filter(e=>e.start>=start&&e.start<=end);}
-    if(monthFilter){ const m=monthFilter.padStart(2,'0'); return de.filter(e=>e.start.startsWith(`2026-${m}`)); }
     return de;
   },[tab]);
 
