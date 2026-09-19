@@ -61,7 +61,7 @@ function EventsContent() {
     if(monthFilter){const m=String(monthFilter).padStart(2,'0');return de.filter(e=>e.start.startsWith('2026-'+m));}
     if(tab==='month'){const{start,end}=getMonthRange();return de.filter(e=>e.start>=start&&e.start<=end);}
     return de;
-  },[tab]);
+  },[tab, monthFilter]);
 
   const filtered = useMemo(()=>base.filter(e=>{
     if(sport&&sport!=='전체'&&e.sport!==sport) return false;
