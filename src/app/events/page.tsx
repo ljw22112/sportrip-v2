@@ -32,12 +32,15 @@ function EventsContent() {
   const paramSport = params.get('sport')||'';
   const paramKeyword = params.get('q')||'';
   const paramRegion = params.get('region')||'';
+  const paramMonth = params.get('month')||'';
 
   useEffect(() => { setSport(paramSport); }, [paramSport]);
   useEffect(() => { setKeyword(paramKeyword); }, [paramKeyword]);
   useEffect(() => { setRegion(paramRegion); }, [paramRegion]);
+  useEffect(() => { setMonthFilter(paramMonth); }, [paramMonth]);
   const [keyword, setKeyword] = useState(params.get('q')||'');
   const [region, setRegion] = useState(params.get('region')||'');
+  const [monthFilter, setMonthFilter] = useState(params.get('month')||'');
   const [status, setStatus] = useState('');
   const [sort, setSort] = useState<'date'|'size'>('date');
   const [filterOpen, setFilterOpen] = useState(false);
@@ -57,6 +60,7 @@ function EventsContent() {
     const de = getDynamicEvents();
     if(tab==='week'){const{start,end}=getWeekRange();return de.filter(e=>e.start>=start&&e.start<=end);}
     if(tab==='month'){const{start,end}=getMonthRange();return de.filter(e=>e.start>=start&&e.start<=end);}
+    if(monthFilter){ const m=monthFilter.padStart(2,'0'); return de.filter(e=>e.start.startsWith(`2026-${m}`)); }
     return de;
   },[tab]);
 
