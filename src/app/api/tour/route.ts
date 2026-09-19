@@ -10,7 +10,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const SERVICE_KEY = process.env.TOUR_API_KEY || '';
 const BASE_URL    = 'https://apis.data.go.kr/B551011/KorService1/locationBasedList1';
-const BF_URL      = 'https://apis.data.go.kr/B551011/KorWithService1/locationBasedList1'; // 무장애 API
+const BF_URL      = 'https://apis.data.go.kr/B551011/KorService1/locationBasedList1'; // 무장애 — KorService1 전체 조회
 const RADIUS      = 10000; // 반경 10km
 
 export async function GET(req: NextRequest) {
@@ -29,35 +29,20 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    let params: URLSearchParams;
-    if (barrierFree) {
-      // KorWithService1 전용 파라미터
-      params = new URLSearchParams({
-        serviceKey: SERVICE_KEY,
-        numOfRows:  '6',
-        pageNo:     '1',
-        MobileOS:   'ETC',
-        MobileApp:  'SpoTrip',
-        _type:      'json',
-        mapX:       lng,
-        mapY:       lat,
-        radius:     String(RADIUS),
-      });
-    } else {
-      params = new URLSearchParams({
-        serviceKey:    SERVICE_KEY,
-        numOfRows:     '6',
-        pageNo:        '1',
-        MobileOS:      'ETC',
-        MobileApp:     'SpoTrip',
-        _type:         'json',
-        contentTypeId: type,
-        mapX:          lng,
-        mapY:          lat,
-        radius:        String(RADIUS),
-        arrange:       'E',
-      });
-    }
+    const paramObj: Record<string,string> = {
+      serviceKey:    SERVICE_KEY,
+      numOfRows:     '6',
+      pageNo:        '1',
+      MobileOS:      'ETC',
+      MobileApp:     'SpoTrip',
+      _type:         'json',
+      mapX:          lng,
+      mapY:          lat,
+      radius:        String(RADIUS),
+      arrange:       'E',
+    };
+    if (!barrierFree) paramObj.contentTypeId = type;
+    const params = new URLSearchParams(paramObj);
 
     const apiUrl = barrierFree ? BF_URL : BASE_URL;
     const res = await fetch(`${apiUrl}?${params}`, {
