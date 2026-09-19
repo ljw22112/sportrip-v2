@@ -38,11 +38,8 @@ function EventsContent() {
   useEffect(() => { setKeyword(paramKeyword); }, [paramKeyword]);
   useEffect(() => { setRegion(paramRegion); }, [paramRegion]);
   const [monthFilter, setMonthFilter] = useState(params.get('month')||'');
-  useEffect(() => { setMonthFilter(paramMonth); }, [paramMonth]);
-  useEffect(() => { setMonthFilter(paramMonth); }, [paramMonth]);
   const [keyword, setKeyword] = useState(params.get('q')||'');
   const [region, setRegion] = useState(params.get('region')||'');
-  const [monthFilter, setMonthFilter] = useState(params.get('month')||'');
   const [status, setStatus] = useState('');
   const [sort, setSort] = useState<'date'|'size'>('date');
   const [filterOpen, setFilterOpen] = useState(false);
@@ -62,7 +59,6 @@ function EventsContent() {
     const de = getDynamicEvents();
     if(tab==='week'){const{start,end}=getWeekRange();return de.filter(e=>e.start>=start&&e.start<=end);}
     if(monthFilter){const m=String(monthFilter).padStart(2,'0');return de.filter(e=>e.start.startsWith('2026-'+m));}
-    if(monthFilter){const m=String(monthFilter).padStart(2,'0');return de.filter(e=>e.start.startsWith(`2026-${m}`));}
     if(tab==='month'){const{start,end}=getMonthRange();return de.filter(e=>e.start>=start&&e.start<=end);}
     return de;
   },[tab]);
