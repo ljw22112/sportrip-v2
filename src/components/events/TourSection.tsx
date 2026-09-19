@@ -84,7 +84,7 @@ export function TourSection({ title, icon, sampleItems, lat, lng, contentTypeId,
                 <div key={i}
                   className="bg-[#F7F7F6] border border-border rounded-xl overflow-hidden transition-all cursor-pointer hover:shadow-md hover:border-gray-400" 
                   onClick={() => {
-                    const dest = url || `https://korean.visitkorea.or.kr/search/search-list.do?keyword=${encodeURIComponent(name)}`;
+                    const dest = url || `https://search.naver.com/search.naver?query=${encodeURIComponent(name + " 관광")}`;
                     window.open(dest, '_blank');
                   }}>
                   {img && (
