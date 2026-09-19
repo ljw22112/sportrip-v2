@@ -29,20 +29,35 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const paramObj: Record<string,string> = {
-      serviceKey:    SERVICE_KEY,
-      numOfRows:     '6',
-      pageNo:        '1',
-      MobileOS:      'ETC',
-      MobileApp:     'SpoTrip',
-      _type:         'json',
-      mapX:          lng,
-      mapY:          lat,
-      radius:        String(RADIUS),
-      arrange:       'E',
-    };
-    if (!barrierFree) paramObj.contentTypeId = type;
-    const params = new URLSearchParams(paramObj);
+    let params: URLSearchParams;
+    if (barrierFree) {
+      // KorWithService1 전용 파라미터
+      params = new URLSearchParams({
+        serviceKey: SERVICE_KEY,
+        numOfRows:  '6',
+        pageNo:     '1',
+        MobileOS:   'ETC',
+        MobileApp:  'SpoTrip',
+        _type:      'json',
+        mapX:       lng,
+        mapY:       lat,
+        radius:     String(RADIUS),
+      });
+    } else {
+      params = new URLSearchParams({
+        serviceKey:    SERVICE_KEY,
+        numOfRows:     '6',
+        pageNo:        '1',
+        MobileOS:      'ETC',
+        MobileApp:     'SpoTrip',
+        _type:         'json',
+        contentTypeId: type,
+        mapX:          lng,
+        mapY:          lat,
+        radius:        String(RADIUS),
+        arrange:       'E',
+      });
+    }
 
     const apiUrl = barrierFree ? BF_URL : BASE_URL;
     const res = await fetch(`${apiUrl}?${params}`, {
