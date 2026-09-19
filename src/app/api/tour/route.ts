@@ -64,7 +64,7 @@ export async function GET(req: NextRequest) {
       addr:  item.addr1        || '',
       tel:   item.tel          || '',
       dist:  item.dist         || 0,
-      img:   item.firstimage   || '',
+      img:   item.firstimage || item.firstimage2 || '',
       url:   item.homepage     || '',
       desc:  item.overview     || '',
     }));

@@ -86,9 +86,12 @@ export function TourSection({ title, icon, sampleItems, lat, lng, contentTypeId,
                   onClick={() => {
                     window.open(`https://search.naver.com/search.naver?query=${encodeURIComponent(name + " 관광")}`, '_blank');
                   }}>
-                  {img && (
-                    <img src={img} alt={name} className="w-full h-24 object-cover"/>
-                  )}
+                  <div className="w-full h-24 overflow-hidden bg-[#EAEAEA] flex items-center justify-center">
+                    {img
+                      ? <img src={img} alt={name} className="w-full h-full object-cover"/>
+                      : <span className="text-4xl">{icon}</span>
+                    }
+                  </div>
                   <div className="p-3">
                     <b className="block text-[13px] font-bold text-ink mb-1 line-clamp-2 leading-tight">{name}</b>
                     {addr && (
