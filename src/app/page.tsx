@@ -190,8 +190,8 @@ export default function HomePage() {
           <div className="max-w-[1760px] mx-auto px-5 md:px-10 py-8 flex flex-wrap gap-6 items-start">
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <img src="/logo.svg" alt="" className="h-14 w-14 brightness-0 invert"/>
-                <span className="font-black text-[28px] text-white tracking-[-0.05em]">스포트립</span>
+                <img src="/logo.svg" alt="" className="h-24 w-24 brightness-0 invert"/>
+                <span className="font-black text-[36px] text-white tracking-[-0.05em]">스포트립</span>
               </div>
               <p className="text-[12px]">SporTrip · 2026 관광데이터 활용 공모전</p>
               <p className="text-[12px] mt-1">출처: ⓒ한국관광공사</p>
