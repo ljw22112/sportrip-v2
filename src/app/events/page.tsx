@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { useState, useMemo, Suspense, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { EventCard, EventCardSkeleton } from '@/components/events/EventCard';
@@ -33,10 +33,13 @@ function EventsContent() {
   const paramKeyword = params.get('q')||'';
   const paramRegion = params.get('region')||'';
   const paramMonth = params.get('month')||'';
+  const paramMonth = params.get('month')||'';
 
   useEffect(() => { setSport(paramSport); }, [paramSport]);
   useEffect(() => { setKeyword(paramKeyword); }, [paramKeyword]);
   useEffect(() => { setRegion(paramRegion); }, [paramRegion]);
+  const [monthFilter, setMonthFilter] = useState(params.get('month')||'');
+  useEffect(() => { setMonthFilter(paramMonth); }, [paramMonth]);
   useEffect(() => { setMonthFilter(paramMonth); }, [paramMonth]);
   const [keyword, setKeyword] = useState(params.get('q')||'');
   const [region, setRegion] = useState(params.get('region')||'');
@@ -59,6 +62,7 @@ function EventsContent() {
   const base = useMemo(()=>{
     const de = getDynamicEvents();
     if(tab==='week'){const{start,end}=getWeekRange();return de.filter(e=>e.start>=start&&e.start<=end);}
+    if(monthFilter){const m=String(monthFilter).padStart(2,'0');return de.filter(e=>e.start.startsWith('2026-'+m));}
     if(monthFilter){const m=String(monthFilter).padStart(2,'0');return de.filter(e=>e.start.startsWith(`2026-${m}`));}
     if(tab==='month'){const{start,end}=getMonthRange();return de.filter(e=>e.start>=start&&e.start<=end);}
     return de;
@@ -230,3 +234,4 @@ export default function EventsPage() {
     </Suspense>
   );
 }
+
