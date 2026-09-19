@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { Search, Heart, X } from 'lucide-react';
 import { SPORTS_15 } from '@/lib/sports';
 
-const MONTHS = [8,9,10,11,12,3,4];
+const MONTHS = [8,9,10,11,12];
 
 export function Header({ showSearch=false }: { showSearch?: boolean }) {
   const router = useRouter();
