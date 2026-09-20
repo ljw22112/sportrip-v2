@@ -40,13 +40,13 @@ export function Header({ showSearch=false }: { showSearch?: boolean }) {
           {/* 중앙 네비 */}
           <nav className="flex items-center gap-0.5 flex-1 justify-center overflow-x-auto scrollbar-hide">
             {[
-              {href:'/about', label:'스포트립 소개'},
-              {href:'/events', label:'대회 찾기'},
-              {href:'/calendar', label:'캘린더'},
-              {href:'/saved', label:'저장한 대회'},
+              {href:'/about', label:'스포트립 소개', mobileHide: false},
+              {href:'/events', label:'대회 찾기', mobileHide: true},
+              {href:'/calendar', label:'캘린더', mobileHide: true},
+              {href:'/saved', label:'저장한 대회', mobileHide: true},
             ].map(n=>(
               <Link key={n.href} href={n.href}
-                className="text-[11px] md:text-[13px] font-semibold px-2 md:px-3 py-2 rounded-lg transition-colors whitespace-nowrap"
+                className={`text-[11px] md:text-[13px] font-semibold px-2 md:px-3 py-2 rounded-lg transition-colors whitespace-nowrap ${n.mobileHide ? 'hidden md:block' : ''}`}
                 style={{color:'rgba(255,255,255,.55)'}}
                 onMouseEnter={e=>(e.currentTarget.style.color='#fff')}
                 onMouseLeave={e=>(e.currentTarget.style.color='rgba(255,255,255,.55)')}>
