@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { EVENTS, getDynamicEvents } from '@/lib/data';
 import { EventRow } from '@/components/events/EventRow';
 import { KakaoMap as KoreaMap } from '@/components/events/KakaoMap';
-import { Header, MobileTabBar } from '@/components/layout/Header';
+import { Header } from '@/components/layout/Header';
 import { RegionListView } from '@/components/events/RegionListView';
 import { getSportInfo } from '@/lib/sports';
 import { CalendarDays } from 'lucide-react';
@@ -27,7 +27,6 @@ const REGION_COLOR: Record<string,{border:string;text:string}> = {
 const KTO_LINKS = [
   ['한국관광공사 공식사이트','https://korean.visitkorea.or.kr'],
   ['한국관광 데이터랩','https://datalab.visitkorea.or.kr'],
-  ['관광안내 1330','tel:1330'],
 ];
 
 function calcN(s:string){return Math.ceil((new Date(s).getTime()-Date.now())/86400000);}
@@ -207,7 +206,6 @@ export default function HomePage() {
           </div>
         </footer>
       </main>
-      <MobileTabBar/>
     </>
   );
 }
