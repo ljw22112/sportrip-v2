@@ -3,7 +3,7 @@ import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import { getDynamicEvents, getAllEvents } from '@/lib/data';
 import { SPORTS_15 } from '@/lib/sports';
-import { Header, MobileTabBar } from '@/components/layout/Header';
+import { Header } from '@/components/layout/Header';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const REGION_COLOR: Record<string,string> = {
@@ -305,7 +305,6 @@ export default function CalendarPage() {
           </div>
         )}
       </main>
-      <MobileTabBar/>
     </>
   );
 }
