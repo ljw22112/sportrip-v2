@@ -38,7 +38,7 @@ export function Header({ showSearch=false }: { showSearch?: boolean }) {
           </Link>
 
           {/* 중앙 네비 */}
-          <nav className="hidden md:flex items-center gap-1 flex-1 justify-center">
+          <nav className="flex items-center gap-0.5 flex-1 justify-center overflow-x-auto scrollbar-hide">
             {[
               {href:'/about', label:'스포트립 소개'},
               {href:'/events', label:'대회 찾기'},
@@ -46,7 +46,7 @@ export function Header({ showSearch=false }: { showSearch?: boolean }) {
               {href:'/saved', label:'저장한 대회'},
             ].map(n=>(
               <Link key={n.href} href={n.href}
-                className="text-[13px] font-semibold px-3 py-2 rounded-lg transition-colors"
+                className="text-[11px] md:text-[13px] font-semibold px-2 md:px-3 py-2 rounded-lg transition-colors whitespace-nowrap"
                 style={{color:'rgba(255,255,255,.55)'}}
                 onMouseEnter={e=>(e.currentTarget.style.color='#fff')}
                 onMouseLeave={e=>(e.currentTarget.style.color='rgba(255,255,255,.55)')}>
