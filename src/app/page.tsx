@@ -187,41 +187,19 @@ export default function HomePage() {
 
         {/* ── 푸터 ── */}
         <footer style={{background:'#0F0F0F',color:'rgba(255,255,255,0.75)'}} className="text-[13px]">
-          <div className="max-w-[1760px] mx-auto px-5 md:px-10 py-10">
-            <div className="flex flex-wrap gap-8 items-start mb-8">
-              {/* 로고 */}
-              <div>
-                <div className="flex items-center gap-2 mb-3">
-                  <img src="/logo.svg" alt="" className="h-24 w-24 brightness-0 invert"/>
-                  <span className="font-black text-[36px] text-white tracking-[-0.05em]">스포트립</span>
-                </div>
-                <p className="text-[12px]">SporTrip · 2026 관광데이터 활용 공모전</p>
-                <p className="text-[12px] mt-1">출처: ⓒ한국관광공사</p>
-                <p className="text-[12px] mt-1">💡 하트로 저장한 대회는 이 기기 브라우저에만 보관됩니다</p>
+          <div className="max-w-[1760px] mx-auto px-5 md:px-10 py-8 flex flex-wrap gap-6 items-start">
+            <div>
+              <div className="flex items-center gap-3 mb-3">
+                <img src="/logo.svg" alt="" className="h-16 w-16 brightness-0 invert"/>
+                <span className="font-black text-[26px] text-white tracking-[-0.05em]">스포트립</span>
               </div>
-              <div className="ml-auto text-right text-[12px]">
-                등록 대회 {EVENTS.length}건<br/>
-                예정 대회 {dynEv.filter(e=>e.status!=='done').length}건
-              </div>
+              <p className="text-[12px]">SporTrip · 2026 관광데이터 활용 공모전</p>
+              <p className="text-[12px] mt-1">출처: ⓒ한국관광공사</p>
+              <p className="text-[12px] mt-1">💡 하트로 저장한 대회는 이 기기 브라우저에만 보관됩니다</p>
             </div>
-            {/* 히어로 문구 + AI 소개 + CTA */}
-            <div className="border-t border-white/10 pt-8">
-              <p className="text-[14px] font-bold mb-2" style={{color:'#D4FF3F'}}>전국 스포츠 대회 일정 + 개최지 여행 정보를 한곳에</p>
-              <h2 className="text-[22px] md:text-[28px] font-black text-white leading-tight mb-4 tracking-[-0.03em]">
-                대회 보러 가는 길,<br/>
-                <span style={{color:'#D4FF3F'}}>그 지역까지 즐기고 오세요</span>
-              </h2>
-              <p className="text-[13px] mb-5" style={{color:'rgba(255,255,255,0.6)'}}>
-                대회를 고르면, 전날·당일·다음날 코스를 AI가 추천해 드려요.
-              </p>
-              <div className="flex gap-3 flex-wrap">
-                <Link href="/events" className="font-bold text-[14px] px-5 py-2.5 rounded-xl hover:opacity-90 transition-all" style={{background:'#D4FF3F',color:'#0F0F0F'}}>
-                  대회 찾기 →
-                </Link>
-                <Link href="/calendar" className="font-bold text-[14px] px-5 py-2.5 rounded-xl transition-all" style={{background:'rgba(255,255,255,0.08)',color:'#fff',border:'1px solid rgba(255,255,255,0.15)'}}>
-                  캘린더 보기
-                </Link>
-              </div>
+            <div className="ml-auto text-right text-[12px]">
+              등록 대회 {EVENTS.length}건<br/>
+              예정 대회 {dynEv.filter(e=>e.status!=='done').length}건
             </div>
           </div>
           <div className="px-5 md:px-10 py-3 text-center text-[12px]" style={{color:'rgba(255,255,255,0.35)',borderTop:'0.5px solid rgba(255,255,255,0.08)'}}>
