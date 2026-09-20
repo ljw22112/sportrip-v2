@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { EVENTS, getDynamicEvents } from '@/lib/data';
 import { EventRow } from '@/components/events/EventRow';
 import { KakaoMap as KoreaMap } from '@/components/events/KakaoMap';
-import { Header } from '@/components/layout/Header';
+import { Header, MobileTabBar } from '@/components/layout/Header';
 import { RegionListView } from '@/components/events/RegionListView';
 import { getSportInfo } from '@/lib/sports';
 import { CalendarDays } from 'lucide-react';
@@ -207,6 +207,7 @@ export default function HomePage() {
           </div>
         </footer>
       </main>
+      <MobileTabBar/>
     </>
   );
 }

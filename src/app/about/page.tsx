@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Header } from '@/components/layout/Header';
+import { Header, MobileTabBar } from '@/components/layout/Header';
 import { SportripIcon, IconTile } from '@/components/SportripIcon';
 import { EVENTS } from '@/lib/data';
 import { ExternalLink } from 'lucide-react';
@@ -267,6 +267,7 @@ export default function AboutPage() {
         </footer>
 
       </main>
+      <MobileTabBar/>
     </>
   );
 }

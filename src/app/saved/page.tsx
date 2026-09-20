@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { EVENTS, getDynamicEvents } from '@/lib/data';
 import { EventCard } from '@/components/events/EventCard';
-import { Header } from '@/components/layout/Header';
+import { Header, MobileTabBar } from '@/components/layout/Header';
 import { Heart } from 'lucide-react';
 
 export default function SavedPage() {
@@ -56,6 +56,7 @@ export default function SavedPage() {
           </div>
         )}
       </main>
+      <MobileTabBar/>
     </>
   );
 }
