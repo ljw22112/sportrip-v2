@@ -8,7 +8,7 @@ const upcomingCount = EVENTS.filter(e => e.status !== 'done').length;
 
 const FEATURES = [
   { icon:'automation' as const, tone:'green' as const, title:'AI 여행 코스', desc:'대회를 고르면 전날·당일·다음날 맞춤 여행 코스를 AI가 자동으로 짜드립니다. 한국관광공사 TourAPI 실데이터 기반.' },
-  { icon:'findEvent'  as const, tone:'brand' as const, title:'대회 찾기',     desc:'전국 스포츠 대회 일정을 지역·종목·날짜로 검색. 15개 종목 대회를 한눈에 확인하세요.' },
+  { icon:'findEvent'  as const, tone:'brand' as const, title:'대회 찾기',     desc:'전국 스포츠 대회 일정을 지역·종목·날짜로 검색. 16개 종목 대회를 한눈에 확인하세요.' },
   { icon:'mapExplore' as const, tone:'brand' as const, title:'지도로 탐색',   desc:'카카오맵 기반 실제 지도에서 대회 개최지를 확인하고, 종목별 필터로 원하는 대회를 찾으세요.' },
   { icon:'travelInfo' as const, tone:'green' as const, title:'주변 여행 정보', desc:'TourAPI 기반으로 대회 장소 주변 관광지·음식점·숙박·축제 정보를 실시간 제공합니다.' },
   { icon:'calendar'   as const, tone:'amber' as const, title:'월간 캘린더',   desc:'월별 대회 일정을 캘린더로 확인하고, 종목 필터로 원하는 대회만 골라 보세요.' },
@@ -84,7 +84,7 @@ export default function AboutPage() {
               {[
                 {num:`${EVENTS.length}+`, label:'등록 대회', sub:'전국 스포츠 DB'},
                 {num:'17', label:'지역 커버리지', sub:'17개 시·도'},
-                {num:'15', label:'종목 카테고리', sub:'마라톤~골프'},
+                {num:'16', label:'종목 카테고리', sub:'마라톤·러닝·배드민턴 등'},
                 {num:'5', label:'TourAPI 카테고리', sub:'관광·음식·숙박·축제·문화·무장애'},
               ].map(s=>(
                 <div key={s.label} className="text-center">
