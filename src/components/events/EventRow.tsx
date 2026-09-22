@@ -7,7 +7,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 export function EventRow({ title, href, events }: { title:string; href:string; events:SportEvent[] }) {
   const ref = useRef<HTMLDivElement>(null);
-  const scroll = (d: number) => ref.current?.scrollBy({left:d*480,behavior:'smooth'});
+  const scroll = (d: number) => ref.current?.scrollBy({left:d*200,behavior:'smooth'});
 
   return (
     <section className="max-w-[1760px] mx-auto px-5 md:px-20 py-6 md:py-7">
@@ -18,10 +18,10 @@ export function EventRow({ title, href, events }: { title:string; href:string; e
             className="text-[13px] font-semibold text-[--green] border border-[--green] px-3 py-1 rounded-full hover:bg-[--green-tint] transition-colors">
             전체보기 ›
           </Link>
-          <button onClick={()=>scroll(-1)} className="hidden md:flex w-7 h-7 bg-[--gray] rounded-full items-center justify-center hover:bg-[--line-soft] transition-colors">
+          <button onClick={()=>scroll(-1)} className="flex w-7 h-7 bg-[--gray] rounded-full items-center justify-center hover:bg-[--line-soft] transition-colors">
             <ChevronLeft className="w-3.5 h-3.5"/>
           </button>
-          <button onClick={()=>scroll(1)} className="hidden md:flex w-7 h-7 bg-[--gray] rounded-full items-center justify-center hover:bg-[--line-soft] transition-colors">
+          <button onClick={()=>scroll(1)} className="flex w-7 h-7 bg-[--gray] rounded-full items-center justify-center hover:bg-[--line-soft] transition-colors">
             <ChevronRight className="w-3.5 h-3.5"/>
           </button>
         </div>
@@ -31,18 +31,15 @@ export function EventRow({ title, href, events }: { title:string; href:string; e
           이 기간에 열리는 대회가 없습니다.
         </div>
       ) : (
-        /* 모바일: 2열 그리드 / 데스크톱: 가로 스크롤 7열 */
-        <>
-          {/* 반응형 단일 그리드 — 모바일 2열 / 태블릿 3열 / 데스크톱 가로스크롤 */}
-          <div ref={ref} className="grid grid-cols-2 sm:grid-cols-3 md:flex md:gap-4 md:overflow-x-auto md:pb-2"
-            style={{scrollbarWidth:'none'}}>
-            {events.slice(0,6).map(e=>(
-              <div key={e.id} className="md:flex-none" style={{width:'clamp(150px,calc((100% - 5*16px)/6),220px)'}}>
-                <EventCard event={e}/>
-              </div>
-            ))}
-          </div>
-        </>
+        <div ref={ref}
+          className="flex gap-3 overflow-x-auto pb-2"
+          style={{scrollbarWidth:'none', WebkitOverflowScrolling:'touch'} as any}>
+          {events.slice(0,6).map(e=>(
+            <div key={e.id} className="flex-none w-[160px] md:w-[200px]">
+              <EventCard event={e}/>
+            </div>
+          ))}
+        </div>
       )}
     </section>
   );
