@@ -121,9 +121,9 @@ export default function HomePage() {
         </section>
 
         {/* ── 대회 캐러셀 ── */}
-        <EventRow title="이번달의 대회" href="/events" events={upcoming.slice(0,6)}/>
+        <EventRow title="이번달의 대회" href="/events" events={upcoming.slice(0,12)}/>
         {(() => {
-          const shownIds = new Set(upcoming.slice(0,6).map(e=>e.id));
+          const shownIds = new Set(upcoming.slice(0,12).map(e=>e.id));
           const marathons = dynEv.filter(e=>e.sport==='기타'&&e.status!=='done'&&!shownIds.has(e.id))
             .sort((a,b)=>{
               const aM=new Date(a.start).getMonth()===thisMonth&&new Date(a.start).getFullYear()===thisYear?0:1;
@@ -131,7 +131,7 @@ export default function HomePage() {
               if(aM!==bM) return aM-bM;
               return new Date(a.start).getTime()-new Date(b.start).getTime();
             }).slice(0,6);
-          return marathons.length>0 ? <EventRow title="기타 대회" href="/events?sport=기타" events={marathons}/> : null;
+          return marathons.length>0 ? <EventRow title="기타 대회" href="/events?sport=기타" events={marathons.slice(0,12)}/> : null;
         })()}
 
         {/* ── 지역별 둘러보기 ── */}

@@ -7,9 +7,10 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 export function EventRow({ title, href, events }: { title:string; href:string; events:SportEvent[] }) {
   const ref = useRef<HTMLDivElement>(null);
+  const CARD_W = 200;
   const scroll = (d: number) => {
     if (!ref.current) return;
-    ref.current.scrollLeft += d * 200;
+    ref.current.scrollLeft += d * CARD_W;
   };
 
   return (
@@ -48,8 +49,8 @@ export function EventRow({ title, href, events }: { title:string; href:string; e
             msOverflowStyle: 'none',
           } as React.CSSProperties}
         >
-          {events.slice(0,6).map(e=>(
-            <div key={e.id} style={{flexShrink:0, width:'160px'}}>
+          {events.map(e=>(
+            <div key={e.id} style={{flexShrink:0, width:`${CARD_W}px`}}>
               <EventCard event={e}/>
             </div>
           ))}
