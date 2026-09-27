@@ -7,7 +7,10 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 export function EventRow({ title, href, events }: { title:string; href:string; events:SportEvent[] }) {
   const ref = useRef<HTMLDivElement>(null);
-  const scroll = (d: number) => ref.current?.scrollBy({left:d*180,behavior:'smooth'});
+  const scroll = (d: number) => {
+    if (!ref.current) return;
+    ref.current.scrollLeft += d * 200;
+  };
 
   return (
     <section className="max-w-[1760px] mx-auto px-5 md:px-20 py-6 md:py-7">
