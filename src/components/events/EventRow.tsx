@@ -7,7 +7,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 export function EventRow({ title, href, events }: { title:string; href:string; events:SportEvent[] }) {
   const ref = useRef<HTMLDivElement>(null);
-  const scroll = (d: number) => ref.current?.scrollBy({left:d*200,behavior:'smooth'});
+  const scroll = (d: number) => ref.current?.scrollBy({left:d*180,behavior:'smooth'});
 
   return (
     <section className="max-w-[1760px] mx-auto px-5 md:px-20 py-6 md:py-7">
@@ -31,11 +31,22 @@ export function EventRow({ title, href, events }: { title:string; href:string; e
           이 기간에 열리는 대회가 없습니다.
         </div>
       ) : (
-        <div ref={ref}
-          className="flex gap-3 overflow-x-auto pb-2"
-          style={{scrollbarWidth:'none', WebkitOverflowScrolling:'touch'} as any}>
+        <div
+          ref={ref}
+          style={{
+            display: 'flex',
+            gap: '12px',
+            overflowX: 'auto',
+            overflowY: 'hidden',
+            WebkitOverflowScrolling: 'touch',
+            touchAction: 'pan-x',
+            paddingBottom: '8px',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none',
+          } as React.CSSProperties}
+        >
           {events.slice(0,6).map(e=>(
-            <div key={e.id} className="flex-none w-[160px] md:w-[200px]">
+            <div key={e.id} style={{flexShrink:0, width:'160px'}}>
               <EventCard event={e}/>
             </div>
           ))}
