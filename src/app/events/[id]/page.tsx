@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { EVENTS, calcDday, calcStatus, calcVerified, VERIFIED_LABELS, calcRegistrationStatus, REG_STATUS_LABELS } from '@/lib/data';
+import { EVENTS, calcDday, calcStatus, calcVerified, VERIFIED_LABELS, calcRegistrationStatus, REG_STATUS_LABELS, safeUrl } from '@/lib/data';
 import { Header, MobileTabBar } from '@/components/layout/Header';
 import { getTourData } from '@/lib/courses';
 import { TourSection } from '@/components/events/TourSection';
@@ -97,13 +97,13 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
               <div className="flex items-center gap-4 px-5 py-4">
                 <span className="text-[15px] text-muted font-semibold w-32 flex-shrink-0">🌐 공식 사이트</span>
                 {ev.url ? (
-                  <a href={ev.url} target="_blank" rel="noopener noreferrer"
+                  <a href={safeUrl(ev.url||'')} target="_blank" rel="noopener noreferrer"
                     className="flex items-center gap-2 text-[16px] font-bold text-[bg-primary] hover:underline flex-1 min-w-0">
                     <ExternalLink className="w-4 h-4 flex-shrink-0"/>
                     <span className="truncate">{ev.url}</span>
                   </a>
                 ) : (
-                  <span className="text-[15px] text-faint">준비 중</span>
+                  <span className="text-[15px] text-faint italic">공식 사이트 미등록</span>
                 )}
               </div>
               <div className="flex items-center gap-4 px-5 py-3 bg-[#F7F7F6]">
@@ -217,7 +217,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                 <div className="text-[18px] font-bold text-ink mb-1">{ev.title}</div>
                 <div className="text-[15px] text-muted mb-4">{ev.region} · {fmtDate(ev.start)}</div>
                 {ev.url ? (
-                  <a href={ev.url} target="_blank" rel="noopener noreferrer"
+                  <a href={safeUrl(ev.url||'')} target="_blank" rel="noopener noreferrer"
                     className="block w-full text-center py-4 rounded-xl font-bold text-[16px] text-white transition-colors"
                     style={{background:sport.color}}>
                     🎽 바로 접수하기 ↗
@@ -253,7 +253,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
           <SaveButton eventId={String(ev.id)} className="flex-1"/>
           <ShareButton url={`/events/${ev.id}`} title={ev.title} className="flex-1"/>
           {ev.url ? (
-            <a href={ev.url} target="_blank" rel="noopener"
+            <a href={safeUrl(ev.url||'')} target="_blank" rel="noopener"
               className="flex-1 flex items-center justify-center text-white font-bold text-[13px] py-2.5 rounded-xl"
               style={{background:sport.color}}>
               공식 사이트 ↗

@@ -14,17 +14,46 @@ export const SCALE_LABELS = {
 
 export type VerifiedStatus = 'verified' | 'unverified' | 'public';
 
+// HTTP-only 사이트를 새 탭에서 안전하게 열기 위한 URL 정규화
+export function safeUrl(url: string): string {
+  if (!url) return '';
+  // HTTP-only로 확인된 도메인은 그대로, 나머지는 https 강제
+  const httpOnlyDomains = ['weightlifting.or.kr','climbing.or.kr','ssireum.sports.or.kr'];
+  try {
+    const parsed = new URL(url);
+    if (httpOnlyDomains.some(d => parsed.hostname.includes(d))) return url;
+    return url.replace(/^http:\/\//, 'https://');
+  } catch { return url; }
+}
+
 export function calcVerified(id: number, url: string): VerifiedStatus {
   if (id >= 200) return 'public'; // 공공데이터 자동수집
   if (!url) return 'unverified';
   try {
     const domain = new URL(url).hostname.replace('www.', '');
     const knownDomains = [
+      // 마라톤·달리기
       'marathon.jtbc.com','chuncheonmarathon.com','daegumarathon.co.kr',
-      'tourdekorea.or.kr','koreabaseball.com','kbl.or.kr','kovo.co.kr',
-      'kleague.com','kfa.or.kr','badmintonkorea.org','swimming.or.kr',
-      'koreataekwondo.org','judo.or.kr','kgto.co.kr','sports.or.kr',
-      'kosad.or.kr','kaaf.or.kr','koreacycling.or.kr','kortennis.co.kr',
+      'seoulmarathon.com','gyeongjumarathon.com','kormarathon.com',
+      'ladiesmarathon.or.kr','busanilbo.com',
+      // 사이클·투르
+      'tourdekorea.or.kr','koreacycling.or.kr',
+      // 구기
+      'koreabaseball.com','kbl.or.kr','kovo.co.kr','kleague.com','kfa.or.kr',
+      // 라켓
+      'badmintonkorea.org','badmintongame.co.kr','kortennis.co.kr',
+      'squash.or.kr','ta.or.kr','courtx.co.kr',
+      // 수상
+      'swimming.or.kr','korswim.co.kr','rowing.or.kr',
+      // 격투·무도
+      'koreataekwondo.org','worldtaekwondo.org','judo.or.kr','kba.or.kr',
+      // 종합·체육회
+      'sports.or.kr','kosad.or.kr','kaaf.or.kr',
+      // 기타 종목
+      'kgto.co.kr','archery.or.kr','shooting.or.kr','gungdo.or.kr',
+      'bowling.or.kr','parkgolf.or.kr','trail.or.kr','inlinekorea.or.kr',
+      'ssireum.sports.or.kr','climbing.or.kr','weightlifting.or.kr',
+      'esports.or.kr','esports.sooplive.com',
       'ironman.com','triathlon.or.kr',
     ];
     if (knownDomains.some(d => domain.includes(d.replace('www.',''))))
